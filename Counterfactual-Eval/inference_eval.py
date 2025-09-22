@@ -31,6 +31,12 @@ def parse_args():
         help="Name of the model being evaluated.",
     )
     parser.add_argument(
+        "--model_prefix",
+        type=str,
+        default="",
+        help="Name of the prefix",
+    )
+    parser.add_argument(
         "--model_path", type=str, required=True, help="Path to the pretrained model."
     )
     parser.add_argument(
@@ -281,7 +287,10 @@ def main():
         # --- 动态生成输出文件名并保存 ---
         # 更清晰安全的写法
         suffix = "_COT_" if args.cot else ""
-        output_filename = f"results_{args.model_name}_{args.dataset_name}{suffix}.json"
+        prefix = "-" + args.model_prefix if args.model_prefix != "" else ""
+        output_filename = (
+            f"results_{args.model_name}{prefix}_{args.dataset_name}{suffix}.json"
+        )
 
         output_path = os.path.join(args.output_dir, output_filename)
         os.makedirs(args.output_dir, exist_ok=True)

@@ -4,7 +4,8 @@ set -x
 
 export PYTHONUNBUFFERED=1
 
-export TENSORBOARD_DIR='/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/train_logs'
+export SWANLAB_DIR='/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/train_logs'
+export SWANLAB_MODE='local'
 
 BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 
@@ -33,8 +34,8 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/math.py:compute_score \
     trainer.project_name=Counterfactual-R1 \
     trainer.experiment_name=qwen2_5_vl_3b_MARS_fold1 \
-    trainer.logger=['console','tensorboard'] \
-    trainer.n_gpus_per_node=1 \
+    trainer.logger=['console','swanlab'] \
+    trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=10 \
     trainer.total_epochs=5 \
     trainer.val_freq=5 \
