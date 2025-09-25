@@ -25,7 +25,7 @@ python3 -m verl.trainer.main \
     worker.actor.global_batch_size=128 \
     worker.actor.model.model_path=${MODEL_PATH} \
     worker.actor.model.enable_gradient_checkpointing=True \
-    worker.actor.model.apply_cmve=False \
+    worker.actor.model.apply_cmve=True \
     worker.actor.fsdp.torch_dtype=bf16 \
     worker.actor.optim.strategy=adamw_bf16 \
     worker.actor.optim.lr=5e-6 \
@@ -35,7 +35,7 @@ python3 -m verl.trainer.main \
     worker.rollout.val_override_config='{"n":1,"temperature":0.5}' \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_MARS_fold1 \
+    trainer.experiment_name=qwen2_5_vl_3b_cmve_MARS_fold1 \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=10 \
@@ -43,4 +43,4 @@ python3 -m verl.trainer.main \
     trainer.val_freq=5 \
     trainer.save_freq=5 \
     trainer.save_limit=3 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_MARS_fold1 \
+    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_cmve_MARS_fold1 \

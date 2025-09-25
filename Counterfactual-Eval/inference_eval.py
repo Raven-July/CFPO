@@ -1,192 +1,194 @@
-from transformers import (
-    Qwen2_5_VLForConditionalGeneration,
-    AutoProcessor,
-)
-from qwen_vl_utils import process_vision_info
-import torch
-import json
-from tqdm import tqdm
-from mathruler.grader import extract_boxed_content, grade_answer
 import os
+import re
+import json
+import math
 import random
-
-import torch.distributed as dist
-import argparse  # 导入 argparse 用于解析命令行参数
-from collections import defaultdict
-
+import argparse
 import warnings
+from collections import defaultdict
+from typing import Optional
+from PIL import Image
 
+import torch
+import torch.distributed as dist
+from tqdm import tqdm
+from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
+from qwen_vl_utils import process_vision_info
+from mathruler.grader import grade_answer
+
+# ----------------- 全局配置 -----------------
 warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+MIN_PIXELS = 262_144  # 最小像素数
+MAX_PIXELS = 4_194_304  # 最大像素数
 
 
+# ===================== 参数解析 =====================
 def parse_args():
-    """解析从 shell 脚本传递的命令行参数。"""
+    """解析命令行参数"""
     parser = argparse.ArgumentParser(
         description="Evaluate VLM models on specified datasets."
     )
+    parser.add_argument("--model_name", type=str, required=True, help="模型名称")
+    parser.add_argument("--model_prefix", type=str, default="", help="模型前缀（可选）")
+    parser.add_argument("--model_path", type=str, required=True, help="预训练模型路径")
     parser.add_argument(
-        "--model_name",
-        type=str,
-        required=True,
-        help="Name of the model being evaluated.",
+        "--dataset_name", type=str, required=True, help="要评估的数据集名称"
     )
+    parser.add_argument("--output_dir", type=str, required=True, help="保存结果的目录")
+    parser.add_argument("--batch_size", type=int, default=4, help="推理批大小")
     parser.add_argument(
-        "--model_prefix",
-        type=str,
-        default="",
-        help="Name of the prefix",
-    )
-    parser.add_argument(
-        "--model_path", type=str, required=True, help="Path to the pretrained model."
-    )
-    parser.add_argument(
-        "--dataset_name",
-        type=str,
-        required=True,
-        help="Name of the dataset to evaluate on.",
-    )
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        required=True,
-        help="Directory to save the output results.",
-    )
-    parser.add_argument(
-        "--batch_size", type=int, default=4, help="Batch size for inference."
-    )
-    parser.add_argument(
-        "--cot",
-        action="store_true",
-        help="Whether activate COT through prompt engineering.",
+        "--cot", action="store_true", help="是否启用 CoT（链式思维）推理"
     )
     return parser.parse_args()
 
 
+# ===================== 分布式设置 =====================
 def setup_distributed():
+    """初始化分布式训练/推理环境"""
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
     torch.cuda.set_device(local_rank)
     dist.init_process_group(backend="nccl")
+
     world_size = dist.get_world_size()
     rank = dist.get_rank()
-    print(f"Process {rank}/{world_size} initialized on cuda:{local_rank}")
+    print(f"[Distributed Init] Rank {rank}/{world_size} on cuda:{local_rank}")
     return local_rank, world_size, rank
 
 
+# ===================== 图像预处理 =====================
+def process_image(
+    image: Image.Image, min_pixels: Optional[int], max_pixels: Optional[int]
+) -> Image.Image:
+    """根据最小/最大像素约束调整图像大小，并转换为 RGB"""
+    image.load()  # 避免 "Too many open files"
+
+    # 缩小到最大像素
+    if max_pixels and image.width * image.height > max_pixels:
+        factor = math.sqrt(max_pixels / (image.width * image.height))
+        image = image.resize((int(image.width * factor), int(image.height * factor)))
+
+    # 放大到最小像素
+    if min_pixels and image.width * image.height < min_pixels:
+        factor = math.sqrt(min_pixels / (image.width * image.height))
+        image = image.resize((int(image.width * factor), int(image.height * factor)))
+
+    # 转换为 RGB 模式
+    return image.convert("RGB") if image.mode != "RGB" else image
+
+
+# ===================== 数据加载 =====================
+def get_dataset_config(dataset_name: str):
+    """根据数据集名称返回路径和图片根目录"""
+    DATA_ROOT = "eval_data"
+    if dataset_name == "C-VQA-Real":
+        return (
+            os.path.join(DATA_ROOT, "C-VQA-Real.json"),
+            "/eaas/default/groups/xitucheng213/home/share/swr/Datasets/Counterfactual/C-VQA/C-VQA-Real/C-VQA-Real_images",
+        )
+    elif dataset_name == "C-VQA-Synthetic":
+        return (
+            os.path.join(DATA_ROOT, "C-VQA-Synthetic.json"),
+            "/eaas/default/groups/xitucheng213/home/share/swr/Datasets/Counterfactual/C-VQA/C-VQA-Synthetic/C-VQA-Synthetic_images",
+        )
+    elif dataset_name == "MARS_Bench":
+        return (
+            os.path.join(DATA_ROOT, "MARS_Bench.json"),
+            "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/COCO_val2014",
+        )
+    else:
+        raise ValueError(f"不支持的数据集: {dataset_name}")
+
+
+# ===================== 模型加载 =====================
+def load_model_and_processor(model_name: str, model_path: str, device):
+    """根据名称加载模型和处理器"""
+    if "qwen2.5-vl-3b" in model_name.lower() or "qwen2.5-vl-7b" in model_name.lower():
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+            model_path,
+            torch_dtype=torch.bfloat16,
+            attn_implementation="flash_attention_2",
+            device_map={"": device},
+        )
+        processor = AutoProcessor.from_pretrained(model_path)
+        return model, processor
+    else:
+        raise ValueError(f"暂不支持加载模型: {model_name}")
+
+
+# ===================== 主流程 =====================
 def main():
-    """主执行函数"""
     args = parse_args()
     local_rank, world_size, rank = setup_distributed()
     device = f"cuda:{local_rank}"
 
-    # --- 根据传入的 dataset_name 配置数据集路径和模板 ---
-    if rank == 0:
-        print(f"Configuring for dataset: {args.dataset_name}")
-
-    if args.dataset_name == "C-VQA-Real":
-        if args.cot:
-            format = " You FIRST think about the reasoning process step by step as an internal monologue and then provide the final answer. The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{{}}."
-        else:
-            format = " Please directly give out the final answer, which MUST BE put in \\boxed{{}}."
-        DATA_ROOT = "eval_data"
-        IMAGE_ROOT = "/eaas/default/groups/xitucheng213/home/u2021213615/share/swr/Datasets/C-VQA/C-VQA-Real/C-VQA-Real_images"
-        QUESTION_TEMPLATE = "{Question}" + format
-        # QUESTION_TEMPLATE = "{Question} You FIRST think about the reasoning process as an internal monologue and then provide the final answer. The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{}."
-        ds_path = os.path.join(DATA_ROOT, "C-VQA-Real.json")
-
-    elif args.dataset_name == "C-VQA-Synthetic":
-        if args.cot:
-            format = " You FIRST think about the reasoning process step by step as an internal monologue and then provide the final answer(For multiple-choice questions, please provide only the option letter, e.g., A.). The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{{}}."
-        else:
-            format = " Please directly give out the final answer(For multiple-choice questions, please provide only the option letter, e.g., A.), which MUST BE put in \\boxed{{}}."
-        DATA_ROOT = "eval_data"
-        IMAGE_ROOT = "/eaas/default/groups/xitucheng213/home/u2021213615/share/swr/Datasets/C-VQA/C-VQA-Synthetic/C-VQA-Synthetic_images"
-        # QUESTION_TEMPLATE = "{Question} Please directly give out the final answer. For multiple-choice questions, please provide only the option letter, e.g., A."
-        QUESTION_TEMPLATE = "{Question}" + format
-        ds_path = os.path.join(DATA_ROOT, "C-VQA-Synthetic.json")
-
-    elif args.dataset_name == "MARS_Bench":
-        if args.cot:
-            format = " You FIRST think about the reasoning process step by step as an internal monologue and then provide the final answer. The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \\boxed{{}}."
-        else:
-            format = " Please directly give out the final answer, which MUST BE put in \\boxed{{}}."
-        DATA_ROOT = "eval_data"
-        IMAGE_ROOT = "/eaas/default/groups/xitucheng213/home/u2021213615/share/swr/Datasets/coco/val2014"
-        QUESTION_TEMPLATE = "{Question}" + format
-        ds_path = os.path.join(DATA_ROOT, "MARS_Bench.json")
+    # ---- 数据集与 Prompt 配置 ----
+    ds_path, image_root = get_dataset_config(args.dataset_name)
+    prompt_template = (
+        "The user asks a question, and then you solve it. "
+        "You FIRST think about the reasoning process step by step as an internal monologue "
+        "and then provide the final answer. "
+        "The reasoning process MUST BE enclosed within <think> </think> tags. "
+        "The final answer MUST BE enclosed within <answer> </answer> tags."
+        if args.cot
+        else "The user asks a question, and then you solve it. "
+        "Please directly give out the final answer, which MUST BE enclosed within <answer> </answer> tags."
+    )
 
     if rank == 0:
-        print(f"Loading model: {args.model_name} from {args.model_path}")
+        print(f"[INFO] Loading dataset: {args.dataset_name}")
+        print(f"[INFO] Loading model: {args.model_name} from {args.model_path}")
 
-    model = None
-    processor = None
+    model, processor = load_model_and_processor(
+        args.model_name, args.model_path, local_rank
+    )
 
-    # 使用 if/elif 来区分并加载不同模型
-    if "qwen2.5-vl-3b" or "qwen2.5-vl-7b" in args.model_name.lower():
-        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            args.model_path,
-            torch_dtype=torch.bfloat16,
-            attn_implementation="flash_attention_2",
-            device_map={"": local_rank},
-        )
-        processor = AutoProcessor.from_pretrained(args.model_path)
-    # 示例：可以这样添加对其他模型的支持
-    # elif 'llava' in args.model_name.lower():
-    #     model = LlavaForConditionalGeneration.from_pretrained(...)
-    #     processor = AutoProcessor.from_pretrained(...)
-
-    else:
-        raise ValueError(f"Model '{args.model_name}' is not supported for loading.")
-
-    if model is None or processor is None:
-        raise RuntimeError("Model or processor failed to load.")
-
-    # --- 准备数据和评估流程 ---
-    if rank == 0:
-        print(f"Processing {args.dataset_name}...")
-
+    # ---- 数据加载与划分 ----
     with open(ds_path, "r") as f:
         data = json.load(f)
 
     random.seed(42)
     random.shuffle(data)
-
     per_rank_data = len(data) // world_size
-    start_idx = rank * per_rank_data
-    end_idx = start_idx + per_rank_data if rank < world_size - 1 else len(data)
+    start_idx, end_idx = rank * per_rank_data, (
+        (rank + 1) * per_rank_data if rank < world_size - 1 else len(data)
+    )
     rank_data = data[start_idx:end_idx]
 
+    # ---- 构建消息 ----
     messages = []
-    for x in rank_data:
-        image_path = os.path.join(IMAGE_ROOT, x["image"])
-        message = [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "image", "image": f"file://{image_path}"},
-                    {
-                        "type": "text",
-                        "text": QUESTION_TEMPLATE.format(Question=x["problem"]),
-                    },
-                ],
-            }
-        ]
-        messages.append(message)
+    for item in rank_data:
+        image_path = os.path.join(image_root, item["image"])
+        messages.append(
+            [
+                {"role": "system", "content": prompt_template},
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "image", "image": f"file://{image_path}"},
+                        {"type": "text", "text": item["problem"]},
+                    ],
+                },
+            ]
+        )
 
-    rank_outputs = []
-    # 使用 args.batch_size
+    # ---- 批量推理 ----
+    outputs = []
     for i in tqdm(range(0, len(messages), args.batch_size), disable=rank != 0):
         batch_messages = messages[i : i + args.batch_size]
-        text = [
-            processor.apply_chat_template(
-                msg, tokenize=False, add_generation_prompt=True
-            )
-            for msg in batch_messages
+        texts = [
+            processor.apply_chat_template(m, tokenize=False, add_generation_prompt=True)
+            for m in batch_messages
         ]
-
         image_inputs, video_inputs = process_vision_info(batch_messages)
+        resized_images = (
+            [process_image(img, MIN_PIXELS, MAX_PIXELS) for img in image_inputs]
+            if image_inputs
+            else None
+        )
+
         inputs = processor(
-            text=text,
-            images=image_inputs,
+            text=texts,
+            images=resized_images,
             videos=video_inputs,
             padding=True,
             padding_side="left",
@@ -196,110 +198,76 @@ def main():
         generated_ids = model.generate(
             **inputs, use_cache=True, max_new_tokens=256, do_sample=False
         )
-        generated_ids_trimmed = [
-            out_ids[len(in_ids) :]
-            for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+        trimmed_ids = [
+            out[len(inp) :] for inp, out in zip(inputs.input_ids, generated_ids)
         ]
-        batch_output_text = processor.batch_decode(
-            generated_ids_trimmed,
-            skip_special_tokens=True,
-            clean_up_tokenization_spaces=False,
-        )
+        outputs.extend(processor.batch_decode(trimmed_ids, skip_special_tokens=True))
 
-        rank_outputs.extend(batch_output_text)  # 简化输出，只保留文本结果
+    print(f"[INFO] Rank {rank} 完成 {len(outputs)} 条样本处理")
 
-    print(f"Rank {rank} has finished processing {len(rank_outputs)} examples")
-
-    all_outputs = [None] * len(data)
-    rank_results = [(start_idx + i, output) for i, output in enumerate(rank_outputs)]
-
+    # ---- 分布式收集结果 ----
     gathered_results = [None] * world_size
-    dist.all_gather_object(gathered_results, rank_results)
+    dist.all_gather_object(
+        gathered_results, [(start_idx + i, o) for i, o in enumerate(outputs)]
+    )
 
+    # ---- 主进程计算准确率并保存 ----
     if rank == 0:
-        # 主进程收集所有结果
+        all_outputs = [None] * len(data)
         for results in gathered_results:
             for idx, output in results:
                 all_outputs[idx] = output
 
-        final_output = []
-        totals = defaultdict(int)
-        corrects = defaultdict(int)
-        all_q_type = []
-        for i, (input_example, model_answer_raw) in enumerate(zip(data, all_outputs)):
-            ground_truth = input_example["solution"]
-            model_answer = model_answer_raw.strip()
-            # is_correct = model_answer.casefold() == ground_truth.casefold()
-            answer = extract_boxed_content(model_answer)
-            if answer == "None":
-                answer = model_answer
-            is_correct = 1.0 if grade_answer(answer, ground_truth) else 0.0
+        totals, corrects, final_output = defaultdict(int), defaultdict(int), []
+        for i, (item, raw_output) in enumerate(zip(data, all_outputs)):
+            gt = item["solution"]
+            match = re.search(
+                r"<answer>(.*?)</answer>", raw_output, re.DOTALL
+            ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
+            answer = match.group(1).strip() if match else raw_output.strip()
+            is_correct = grade_answer(answer, gt)
 
-            cf_type = "cf" if input_example["is_cf"] else "ncf"
-            if (
-                args.dataset_name == "C-VQA-Real"
-                or args.dataset_name == "C-VQA-Synthetic"
-            ):
-                q_type = input_example.get("type", "unknown")
-            else:
-                # 其他数据集的处理
-                q_type = input_example.get("type")
-            if q_type not in all_q_type:
-                all_q_type.append(q_type)
-            totals["all"] += 1
-            totals[cf_type] += 1
-            totals[q_type] += 1
+            cf_type = "cf" if item.get("is_cf") else "ncf"
+            q_type = item.get("type", "unknown")
 
-            if is_correct:
-                corrects["all"] += 1
-                corrects[cf_type] += 1
-                corrects[q_type] += 1
+            # 统计数量
+            for key in ["all", cf_type, q_type, f"{q_type}_{cf_type}"]:
+                totals[key] += 1
+                if is_correct:
+                    corrects[key] += 1
 
             final_output.append(
                 {
-                    "image": input_example["image"],
-                    "question": input_example["problem"],
-                    "ground_truth": ground_truth,
-                    "model_output": model_answer_raw,
+                    "image": item["image"],
+                    "question": item["problem"],
+                    "is_cf": item.get("is_cf", False),
+                    "type": item.get("type", "unknown"),
+                    "ground_truth": gt,
+                    "model_output": raw_output,
                     "extracted_answer": answer,
-                    "correct": 1 if is_correct else 0,
+                    "correct": int(is_correct),
                 }
             )
 
+        # ---- 计算准确率 ----
+        print(f"\n--- {args.dataset_name} 准确率报告 ---")
         accuracies = {}
-        # metric_keys = ['all', 'ncf', 'cf', 'direct', 'indirect', 'boolean']
-        metric_keys = list(totals.keys())
+        for key in sorted(totals.keys()):
+            acc = (corrects[key] / totals[key]) * 100 if totals[key] > 0 else 0
+            accuracies[f"{key}_accuracy"] = acc
+            print(f"{key:<12} : {acc:.2f}% ({corrects[key]}/{totals[key]})")
 
-        print(f"\n--- Accuracy Report for {args.dataset_name} ---")
-        for key in metric_keys:
-            total_count = totals[key]
-            correct_count = corrects[key]
-            if total_count > 0:
-                accuracy = (correct_count / total_count) * 100
-                accuracies[f"{key}_accuracy"] = accuracy
-                print(
-                    f"{key.capitalize()} accuracy: {accuracy:.2f}% ({correct_count}/{total_count})"
-                )
-            else:
-                accuracies[f"{key}_accuracy"] = 0
-                print(f"{key.capitalize()} accuracy: N/A (0 samples)")
-
-        # --- 动态生成输出文件名并保存 ---
-        # 更清晰安全的写法
+        # ---- 保存结果 ----
         suffix = "_COT_" if args.cot else ""
-        prefix = "-" + args.model_prefix if args.model_prefix != "" else ""
-        output_filename = (
-            f"results_{args.model_name}{prefix}_{args.dataset_name}{suffix}.json"
-        )
-
-        output_path = os.path.join(args.output_dir, output_filename)
+        prefix = f"-{args.model_prefix}" if args.model_prefix else ""
+        filename = f"results_{args.model_name}{prefix}_{args.dataset_name}{suffix}.json"
         os.makedirs(args.output_dir, exist_ok=True)
+        output_path = os.path.join(args.output_dir, filename)
 
         with open(output_path, "w") as f:
             json.dump({"accuracies": accuracies, "results": final_output}, f, indent=4)
 
-        print(f"\nResults saved to {output_path}")
-        print("-" * 100)
+        print(f"\n[INFO] 结果已保存到: {output_path}\n{'-' * 100}")
 
     dist.barrier()
 

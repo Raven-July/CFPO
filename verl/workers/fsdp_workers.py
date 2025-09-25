@@ -54,8 +54,18 @@ from ..utils.fsdp_utils import (
 from ..utils.model_utils import print_gpu_memory_usage, print_model_size
 from ..utils.tokenizer import get_processor, get_tokenizer
 from ..utils.torch_dtypes import PrecisionType
-from ..utils.torch_functional import AnyPrecisionAdamW, get_constant_schedule_with_warmup
-from .config import ActorConfig, CriticConfig, FSDPConfig, ModelConfig, OptimConfig, WorkerConfig
+from ..utils.torch_functional import (
+    AnyPrecisionAdamW,
+    get_constant_schedule_with_warmup,
+)
+from .config import (
+    ActorConfig,
+    CriticConfig,
+    FSDPConfig,
+    ModelConfig,
+    OptimConfig,
+    WorkerConfig,
+)
 from .rollout import vLLMRollout
 from .sharding_manager import FSDPVLLMShardingManager
 from .sharding_manager.fsdp_ulysses import FSDPUlyssesShardingManager
@@ -65,7 +75,9 @@ class FSDPWorker(Worker):
     def __init__(
         self,
         config: WorkerConfig,
-        role: Literal["actor", "critic", "rollout", "ref", "actor_rollout", "actor_rollout_ref"],
+        role: Literal[
+            "actor", "critic", "rollout", "ref", "actor_rollout", "actor_rollout_ref"
+        ],
     ):
         super().__init__()
         self.config = config
@@ -81,7 +93,11 @@ class FSDPWorker(Worker):
 
         self._has_actor = self.role in ["actor", "actor_rollout", "actor_rollout_ref"]
         self._has_critic = self.role == "critic"
-        self._has_rollout = self.role in ["rollout", "actor_rollout", "actor_rollout_ref"]
+        self._has_rollout = self.role in [
+            "rollout",
+            "actor_rollout",
+            "actor_rollout_ref",
+        ]
         self._has_ref = self.role in ["ref", "actor_rollout_ref"]
         if self._has_actor and self._has_critic:
             raise ValueError("Actor and critic cannot be both initialized.")
@@ -102,18 +118,26 @@ class FSDPWorker(Worker):
             self._use_optimizer_offload = self.config.critic.offload.offload_optimizer
             self._init_dist_mesh(self.config.critic, "critic")
 
-        if self._has_ref:  # NOTE: it seems that manual offload is slower than FSDP offload
+        if (
+            self._has_ref
+        ):  # NOTE: it seems that manual offload is slower than FSDP offload
             self._use_ref_param_offload = self.config.ref.offload.offload_params
 
-    def _init_dist_mesh(self, config: Union[ActorConfig, CriticConfig], role: Literal["actor", "critic"]):
+    def _init_dist_mesh(
+        self, config: Union[ActorConfig, CriticConfig], role: Literal["actor", "critic"]
+    ):
         world_size = dist.get_world_size()
         # create main device mesh
         fsdp_size = config.fsdp.fsdp_size
         if fsdp_size <= 0 or fsdp_size >= world_size:
-            self.device_mesh = init_device_mesh("cuda", mesh_shape=(world_size,), mesh_dim_names=("fsdp",))
+            self.device_mesh = init_device_mesh(
+                "cuda", mesh_shape=(world_size,), mesh_dim_names=("fsdp",)
+            )
         else:  # hsdp
             self.device_mesh = init_device_mesh(
-                "cuda", mesh_shape=(world_size // fsdp_size, fsdp_size), mesh_dim_names=("ddp", "fsdp")
+                "cuda",
+                mesh_shape=(world_size // fsdp_size, fsdp_size),
+                mesh_dim_names=("ddp", "fsdp"),
             )
 
         # create ulysses device mesh
@@ -126,27 +150,42 @@ class FSDPWorker(Worker):
         else:
             self.ulysses_device_mesh = None
 
-        self.ulysses_sharding_manager = FSDPUlyssesShardingManager(self.ulysses_device_mesh)
+        self.ulysses_sharding_manager = FSDPUlyssesShardingManager(
+            self.ulysses_device_mesh
+        )
 
         # validate and normalize config
         if self.config.rollout.n > 1:
             config.global_batch_size *= self.config.rollout.n
-            self.print_rank0(f"{role} will use global batch size {config.global_batch_size}.")
+            self.print_rank0(
+                f"{role} will use global batch size {config.global_batch_size}."
+            )
 
         config.global_batch_size_per_device = (
             config.global_batch_size * config.ulysses_size
         ) // self.device_mesh.size()
         if config.global_batch_size_per_device == 0:
-            raise ValueError(f"{role} global batch size * ulysses size must be larger than num gpus.")
+            raise ValueError(
+                f"{role} global batch size * ulysses size must be larger than num gpus."
+            )
 
-        if config.global_batch_size_per_device % config.micro_batch_size_per_device_for_update != 0:
-            raise ValueError(f"{role} global batch size per device must be divisible by the micro batch size.")
+        if (
+            config.global_batch_size_per_device
+            % config.micro_batch_size_per_device_for_update
+            != 0
+        ):
+            raise ValueError(
+                f"{role} global batch size per device must be divisible by the micro batch size."
+            )
 
         if (
             config.fsdp.enable_cpu_offload
-            and config.global_batch_size_per_device != config.micro_batch_size_per_device_for_update
+            and config.global_batch_size_per_device
+            != config.micro_batch_size_per_device_for_update
         ):
-            raise ValueError(f"{role} cannot use FSDP's CPU offload when gradient accumulation is enabled.")
+            raise ValueError(
+                f"{role} cannot use FSDP's CPU offload when gradient accumulation is enabled."
+            )
 
     def _build_model_optimizer(
         self,
@@ -177,14 +216,20 @@ class FSDPWorker(Worker):
             )
 
             try:
-                self.generation_config = GenerationConfig.from_pretrained(model_config.model_path)
+                self.generation_config = GenerationConfig.from_pretrained(
+                    model_config.model_path
+                )
             except Exception:
-                self.generation_config = GenerationConfig.from_model_config(self.model_config)
+                self.generation_config = GenerationConfig.from_model_config(
+                    self.model_config
+                )
 
             self.print_rank0(f"Model config: {self.model_config}")
 
         if padding_free:
-            apply_ulysses_patch(self.model_config.model_type)
+            if model_config.apply_cmve == True:
+                self.print_rank0("Activate CMVE patch!")
+            apply_ulysses_patch(self.model_config.model_type, model_config.apply_cmve)
             self.print_rank0("Ulysses patch applied!")
 
         if fsdp_config.torch_dtype is None:
@@ -199,7 +244,9 @@ class FSDPWorker(Worker):
         else:
             auto_class = AutoModelForCausalLM
 
-        if (not fsdp_config.enable_rank0_init) or self.device_mesh.get_local_rank("fsdp") == 0:
+        if (not fsdp_config.enable_rank0_init) or self.device_mesh.get_local_rank(
+            "fsdp"
+        ) == 0:
             model = auto_class.from_pretrained(
                 model_config.model_path,
                 config=self.model_config,
@@ -222,13 +269,17 @@ class FSDPWorker(Worker):
         model.tie_weights()  # avoid hanging
         model = model.to(torch_dtype)
         if model_config.enable_gradient_checkpointing:
-            model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+            model.gradient_checkpointing_enable(
+                gradient_checkpointing_kwargs={"use_reentrant": False}
+            )
 
         if role == "ref":
             model.requires_grad_(False)
 
         if model_config.freeze_vision_tower:
-            if hasattr(model, "model") and hasattr(model.model, "visual"):  # transformers >= 4.52.0
+            if hasattr(model, "model") and hasattr(
+                model.model, "visual"
+            ):  # transformers >= 4.52.0
                 model.model.visual.requires_grad_(False)
                 fsdp_config.use_orig_params = True
                 self.print_rank0("Vision tower is set to not trainable.")
@@ -268,7 +319,9 @@ class FSDPWorker(Worker):
 
         if fsdp_config.enable_rank0_init:
             sync_module_states = True
-            param_init_fn = get_init_fn(model, device="cuda") if self.rank != 0 else None
+            param_init_fn = (
+                get_init_fn(model, device="cuda") if self.rank != 0 else None
+            )
         else:
             sync_module_states = False
             param_init_fn = None
@@ -306,12 +359,16 @@ class FSDPWorker(Worker):
                     weight_decay=optim_config.weight_decay,
                 )
             else:
-                raise NotImplementedError(f"Optimizer {optim_config.strategy} not supported.")
+                raise NotImplementedError(
+                    f"Optimizer {optim_config.strategy} not supported."
+                )
 
             if optim_config.lr_warmup_steps is not None:
                 num_warmup_steps = optim_config.lr_warmup_steps
             else:
-                num_warmup_steps = int(optim_config.lr_warmup_ratio * optim_config.training_steps)
+                num_warmup_steps = int(
+                    optim_config.lr_warmup_ratio * optim_config.training_steps
+                )
 
             self.lr_scheduler = get_constant_schedule_with_warmup(
                 optimizer=self.optimizer, num_warmup_steps=num_warmup_steps
@@ -334,9 +391,13 @@ class FSDPWorker(Worker):
         tp_size = self.config.rollout.tensor_parallel_size
         dp_size = self.world_size // tp_size
         if self.world_size % tp_size != 0:
-            raise ValueError(f"rollout world size {self.world_size} is not divisible by tp size {tp_size}.")
+            raise ValueError(
+                f"rollout world size {self.world_size} is not divisible by tp size {tp_size}."
+            )
 
-        rollout_device_mesh = init_device_mesh("cuda", mesh_shape=(dp_size, tp_size), mesh_dim_names=("dp", "tp"))
+        rollout_device_mesh = init_device_mesh(
+            "cuda", mesh_shape=(dp_size, tp_size), mesh_dim_names=("dp", "tp")
+        )
         self.rollout = vLLMRollout(
             model_path=self.config.actor.model.model_path,
             config=self.config.rollout,
@@ -447,7 +508,9 @@ class FSDPWorker(Worker):
         if "multi_modal_data" not in data.non_tensor_batch:
             return
 
-        if "uid" in self._cache and not np.all(data.non_tensor_batch["uid"] == self._cache["uid"]):
+        if "uid" in self._cache and not np.all(
+            data.non_tensor_batch["uid"] == self._cache["uid"]
+        ):
             self._cache.clear()
 
         if "multi_modal_inputs" not in self._cache:
@@ -457,20 +520,33 @@ class FSDPWorker(Worker):
             for multi_modal_data in data.non_tensor_batch["multi_modal_data"]:
                 images = []
                 for image in multi_modal_data["images"]:
-                    images.append(process_image(image, min_pixels=min_pixels, max_pixels=max_pixels))
+                    images.append(
+                        process_image(
+                            image, min_pixels=min_pixels, max_pixels=max_pixels
+                        )
+                    )
 
                 if len(images) != 0:
                     # it's necessary to add `dict` to properly convert batch features to dict
                     # otherwise the batch features will be converted to dict keys
                     # see https://github.com/hiyouga/EasyR1/pull/339
-                    multi_modal_inputs = dict(self.processor.image_processor(images=images, return_tensors="pt"))
-                    multi_modal_inputs = {k: v.to(torch.cuda.current_device()) for k, v in multi_modal_inputs.items()}
+                    multi_modal_inputs = dict(
+                        self.processor.image_processor(
+                            images=images, return_tensors="pt"
+                        )
+                    )
+                    multi_modal_inputs = {
+                        k: v.to(torch.cuda.current_device())
+                        for k, v in multi_modal_inputs.items()
+                    }
                     batch_multi_modal_inputs.append(multi_modal_inputs)
                 else:
                     batch_multi_modal_inputs.append({})
 
             self._cache["uid"] = data.non_tensor_batch["uid"]
-            self._cache["multi_modal_inputs"] = np.array(batch_multi_modal_inputs, dtype=object)
+            self._cache["multi_modal_inputs"] = np.array(
+                batch_multi_modal_inputs, dtype=object
+            )
 
         data.non_tensor_batch["multi_modal_inputs"] = self._cache["multi_modal_inputs"]
 
@@ -494,17 +570,25 @@ class FSDPWorker(Worker):
 
             delta_time = timer.last
             global_num_tokens = data.meta_info["global_token_num"]
-            estimated_flops, promised_flops = self.flops_counter.estimate_flops(global_num_tokens, delta_time)
+            estimated_flops, promised_flops = self.flops_counter.estimate_flops(
+                global_num_tokens, delta_time
+            )
             metrics["perf/mfu_actor"] = (
-                estimated_flops * self.config.actor.ppo_epochs / (promised_flops * self.world_size)
+                estimated_flops
+                * self.config.actor.ppo_epochs
+                / (promised_flops * self.world_size)
             )
             metrics["perf/max_memory_allocated_gb"] = (
-                torch.cuda.max_memory_allocated() - self.rollout_sharding_manager.freed_bytes
+                torch.cuda.max_memory_allocated()
+                - self.rollout_sharding_manager.freed_bytes
             ) / (1024**3)
             metrics["perf/max_memory_reserved_gb"] = (
-                torch.cuda.max_memory_reserved() - self.rollout_sharding_manager.freed_bytes
+                torch.cuda.max_memory_reserved()
+                - self.rollout_sharding_manager.freed_bytes
             ) / (1024**3)
-            metrics["perf/cpu_memory_used_gb"] = psutil.virtual_memory().used / (1024**3)
+            metrics["perf/cpu_memory_used_gb"] = psutil.virtual_memory().used / (
+                1024**3
+            )
 
             self.lr_scheduler.step()
             lr = self.lr_scheduler.get_last_lr()[0]
@@ -513,7 +597,8 @@ class FSDPWorker(Worker):
             # Metrics should be in non_tensor_batch instead of meta_info, as DataProto not concat meta_info.
             output = DataProto(
                 non_tensor_batch={
-                    key: np.array([value] if np.isscalar(value) else value) for key, value in metrics.items()
+                    key: np.array([value] if np.isscalar(value) else value)
+                    for key, value in metrics.items()
                 }
             )
 
@@ -539,12 +624,16 @@ class FSDPWorker(Worker):
         assert self._has_rollout
 
         meta_info = {
-            "eos_token_id": self.generation_config.eos_token_id
-            if self.generation_config is not None
-            else self.tokenizer.eos_token_id,
-            "pad_token_id": self.generation_config.pad_token_id
-            if self.generation_config is not None
-            else self.tokenizer.pad_token_id,
+            "eos_token_id": (
+                self.generation_config.eos_token_id
+                if self.generation_config is not None
+                else self.tokenizer.eos_token_id
+            ),
+            "pad_token_id": (
+                self.generation_config.pad_token_id
+                if self.generation_config is not None
+                else self.tokenizer.pad_token_id
+            ),
         }
         prompts.meta_info.update(meta_info)
 
@@ -572,7 +661,8 @@ class FSDPWorker(Worker):
             data = self.ulysses_sharding_manager.preprocess_data(data)
             output = self.actor.compute_log_prob(data=data)
             output = DataProto.from_dict(
-                tensors={"old_log_probs": output}, meta_info={"temperature": self.config.rollout.temperature}
+                tensors={"old_log_probs": output},
+                meta_info={"temperature": self.config.rollout.temperature},
             )
             output = self.ulysses_sharding_manager.postprocess_data(output)
 
@@ -657,9 +747,13 @@ class FSDPWorker(Worker):
 
             delta_time = timer.last
             global_num_tokens = data.meta_info["global_token_num"]
-            estimated_flops, promised_flops = self.flops_counter.estimate_flops(global_num_tokens, delta_time)
+            estimated_flops, promised_flops = self.flops_counter.estimate_flops(
+                global_num_tokens, delta_time
+            )
             metrics["perf/mfu_critic"] = (
-                estimated_flops * self.config.actor.ppo_epochs / (promised_flops * self.world_size)
+                estimated_flops
+                * self.config.actor.ppo_epochs
+                / (promised_flops * self.world_size)
             )
 
             self.lr_scheduler.step()
@@ -669,7 +763,8 @@ class FSDPWorker(Worker):
             # Metrics should be in non_tensor_batch instead of meta_info, as DataProto not concat meta_info.
             output = DataProto(
                 non_tensor_batch={
-                    metric: np.array([value] if np.isscalar(value) else value) for metric, value in metrics.items()
+                    metric: np.array([value] if np.isscalar(value) else value)
+                    for metric, value in metrics.items()
                 }
             )
 

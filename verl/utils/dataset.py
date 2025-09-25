@@ -51,7 +51,9 @@ def collate_fn(features: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def process_image(
-    image: Union[Dict[str, Any], ImageObject, str], min_pixels: Optional[int], max_pixels: Optional[int]
+    image: Union[Dict[str, Any], ImageObject, str],
+    min_pixels: Optional[int],
+    max_pixels: Optional[int],
 ) -> ImageObject:
     if isinstance(image, str):
         image = Image.open(image)
@@ -63,12 +65,16 @@ def process_image(
     image.load()  # avoid "Too many open files" errors
     if max_pixels is not None and (image.width * image.height) > max_pixels:
         resize_factor = math.sqrt(max_pixels / (image.width * image.height))
-        width, height = int(image.width * resize_factor), int(image.height * resize_factor)
+        width, height = int(image.width * resize_factor), int(
+            image.height * resize_factor
+        )
         image = image.resize((width, height))
 
     if min_pixels is not None and (image.width * image.height) < min_pixels:
         resize_factor = math.sqrt(min_pixels / (image.width * image.height))
-        width, height = int(image.width * resize_factor), int(image.height * resize_factor)
+        width, height = int(image.width * resize_factor), int(
+            image.height * resize_factor
+        )
         image = image.resize((width, height))
 
     if image.mode != "RGB":
@@ -117,11 +123,15 @@ class RLHFDataset(Dataset):
 
         if os.path.isdir(data_path):
             # when we use dataset builder, we should always refer to the train split
-            file_type = os.path.splitext(os.listdir(data_path)[0])[-1][1:].replace("jsonl", "json")
+            file_type = os.path.splitext(os.listdir(data_path)[0])[-1][1:].replace(
+                "jsonl", "json"
+            )
             self.dataset = load_dataset(file_type, data_dir=data_path, split=data_split)
         elif os.path.isfile(data_path):
             file_type = os.path.splitext(data_path)[-1][1:].replace("jsonl", "json")
-            self.dataset = load_dataset(file_type, data_files=data_path, split=data_split)
+            self.dataset = load_dataset(
+                file_type, data_files=data_path, split=data_split
+            )
         else:
             # load remote dataset from huggingface hub
             self.dataset = load_dataset(data_path, split=data_split)
@@ -133,14 +143,17 @@ class RLHFDataset(Dataset):
 
         if self.filter_overlong_prompts:
             self.dataset = self.dataset.filter(
-                self._filter_overlong_prompts, desc="Filtering overlong prompts", num_proc=16
+                self._filter_overlong_prompts,
+                desc="Filtering overlong prompts",
+                num_proc=16,
             )
 
     def _build_messages(self, example: Dict[str, Any]) -> List[Dict[str, Any]]:
         prompt_str: str = example[self.prompt_key]
         if self.format_prompt:
-            format_prompt = Template(self.format_prompt.strip())
-            prompt_str = format_prompt.render(content=prompt_str)
+            format_prompt = self.format_prompt.strip()
+            # format_prompt = Template(self.format_prompt.strip())
+            # prompt_str = format_prompt.render(content=prompt_str)
 
         if self.image_key in example:
             # https://huggingface.co/docs/transformers/en/tasks/image_text_to_text
@@ -152,25 +165,50 @@ class RLHFDataset(Dataset):
                 if content:
                     content_list.append({"type": "text", "text": content})
 
-            return [{"role": "user", "content": content_list}]
+            return [
+                {
+                    "role": "system",
+                    "content": format_prompt,
+                },
+                {"role": "user", "content": content_list},
+            ]
         else:
-            return [{"role": "user", "content": prompt_str}]
+            return [
+                {
+                    "role": "system",
+                    "content": format_prompt,
+                },
+                {"role": "user", "content": prompt_str},
+            ]
 
     def _filter_overlong_prompts(self, example: Dict[str, Any]) -> bool:
         messages = self._build_messages(example)
         if self.image_key in example:
-            prompt = self.processor.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+            prompt = self.processor.apply_chat_template(
+                messages, add_generation_prompt=True, tokenize=False
+            )
             images = example[self.image_key] or []
-            if self.image_dir is not None and len(images) != 0 and isinstance(images[0], str):  # image paths
+            if (
+                self.image_dir is not None
+                and len(images) != 0
+                and isinstance(images[0], str)
+            ):  # image paths
                 images = [os.path.join(self.image_dir, image) for image in images]
 
             resized_images = [
-                process_image(image, min_pixels=self.min_pixels, max_pixels=self.max_pixels) for image in images
+                process_image(
+                    image, min_pixels=self.min_pixels, max_pixels=self.max_pixels
+                )
+                for image in images
             ] or None
-            model_inputs = self.processor(resized_images, [prompt], add_special_tokens=False, return_tensors="pt")
+            model_inputs = self.processor(
+                resized_images, [prompt], add_special_tokens=False, return_tensors="pt"
+            )
             return model_inputs["input_ids"].size(-1) <= self.max_prompt_length
         else:
-            input_ids = self.tokenizer.apply_chat_template(messages, add_generation_prompt=True)
+            input_ids = self.tokenizer.apply_chat_template(
+                messages, add_generation_prompt=True
+            )
             return len(input_ids) <= self.max_prompt_length
 
     def __len__(self):
@@ -181,25 +219,44 @@ class RLHFDataset(Dataset):
         messages = self._build_messages(example)
 
         if self.image_key in example:
-            prompt = self.processor.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+            prompt = self.processor.apply_chat_template(
+                messages, add_generation_prompt=True, tokenize=False
+            )
             images = example.pop(self.image_key)
-            if self.image_dir is not None and len(images) != 0 and isinstance(images[0], str):  # image paths
+            if (
+                self.image_dir is not None
+                and len(images) != 0
+                and isinstance(images[0], str)
+            ):  # image paths
                 images = [os.path.join(self.image_dir, image) for image in images]
 
             resized_images = [
-                process_image(image, min_pixels=self.min_pixels, max_pixels=self.max_pixels) for image in images
+                process_image(
+                    image, min_pixels=self.min_pixels, max_pixels=self.max_pixels
+                )
+                for image in images
             ] or None
-            model_inputs = self.processor(resized_images, [prompt], add_special_tokens=False, return_tensors="pt")
+            model_inputs = self.processor(
+                resized_images, [prompt], add_special_tokens=False, return_tensors="pt"
+            )
             input_ids = model_inputs.pop("input_ids")[0]
             attention_mask = model_inputs.pop("attention_mask")[0]
             example["multi_modal_data"] = {"images": images}
         else:
-            prompt = self.tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
-            model_inputs = self.tokenizer([prompt], add_special_tokens=False, return_tensors="pt")
+            prompt = self.tokenizer.apply_chat_template(
+                messages, add_generation_prompt=True, tokenize=False
+            )
+            model_inputs = self.tokenizer(
+                [prompt], add_special_tokens=False, return_tensors="pt"
+            )
             input_ids = model_inputs.pop("input_ids")[0]
             attention_mask = model_inputs.pop("attention_mask")[0]
 
-        if self.processor is not None and "Qwen2VLImageProcessor" in self.processor.image_processor.__class__.__name__:
+        if (
+            self.processor is not None
+            and "Qwen2VLImageProcessor"
+            in self.processor.image_processor.__class__.__name__
+        ):
             # qwen2vl mrope
             position_ids = get_rope_index(
                 self.processor,
@@ -208,7 +265,9 @@ class RLHFDataset(Dataset):
                 attention_mask=attention_mask,
             )  # (3, seq_length)
         else:
-            position_ids = torch.clip(attention_mask.cumsum(dim=0) - 1, min=0, max=None)  # (seq_length,)
+            position_ids = torch.clip(
+                attention_mask.cumsum(dim=0) - 1, min=0, max=None
+            )  # (seq_length,)
 
         input_ids, attention_mask, position_ids = VF.postprocess_data(
             input_ids=input_ids,
@@ -226,7 +285,9 @@ class RLHFDataset(Dataset):
             elif self.truncation == "right":
                 raw_prompt_ids = raw_prompt_ids[: self.max_prompt_length]
             elif self.truncation == "error":
-                raise RuntimeError(f"Prompt length {len(raw_prompt_ids)} is longer than {self.max_prompt_length}.")
+                raise RuntimeError(
+                    f"Prompt length {len(raw_prompt_ids)} is longer than {self.max_prompt_length}."
+                )
 
         example["input_ids"] = input_ids
         example["attention_mask"] = attention_mask

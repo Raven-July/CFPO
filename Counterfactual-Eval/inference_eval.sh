@@ -1,17 +1,17 @@
-# BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
-BASE_PATH=/home/u2021213615/share/yzy
+BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
+# BASE_PATH=/home/u2021213615/share/yzy
 
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
-MODEL_NAME=Qwen2.5-VL-7B
+MODEL_NAME=Qwen2.5-VL-3B
 # MODEL_PREFIX="MARS-fold1"
 MODEL_PREFIX=""
-MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-7B-Instruct
+MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
 
-DATASET_NAME=C-VQA-Synthetic
+DATASET_NAME=C-VQA-Real
 
 OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result
-BATCH_SIZE=4
-NUM_GPUS=4
+BATCH_SIZE=64
+NUM_GPUS=2
 
 echo "Starting evaluation for model: $MODEL_NAME on dataset: $DATASET_NAME"
 
