@@ -92,7 +92,7 @@ def get_dataset_config(dataset_name: str):
         )
     elif dataset_name == "MARS_Bench":
         return (
-            os.path.join(DATA_ROOT, "MARS_Bench.json"),
+            os.path.join(DATA_ROOT, "MARS_Bench_test.json"),
             "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/COCO_val2014",
         )
     else:
@@ -128,10 +128,10 @@ def main():
         "You FIRST think about the reasoning process step by step as an internal monologue "
         "and then provide the final answer. "
         "The reasoning process MUST BE enclosed within <think> </think> tags. "
-        "The final answer MUST BE enclosed within <answer> </answer> tags."
+        "The final answer(SIMPLEST WORDS or SELECTION LETTER) MUST BE enclosed within <answer> </answer> tags."
         if args.cot
         else "The user asks a question, and then you solve it. "
-        "Please directly give out the final answer, which MUST BE enclosed within <answer> </answer> tags."
+        "Please directly give out the final answer(SIMPLEST WORDS or SELECTION LETTER), which MUST BE enclosed within <answer> </answer> tags."
     )
 
     if rank == 0:
@@ -196,7 +196,12 @@ def main():
         ).to(device)
 
         generated_ids = model.generate(
-            **inputs, use_cache=True, max_new_tokens=256, do_sample=False
+            **inputs,
+            use_cache=True,
+            max_new_tokens=512,
+            do_sample=False,
+            top_p=1.0,
+            top_k=50,
         )
         trimmed_ids = [
             out[len(inp) :] for inp, out in zip(inputs.input_ids, generated_ids)
@@ -226,6 +231,9 @@ def main():
             ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
             answer = match.group(1).strip() if match else raw_output.strip()
             is_correct = grade_answer(answer, gt)
+
+            if not is_correct and ":" in answer:
+                is_correct = grade_answer(answer[0], gt)
 
             cf_type = "cf" if item.get("is_cf") else "ncf"
             q_type = item.get("type", "unknown")

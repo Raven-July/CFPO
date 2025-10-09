@@ -101,10 +101,10 @@ def apply_ulysses_patch(model_type: str, apply_cmve: bool) -> None:
                 Qwen2VLModel.forward = qwen2_vl_base_forward_new
                 Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
                 Qwen2VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, default_a=3
+                    qwen2_vl_forward_new, default_a=0.5
                 )
                 Qwen2_5_VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, default_a=3
+                    qwen2_vl_forward_new, default_a=0.5
                 )
                 Qwen2VLTextModel.forward = qwen2_vl_language_forward_new
                 Qwen2_5_VLTextModel.forward = qwen2_vl_language_forward_new

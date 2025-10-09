@@ -16,7 +16,7 @@
 # limitations under the License.
 
 from typing import Optional, Tuple, List, Union
-
+import math
 import torch
 
 from ...utils.py_functional import is_transformers_version_greater_than
@@ -182,6 +182,103 @@ def get_rope_index(
     return position_ids
 
 
+def GMM_mask(
+    saliency,
+    trim=False,
+    head_wise=False,
+    token_wise=False,
+    high_thres=False,
+    low_thres=False,
+):
+    data = saliency
+    if trim:
+        lower_triangular = torch.tril(data)
+        mean = torch.mean(lower_triangular[lower_triangular != 0])
+        std = torch.std(lower_triangular[lower_triangular != 0])
+    else:
+        if head_wise:
+            mean = torch.mean(data, dim=(0, 2, 3), keepdim=True)
+            std = torch.std(data, dim=(0, 2, 3), keepdim=True)
+        elif token_wise:
+            mean = torch.mean(data, dim=(0, 1, 3), keepdim=True)
+            std = torch.std(data, dim=(0, 1, 3), keepdim=True)
+        else:
+            mean = torch.mean(data)
+            std = torch.std(data)
+    if high_thres:
+        thres = mean + 2 * std
+    elif low_thres:
+        thres = mean - std
+    else:
+        thres = mean
+
+    mask = (saliency > thres).float()
+
+    mask = mask
+    return mask, mean, std
+
+
+def values_noise_multiply(
+    attn_weights,
+    image_pos,
+    value_states,
+):
+
+    bsz, num_heads, q_len, k_len = attn_weights.shape
+    head_dim = value_states.shape[-1]
+
+    # --- 1. 向量化计算均值 (mean value) ---
+    # 创建一个索引张量，用于后续的广播比较
+    k_indices = torch.arange(k_len, device=value_states.device).view(1, k_len)
+
+    # 从 image_pos 列表提取所有样本的 start 和 end 索引
+    starts = torch.tensor(
+        [p["image_token_start"] for p in image_pos], device=value_states.device
+    ).view(bsz, 1)
+    ends = torch.tensor(
+        [p["image_token_end"] for p in image_pos], device=value_states.device
+    ).view(bsz, 1)
+
+    # 通过广播创建一个布尔掩码，标记出每个样本的图像token位置
+    # (bsz, 1) >= (1, k_len) -> (bsz, k_len)
+    value_mask = (k_indices >= starts) & (k_indices < ends)
+
+    # 扩展掩码维度以匹配 value_states 的形状
+    value_mask_expanded = value_mask.view(bsz, 1, k_len, 1).expand_as(value_states)
+
+    # 使用掩码计算均值
+    masked_values = value_states.where(value_mask_expanded, 0.0)
+    num_tokens_per_item = (ends - starts).clamp(min=1)  # 防止除以零
+
+    # 对每个样本的图像token值求和，然后除以各自的token数量和维度大小
+    mean = torch.sum(masked_values, dim=(2, 3), keepdim=True) / (
+        num_tokens_per_item.view(bsz, 1, 1, 1) * head_dim
+    )
+
+    # 将均值广播到 value_states 的形状
+    noise_value_states = mean.expand_as(value_states)
+
+    # --- 2. 循环计算 final_mask (因为切片不规则) ---
+    final_mask = torch.zeros_like(attn_weights)
+    for i in range(bsz):
+        start, end = image_pos[i]["image_token_start"], image_pos[i]["image_token_end"]
+
+        # 确保查询长度大于图像结束位置，避免无效切片
+        if q_len > end:
+            # 提取当前样本对应的注意力权重切片
+            img_attn_slice = attn_weights[i : i + 1, :, end:, start:end]
+
+            # GMM_mask 需要一个4D张量，所以我们传入切片
+            mask, _, _ = GMM_mask(img_attn_slice)
+
+            # 将计算出的mask放回 final_mask 的对应位置
+            final_mask[i : i + 1, :, end:, start:end] = mask
+
+    final_mask = final_mask.to(value_states.dtype)
+
+    return final_mask, noise_value_states
+
+
 # Add Cross-Modal-Value-Enhancement(CMVE)
 def qwen2_vl_attn_forward(
     self: "Qwen2VLAttention",
@@ -192,7 +289,7 @@ def qwen2_vl_attn_forward(
         Tuple[torch.Tensor, torch.Tensor]
     ] = None,  # will become mandatory in v4.46
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
-    top_percent: float = 0.1,  # <-- 新增参数，Top-K 的 K 值
+    image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     **kwargs,
 ) -> Tuple[torch.Tensor, None, None]:
     # print("qwen2_vl_attn_forward:" + str(apply_cmve))
@@ -229,38 +326,68 @@ def qwen2_vl_attn_forward(
     ):
         sliding_window = self.config.sliding_window
 
-    attn_output, _ = flash_attention_forward(
-        self,
-        query_states,
-        key_states,
-        value_states,
-        attention_mask,
-        dropout=dropout_rate,
-        sliding_window=sliding_window,
-        position_ids=position_ids[0],  # important: pass position ids
-    )  # (batch_size, seq_length, num_head / sp_size, head_size)
+    if apply_cmve:
+        # calculate
+        attn_weights = torch.matmul(
+            query_states, key_states.transpose(2, 3)
+        ) / math.sqrt(self.head_dim)
+
+        if attention_mask is not None:  # no matter the length, we just slice it
+            causal_mask = attention_mask[:, :, :, : key_states.shape[-2]]
+            attn_weights = attn_weights + causal_mask
+
+        # Fix precision issues in Qwen2-VL float16 inference
+        # Replace inf values with zeros in attention weights to prevent NaN propagation
+        if query_states.dtype == torch.float16:
+            attn_weights = torch.where(
+                torch.isinf(attn_weights), torch.zeros_like(attn_weights), attn_weights
+            )
+
+        attn_weights = torch.nn.functional.softmax(
+            attn_weights, dim=-1, dtype=torch.float32
+        ).to(query_states.dtype)
+        attn_weights = torch.nn.functional.dropout(
+            attn_weights, p=self.attention_dropout, training=self.training
+        )
+
+        final_mask, ave_value_states = values_noise_multiply(
+            attn_weights, image_pos, value_states
+        )
+
+        delta_v = ave_value_states - value_states
+        attn_output_delta = torch.matmul(attn_weights * final_mask, delta_v)
+        if attn_output_delta.size() != (bsz, self.num_heads, q_len, self.head_dim):
+            raise ValueError(
+                f"`attn_output_delta` should be of size {(bsz, self.num_heads, q_len, self.head_dim)}, but is"
+                f" {attn_output.size()}"
+            )
+        attn_output_delta = attn_output_delta.transpose(1, 2)
+
+        attn_output_ori, _ = flash_attention_forward(
+            self,
+            query_states,
+            key_states,
+            value_states,
+            attention_mask,
+            dropout=dropout_rate,
+            sliding_window=sliding_window,
+            position_ids=position_ids[0],  # important: pass position ids
+        )  # (batch_size, seq_length, num_head / sp_size, head_size)
+
+        attn_output = attn_output_ori + attn_output_delta
+    else:
+        attn_output, _ = flash_attention_forward(
+            self,
+            query_states,
+            key_states,
+            value_states,
+            attention_mask,
+            dropout=dropout_rate,
+            sliding_window=sliding_window,
+            position_ids=position_ids[0],  # important: pass position ids
+        )  # (batch_size, seq_length, num_head / sp_size, head_size)
     attn_output = attn_output.reshape(bsz, q_len, self.hidden_size).contiguous()
-    if apply_cmve and top_percent > 0.0:
-        # attn_output: [bsz, q_len, hidden_size]
-        flat = attn_output.view(bsz, -1)           # [bsz, N] where N = q_len * hidden_size
-        N = flat.size(1)
-        k = max(1, int(N * float(top_percent)))    # 至少替换 1 个元素
-
-        # 找出每个 batch 的 top-k 索引（按行）
-        _, topk_idx = torch.topk(flat, k, dim=1, largest=True)
-
-        # 构造 mask（不会修改原始数据）
-        mask = torch.zeros_like(flat, dtype=torch.bool)
-        mask.scatter_(1, topk_idx, True)           # mask 中对应位置为 True
-
-        # 每个 batch 的均值 (bsz, 1)，会在 torch.where 中 broadcast 到 (bsz, N)
-        mean_vals = flat.mean(dim=1, keepdim=True)
-
-        # 使用 torch.where 生成新的 flat（非就地修改）
-        new_flat = torch.where(mask, mean_vals, flat)
-
-        # 恢复形状
-        attn_output = new_flat.view(bsz, q_len, self.hidden_size)
+    attn_output = self.o_proj(attn_output)
     return attn_output, None, None
 
 
@@ -392,6 +519,7 @@ def qwen2_vl_base_forward_new(
     image_grid_thw: Optional[torch.LongTensor] = None,
     video_grid_thw: Optional[torch.LongTensor] = None,
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
+    image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     **kwargs,
 ):
     # print("qwen2_vl_base_forward_new:" + str(apply_cmve))
@@ -410,6 +538,7 @@ def qwen2_vl_base_forward_new(
         attention_mask=attention_mask,
         inputs_embeds=inputs_embeds,
         apply_cmve=apply_cmve,  # <-- 传递标志
+        image_pos=image_pos,
         **kwargs,
     )
 
@@ -432,9 +561,37 @@ def qwen2_vl_forward_new(
     pixel_values_videos: Optional[torch.FloatTensor] = None,
     image_grid_thw: Optional[torch.LongTensor] = None,
     video_grid_thw: Optional[torch.LongTensor] = None,
-    a: float = 1,  # <-- CMVE 强度系数
+    alpha: float = 1,  # <-- CMVE 强度系数
+    beta: float = 0.3,  # <-- APC 截断阈值
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
+
+    # --- START: 修正 image_pos 生成逻辑 ---
+    image_pos = []
+    # 遍历批处理中的每个输入序列
+    for i in range(input_ids.shape[0]):
+        # 在当前序列中查找<vision_start>和<vision_end>标记的位置
+        # [0] 用于获取索引张量
+        bos_indices = torch.where(input_ids[i] == self.config.vision_start_token_id)[0]
+        eos_indices = torch.where(input_ids[i] == self.config.vision_end_token_id)[0]
+
+        # 确保每个序列中都找到了标记
+        if len(bos_indices) > 0 and len(eos_indices) > 0:
+            # .item() 将单元素张量转换为Python标量
+            start_index = bos_indices[0].item() + 1
+            end_index = eos_indices[0].item()
+            image_pos.append(
+                {
+                    "image_token_start": start_index,
+                    "image_token_end": end_index,
+                }
+            )
+        else:
+            # 如果某个序列中没有图像，可以添加一个标记或空字典
+            # 这里我们假设每个序列都有图像，否则下游函数可能出错
+            # 您可以根据需要添加错误处理逻辑
+            pass
+    # --- END: 修正 image_pos 生成逻辑 ---
 
     # --- 原始路径（保持不变） ---
     outputs = self.model(
@@ -452,7 +609,7 @@ def qwen2_vl_forward_new(
     hidden_states = outputs[0]
     logits = self.lm_head(hidden_states)
 
-    # --- 变化路径（attn 应用变化 A） ---
+    # --- 变化路径（attn 应用cmve） ---
     outputs_mod = self.model(
         input_ids=input_ids,
         pixel_values=pixel_values,
@@ -462,15 +619,23 @@ def qwen2_vl_forward_new(
         position_ids=position_ids,
         attention_mask=attention_mask,
         apply_cmve=True,  # <-- 触发变化 A
+        image_pos=image_pos,  # <-- 传递图像位置
         **kwargs,
     )
-    hidden_states_mod = outputs_mod[0]
-    logits_mod = self.lm_head(hidden_states_mod)
+    hidden_states_cf = outputs_mod[0]
+    logits_cf = self.lm_head(hidden_states_cf)
 
     # print("Number of differences:", (logits != logits_mod).sum().item())
     # print("a:" + str(a))
     # --- 最终 logits ---
-    logits = (1 + a) * logits - a * logits_mod
+    # 获取原始logits中最后一个时间步的next_token_logits，用于后续的计算
+    next_token_logits = logits[:, -1, :]
+    # 获取经过修改后的logits中最后一个时间步的next_token_logits_cf，用于后续的计算
+    next_token_logits_cf = logits_cf[:, -1, :]
+    # 计算原始next_token_logits和修改后的next_token_logits_cf的加权差值，alpha是控制修改强度的系数
+    diffs = (1 + alpha) * next_token_logits - alpha * next_token_logits_cf
+    # 将修改后的next_token_logits赋值给原始logits的最后一个时间步，完成logits的更新
+    logits[:, -1, :] = diffs
 
     return Qwen2VLCausalLMOutputWithPast(
         loss=None,
@@ -495,6 +660,7 @@ def qwen2_vl_language_forward_new(
     return_dict: Optional[bool] = None,
     cache_position: Optional[torch.LongTensor] = None,
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
+    image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     **kwargs,
 ) -> Union[Tuple, BaseModelOutputWithPast]:
     # print("qwen2_vl_language_forward_new:" + str(apply_cmve))
@@ -583,6 +749,7 @@ def qwen2_vl_language_forward_new(
                 cache_position,
                 position_embeddings,
                 apply_cmve,  # <-- 传递标志
+                image_pos,
                 **kwargs,
             )
         else:
@@ -596,6 +763,7 @@ def qwen2_vl_language_forward_new(
                 cache_position=cache_position,
                 position_embeddings=position_embeddings,
                 apply_cmve=apply_cmve,  # <-- 传递标志
+                image_pos=image_pos,
                 **kwargs,
             )
 
@@ -642,6 +810,7 @@ def qwen2_vl_decoder_forward_new(
         Tuple[torch.Tensor, torch.Tensor]
     ] = None,  # necessary, but kept here for BC
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
+    image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     **kwargs,
 ) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]:
     # print("qwen2_vl_decoder_forward_new:" + str(apply_cmve))
@@ -661,6 +830,7 @@ def qwen2_vl_decoder_forward_new(
         cache_position=cache_position,
         position_embeddings=position_embeddings,
         apply_cmve=apply_cmve,  # <-- 传递标志
+        image_pos=image_pos,  # <-- 传递图像位置
         **kwargs,
     )
     hidden_states = residual + hidden_states
