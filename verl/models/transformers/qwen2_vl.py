@@ -333,6 +333,7 @@ def qwen2_vl_forward_new(
     video_grid_thw: Optional[torch.LongTensor] = None,
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
+    print("THIS IS DEFAULT FORWARD")
     outputs = self.model(
         input_ids=input_ids,
         pixel_values=pixel_values,

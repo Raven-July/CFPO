@@ -22,6 +22,7 @@ import torch
 from ...utils.py_functional import is_transformers_version_greater_than
 from .flash_attention_utils import flash_attention_forward
 
+from vllm.model_executor.models.qwen2_5_vl import Qwen2_5_VisionTransformer
 
 if is_transformers_version_greater_than("4.52.0"):
     from transformers.models.qwen2_vl.modeling_qwen2_vl import (
@@ -206,7 +207,7 @@ def GMM_mask(
             mean = torch.mean(data)
             std = torch.std(data)
     if high_thres:
-        thres = mean + 2 * std
+        thres = mean + std
     elif low_thres:
         thres = mean - std
     else:
@@ -562,10 +563,9 @@ def qwen2_vl_forward_new(
     image_grid_thw: Optional[torch.LongTensor] = None,
     video_grid_thw: Optional[torch.LongTensor] = None,
     alpha: float = 1,  # <-- CMVE 强度系数
-    beta: float = 0.3,  # <-- APC 截断阈值
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
-
+    print("THIS IS CMVE FORWARD")
     # --- START: 修正 image_pos 生成逻辑 ---
     image_pos = []
     # 遍历批处理中的每个输入序列
@@ -625,8 +625,6 @@ def qwen2_vl_forward_new(
     hidden_states_cf = outputs_mod[0]
     logits_cf = self.lm_head(hidden_states_cf)
 
-    # print("Number of differences:", (logits != logits_mod).sum().item())
-    # print("a:" + str(a))
     # --- 最终 logits ---
     # 获取原始logits中最后一个时间步的next_token_logits，用于后续的计算
     next_token_logits = logits[:, -1, :]
