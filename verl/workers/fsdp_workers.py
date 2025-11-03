@@ -563,8 +563,9 @@ class FSDPWorker(Worker):
         if self._use_optimizer_offload:
             load_fsdp_optimizer(optimizer=self.optimizer)
 
-        apply_ulysses_patch(self.model_config.model_type, self.apply_cmve)
-        self.print_rank0(f"CMVE set to {self.apply_cmve} for actor update")
+        if self.apply_cmve:
+            apply_ulysses_patch(self.model_config.model_type, False)
+            self.print_rank0(f"CMVE set to False for actor update")
 
         with self.ulysses_sharding_manager:
             data = self.ulysses_sharding_manager.preprocess_data(data=data)
@@ -604,9 +605,9 @@ class FSDPWorker(Worker):
                     for key, value in metrics.items()
                 }
             )
-        if self.apply_cmve:
-            apply_ulysses_patch(self.model_config.model_type, False)
-            self.print_rank0(f"CMVE set back to False after actor update")
+        # if self.apply_cmve:
+        #     apply_ulysses_patch(self.model_config.model_type, False)
+        #     self.print_rank0(f"CMVE set back to False after actor update")
 
         if self._use_param_offload:
             offload_fsdp_model(self.fsdp_module)
@@ -664,8 +665,9 @@ class FSDPWorker(Worker):
         data.meta_info["temperature"] = self.config.rollout.temperature
         # perform recompute log_prob
 
-        apply_ulysses_patch(self.model_config.model_type, self.apply_cmve)
-        self.print_rank0(f"CMVE set to {self.apply_cmve} for old actor logprob")
+        if self.apply_cmve:
+            apply_ulysses_patch(self.model_config.model_type, False)
+            self.print_rank0(f"CMVE set to False for old actor logprob")
 
         with self.ulysses_sharding_manager:
             data = self.ulysses_sharding_manager.preprocess_data(data)
@@ -676,9 +678,53 @@ class FSDPWorker(Worker):
             )
             output = self.ulysses_sharding_manager.postprocess_data(output)
 
+        # if self.apply_cmve:
+        #     apply_ulysses_patch(self.model_config.model_type, False)
+        #     self.print_rank0(f"CMVE set back to False after old actor logprob")
+
+        # https://pytorch.org/docs/stable/notes/fsdp.html#fsdp-notes
+        # unshard the root FSDP module
+        if self.world_size > 1:
+            self.fsdp_module._handle.reshard(True)
+
+        if self._use_param_offload:
+            offload_fsdp_model(self.fsdp_module)
+
+        output = output.to("cpu")
+        return output
+
+    @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
+    def compute_log_probs_cmve(self, data: DataProto):
+        assert self._has_actor
+
+        self._process_multi_modal_inputs(data)
+        data = data.to(torch.cuda.current_device())
+
+        if self._use_param_offload:
+            load_fsdp_model(self.fsdp_module)
+
+        # we should always recompute old_log_probs when it is HybridEngine
+        data.meta_info["temperature"] = self.config.rollout.temperature
+        # perform recompute log_prob
+
+        if self.apply_cmve:
+            apply_ulysses_patch(self.model_config.model_type, self.apply_cmve)
+            self.print_rank0(
+                f"CMVE set to {self.apply_cmve} for old actor CMVE logprob"
+            )
+
+        with self.ulysses_sharding_manager:
+            data = self.ulysses_sharding_manager.preprocess_data(data)
+            output = self.actor.compute_log_prob(data=data)
+            output = DataProto.from_dict(
+                tensors={"cmve_log_probs": output},
+                meta_info={"temperature": self.config.rollout.temperature},
+            )
+            output = self.ulysses_sharding_manager.postprocess_data(output)
+
         if self.apply_cmve:
             apply_ulysses_patch(self.model_config.model_type, False)
-            self.print_rank0(f"CMVE set back to False after old actor logprob")
+            self.print_rank0(f"CMVE set back to False after old actor CMVE logprob")
 
         # https://pytorch.org/docs/stable/notes/fsdp.html#fsdp-notes
         # unshard the root FSDP module

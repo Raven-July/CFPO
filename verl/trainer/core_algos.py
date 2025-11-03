@@ -47,7 +47,8 @@ class KLController(ABC):
 class AdaptiveKLController(KLController):
     """Adaptive KL controller described in: https://arxiv.org/pdf/1909.08593.pdf
 
-    Copied from https://github.com/huggingface/trl/blob/v0.11.0/trl/trainer/utils.py#L54"""
+    Copied from https://github.com/huggingface/trl/blob/v0.11.0/trl/trainer/utils.py#L54
+    """
 
     def __init__(self, init_kl_coef: float, target_kl: float, horizon: float):
         self.kl_coef = init_kl_coef
@@ -64,13 +65,32 @@ class AdaptiveKLController(KLController):
 class FixedKLController(KLController):
     """Fixed KL controller.
 
-    Copeid from https://github.com/huggingface/trl/blob/v0.11.0/trl/trainer/utils.py#L72"""
+    Copeid from https://github.com/huggingface/trl/blob/v0.11.0/trl/trainer/utils.py#L72
+    """
 
     def __init__(self, init_kl_coef: float):
         self.kl_coef = init_kl_coef
 
     def update(self, current_kl: float, n_steps: int):
         pass
+
+
+class AnnealingKLController(KLController):
+    """
+    KL controller that linearly anneals kl_coef from start_value to end_value over total_steps.
+    """
+
+    def __init__(self, start_value: float, end_value: float, total_steps: int):
+        self.start_value = start_value
+        self.end_value = end_value
+        self.total_steps = max(1, total_steps)
+        self.kl_coef = start_value
+        self.current_step = 0
+
+    def update(self, current_kl: float, n_steps: int) -> None:
+        self.current_step += n_steps
+        progress = min(self.current_step / self.total_steps, 1.0)
+        self.kl_coef = self.start_value + (self.end_value - self.start_value) * progress
 
 
 class AdvantageEstimator(str, Enum):
@@ -90,7 +110,9 @@ def get_kl_controller(algorithm_config: "AlgorithmConfig") -> KLController:
     if algorithm_config.kl_type == "fixed":
         kl_ctrl = FixedKLController(init_kl_coef=algorithm_config.kl_coef)
     elif algorithm_config.kl_type == "adaptive":
-        assert algorithm_config.kl_horizon > 0, f"horizon must be larger than 0. Got {algorithm_config.kl_horizon}."
+        assert (
+            algorithm_config.kl_horizon > 0
+        ), f"horizon must be larger than 0. Got {algorithm_config.kl_horizon}."
         kl_ctrl = AdaptiveKLController(
             init_kl_coef=algorithm_config.kl_coef,
             target_kl=algorithm_config.kl_target,
@@ -149,7 +171,10 @@ def compute_gae_advantage_return(
 # NOTE(sgm): this implementation only consider outcome supervision, where the reward is a scalar.
 @torch.no_grad()
 def compute_grpo_outcome_advantage(
-    token_level_rewards: torch.Tensor, response_mask: torch.Tensor, index: torch.Tensor, eps: float = 1e-6
+    token_level_rewards: torch.Tensor,
+    response_mask: torch.Tensor,
+    index: torch.Tensor,
+    eps: float = 1e-6,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Compute advantage for GRPO, operating only on Outcome reward
@@ -270,7 +295,9 @@ def compute_reinforce_plus_plus_outcome_advantage(
 
 @torch.no_grad()
 def compute_remax_outcome_advantage(
-    token_level_rewards: torch.Tensor, reward_baselines: torch.Tensor, response_mask: torch.Tensor
+    token_level_rewards: torch.Tensor,
+    reward_baselines: torch.Tensor,
+    response_mask: torch.Tensor,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Compute advantage for ReMax, operating only on Outcome reward
@@ -308,7 +335,10 @@ def compute_rewards(
 
 
 def average_loss(
-    values: torch.Tensor, mask: torch.Tensor, mode: Literal["token", "seq"], eps: float = 1e-8
+    values: torch.Tensor,
+    mask: torch.Tensor,
+    mode: Literal["token", "seq"],
+    eps: float = 1e-8,
 ) -> torch.Tensor:
     """Average the policy loss.
 
@@ -387,13 +417,19 @@ def compute_policy_loss(
     # clamp the ratio before exp to avoid nan grad
     # see: https://github.com/pytorch/pytorch/issues/10729
     clipped_ratio = torch.exp(
-        torch.clamp(negative_approx_kl, np.log(1.0 - clip_ratio_low), np.log(1.0 + clip_ratio_high))
+        torch.clamp(
+            negative_approx_kl,
+            np.log(1.0 - clip_ratio_low),
+            np.log(1.0 + clip_ratio_high),
+        )
     )
 
     # pg metrics
     metrics = {"ppo_kl": -negative_approx_kl}
     # use negative log probs as an estimator of entropy loss
-    metrics["entropy_loss"] = average_loss(-log_probs, response_mask, mode=loss_avg_mode)
+    metrics["entropy_loss"] = average_loss(
+        -log_probs, response_mask, mode=loss_avg_mode
+    )
 
     pg_loss = -advantages * ratio  # -ratio * A
     pg_loss2 = -advantages * clipped_ratio  # -clip(ratio, 1-clip_low, 1+clip_high) * A
@@ -401,12 +437,20 @@ def compute_policy_loss(
 
     clipped_pg_loss_higher = torch.max(pg_loss, pg_loss2)  # clip if pg_loss < pg_loss2
     metrics["pg_clipfrac_higher"] = (pg_loss < pg_loss2).float()
-    clipped_pg_loss_lower = torch.min(clipped_pg_loss_higher, pg_loss3)  # clip if pg_loss > pg_loss3 and adv < 0
-    final_pg_loss = torch.where(advantages < 0, clipped_pg_loss_lower, clipped_pg_loss_higher)
-    metrics["pg_clipfrac_lower"] = (clipped_pg_loss_higher > pg_loss3).float() * (advantages < 0).float()
+    clipped_pg_loss_lower = torch.min(
+        clipped_pg_loss_higher, pg_loss3
+    )  # clip if pg_loss > pg_loss3 and adv < 0
+    final_pg_loss = torch.where(
+        advantages < 0, clipped_pg_loss_lower, clipped_pg_loss_higher
+    )
+    metrics["pg_clipfrac_lower"] = (clipped_pg_loss_higher > pg_loss3).float() * (
+        advantages < 0
+    ).float()
 
     final_pg_loss = average_loss(final_pg_loss, response_mask, mode=loss_avg_mode)
-    metrics = {k: VF.masked_mean(v, response_mask).detach().item() for k, v in metrics.items()}
+    metrics = {
+        k: VF.masked_mean(v, response_mask).detach().item() for k, v in metrics.items()
+    }
     return final_pg_loss, metrics
 
 
@@ -444,12 +488,16 @@ def compute_value_loss(
             The ratio of vf being clipped
 
     """
-    vpredclipped = torch.clamp(vpreds, values - cliprange_value, values + cliprange_value)
+    vpredclipped = torch.clamp(
+        vpreds, values - cliprange_value, values + cliprange_value
+    )
     vf_loss1 = torch.square(vpreds - returns)
     vf_loss2 = torch.square(vpredclipped - returns)
     clipped_vf_losses = torch.max(vf_loss1, vf_loss2)  # clip if vf_loss1 < vf_loss2
     vf_loss = 0.5 * average_loss(clipped_vf_losses, response_mask, mode=loss_avg_mode)
-    vf_clipfrac = VF.masked_mean((vf_loss1 < vf_loss2).float(), response_mask).detach().item()
+    vf_clipfrac = (
+        VF.masked_mean((vf_loss1 < vf_loss2).float(), response_mask).detach().item()
+    )
     return vf_loss, vf_clipfrac
 
 
@@ -490,6 +538,8 @@ def compute_kl(
         return torch.clamp(kld, min=-10.0, max=10.0)
 
     if kl_penalty == "full":
-        return F.kl_div(ref_log_probs, log_probs, log_target=True, reduction="none").sum(-1)
+        return F.kl_div(
+            ref_log_probs, log_probs, log_target=True, reduction="none"
+        ).sum(-1)
 
     raise NotImplementedError(f"Unknown KL penalty: {kl_penalty}.")

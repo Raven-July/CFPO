@@ -594,20 +594,20 @@ def qwen2_vl_forward_new(
     # --- END: 修正 image_pos 生成逻辑 ---
 
     # --- 原始路径（保持不变） ---
-    outputs = self.model(
-        input_ids=input_ids,
-        pixel_values=pixel_values,
-        pixel_values_videos=pixel_values_videos,
-        image_grid_thw=image_grid_thw,
-        video_grid_thw=video_grid_thw,
-        position_ids=position_ids,
-        attention_mask=attention_mask,
-        # make sure apply_cmve is False for the original run
-        apply_cmve=False,
-        **kwargs,
-    )
-    hidden_states = outputs[0]
-    logits = self.lm_head(hidden_states)
+    # outputs = self.model(
+    #     input_ids=input_ids,
+    #     pixel_values=pixel_values,
+    #     pixel_values_videos=pixel_values_videos,
+    #     image_grid_thw=image_grid_thw,
+    #     video_grid_thw=video_grid_thw,
+    #     position_ids=position_ids,
+    #     attention_mask=attention_mask,
+    #     # make sure apply_cmve is False for the original run
+    #     apply_cmve=False,
+    #     **kwargs,
+    # )
+    # hidden_states = outputs[0]
+    # logits = self.lm_head(hidden_states)
 
     # --- 变化路径（attn 应用cmve） ---
     outputs_mod = self.model(
@@ -627,17 +627,17 @@ def qwen2_vl_forward_new(
 
     # --- 最终 logits ---
     # 获取原始logits中最后一个时间步的next_token_logits，用于后续的计算
-    next_token_logits = logits[:, -1, :]
-    # 获取经过修改后的logits中最后一个时间步的next_token_logits_cf，用于后续的计算
-    next_token_logits_cf = logits_cf[:, -1, :]
-    # 计算原始next_token_logits和修改后的next_token_logits_cf的加权差值，alpha是控制修改强度的系数
-    diffs = (1 + alpha) * next_token_logits - alpha * next_token_logits_cf
-    # 将修改后的next_token_logits赋值给原始logits的最后一个时间步，完成logits的更新
-    logits[:, -1, :] = diffs
+    # next_token_logits = logits[:, -1, :]
+    # # 获取经过修改后的logits中最后一个时间步的next_token_logits_cf，用于后续的计算
+    # next_token_logits_cf = logits_cf[:, -1, :]
+    # # 计算原始next_token_logits和修改后的next_token_logits_cf的加权差值，alpha是控制修改强度的系数
+    # diffs = (1 + alpha) * next_token_logits - alpha * next_token_logits_cf
+    # # 将修改后的next_token_logits赋值给原始logits的最后一个时间步，完成logits的更新
+    # logits[:, -1, :] = diffs
 
     return Qwen2VLCausalLMOutputWithPast(
         loss=None,
-        logits=logits,
+        logits=logits_cf,
         past_key_values=None,
         hidden_states=None,
         attentions=None,

@@ -17,7 +17,7 @@ PPO config
 
 import os
 from dataclasses import asdict, dataclass, field, fields, is_dataclass
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict, Any
 
 from ..workers.config import WorkerConfig
 
@@ -99,6 +99,36 @@ class AlgorithmConfig:
     filter_high: float = 0.99
     """filter out high reward samples if online filtering"""
 
+    """average setting for actor"""
+    loss_avg_mode: str = "token"  # "token" or "seq"
+
+    """kl_cmve for papo"""
+    use_kl_cmve: bool = False
+    contrastive_type: str = "augmented"
+    kl_cmve_schedule: str = "fixed"
+    kl_cmve_schedule_args: Dict[str, Any] = field(default_factory=dict)
+    kl_cmve_penalty: str = "kl"
+    kl_cmve_coef: float = 1e-3
+    kl_cmve_apply_mode: str = "all"
+    incorrect_weighting: float = 0.1
+
+    """double Entropy Loss"""
+    use_cmve_entropy_loss: bool = False
+    cmve_entropy_loss_coef: float = 0.03
+
+    use_ori_entropy_loss: bool = False
+    ori_entropy_loss_coef: float = 0.03
+
+    """other experimental settings"""
+    use_kl_cmve_clipping: bool = False
+    kl_cmve_clipping: float = 0.2
+
+    use_kl_cmve_token_level_mask: bool = False
+    kl_cmve_token_level_mask_top_p: float = 0.2
+
+    use_sft_loss: bool = False
+    sft_loss_coef: float = 1e-3
+
 
 @dataclass
 class TrainerConfig:
@@ -141,9 +171,13 @@ class TrainerConfig:
 
     def post_init(self):
         if self.save_checkpoint_path is None:
-            self.save_checkpoint_path = os.path.join("checkpoints", self.project_name, self.experiment_name)
+            self.save_checkpoint_path = os.path.join(
+                "checkpoints", self.project_name, self.experiment_name
+            )
 
-        self.save_checkpoint_path = os.path.abspath(self.save_checkpoint_path)  # ray job uses absolute path
+        self.save_checkpoint_path = os.path.abspath(
+            self.save_checkpoint_path
+        )  # ray job uses absolute path
         if self.load_checkpoint_path is not None:
             if os.path.exists(self.load_checkpoint_path):  # ray job uses absolute path
                 self.load_checkpoint_path = os.path.abspath(self.load_checkpoint_path)
@@ -162,11 +196,34 @@ class PPOConfig:
     def post_init(self):
         self.worker.rollout.prompt_length = self.data.max_prompt_length
         self.worker.rollout.response_length = self.data.max_response_length
-        self.worker.rollout.trust_remote_code = self.worker.actor.model.trust_remote_code
+        self.worker.rollout.trust_remote_code = (
+            self.worker.actor.model.trust_remote_code
+        )
         self.worker.actor.disable_kl = self.algorithm.disable_kl
         self.worker.actor.use_kl_loss = self.algorithm.use_kl_loss
         self.worker.actor.kl_penalty = self.algorithm.kl_penalty
         self.worker.actor.kl_coef = self.algorithm.kl_coef
+
+        self.worker.actor.use_kl_cmve= self.algorithm.use_kl_cmve
+        self.worker.actor.kl_cmve_penalty = self.algorithm.kl_cmve_penalty
+        self.worker.actor.kl_cmve_coef = self.algorithm.kl_cmve_coef
+        self.worker.actor.kl_cmve_apply_mode = self.algorithm.kl_cmve_apply_mode
+        self.worker.actor.use_cmve_entropy_loss = self.algorithm.use_cmve_entropy_loss
+        self.worker.actor.cmve_entropy_loss_coef = self.algorithm.cmve_entropy_loss_coef
+        self.worker.actor.use_ori_entropy_loss = self.algorithm.use_ori_entropy_loss
+        self.worker.actor.ori_entropy_loss_coef = self.algorithm.ori_entropy_loss_coef
+        self.worker.actor.use_kl_cmve_clipping = self.algorithm.use_kl_cmve_clipping
+        self.worker.actor.kl_cmve_clipping = self.algorithm.kl_cmve_clipping
+        self.worker.actor.use_kl_cmve_token_level_mask = (
+            self.algorithm.use_kl_cmve_token_level_mask
+        )
+        self.worker.actor.kl_cmve_token_level_mask_top_p = (
+            self.algorithm.kl_cmve_token_level_mask_top_p
+        )
+        self.worker.actor.use_sft_loss = self.algorithm.use_sft_loss
+        self.worker.actor.sft_loss_coef = self.algorithm.sft_loss_coef
+
+        self.worker.actor.loss_avg_mode = self.algorithm.loss_avg_mode
 
     def deep_post_init(self):
         recursive_post_init(self)

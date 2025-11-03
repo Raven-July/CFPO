@@ -113,6 +113,32 @@ class ActorConfig:
     kl_penalty: str = field(default="kl", init=False)
     kl_coef: float = field(default=0.0, init=False)
 
+    # for kl_cmve
+    use_kl_cmve: bool = False
+    kl_cmve_penalty: str = "kl"
+    kl_cmve_coef: float = 1e-3
+    kl_cmve_apply_mode: str = "all"  # correct_only, all, weighted
+
+    # double entropy loss
+    use_cmve_entropy_loss: bool = False
+    cmve_entropy_loss_coef: float = 1e-2
+
+    use_ori_entropy_loss: bool = False
+    ori_entropy_loss_coef: float = 1e-2
+
+    # other experimental settings
+    use_kl_cmve_clipping: bool = False
+    kl_cmve_clipping: float = 0.2
+
+    use_kl_cmve_token_level_mask: bool = False
+    kl_cmve_token_level_mask_top_p: float = (
+        0.2  # top p tokens to apply contrastive kl loss
+    )
+
+    # for sft loss
+    use_sft_loss: bool = False
+    sft_loss_coef: float = 1e-3
+
 
 @dataclass
 class RefConfig:

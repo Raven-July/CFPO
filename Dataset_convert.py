@@ -4,15 +4,26 @@ import random
 from collections import defaultdict
 
 # 输入输出路径
-input_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_data/MARS_Bench.json"
-output_train_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_train_fold1.json"
-output_test_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_test_fold1.json"
+# input_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_data/MARS_Bench.json"
+# output_train_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_train.json"
+# output_test_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_test.json"
+# # 为原始格式的测试集定义输出路径
+# output_test_original_format_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_test_original.json"
+# output_distribution_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_train_distribution.json"
+
+input_path = "/home/u2021213615/share/yzy/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_data/C-VQA-Synthetic.json"
+output_train_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/C-VQA-Synthetic_train.json"
+output_test_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/C-VQA-Synthetic_test.json"
 # 为原始格式的测试集定义输出路径
-output_test_original_format_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_test_fold1_original.json"
-output_distribution_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/MARS_Bench_train_fold1_distribution.json"
+output_test_original_format_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/C-VQA-Synthetic_test_original.json"
+output_distribution_path = "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/C-VQA-Synthetic_train_distribution.json"
+
 
 random_seed = 42  # 固定随机种子
-TRAIN_SET_SIZE = 880  # 设置训练集样本总数
+TRAIN_SET_SIZE = 600  # 设置训练集样本总数
+# marsbench 5110 3600
+# cvqa-real 6288 1800
+# cvqa-Synthetic 6000 600
 
 
 def convert_data(input_path):
@@ -29,7 +40,7 @@ def convert_data(input_path):
                 "images": [item["image"]],  # 保持和原代码一致，放在list里
                 "problem": "<image>" + item["problem"],
                 "answer": item["solution"],
-                "id": item["id"],
+                "id": str(item["id"]),
                 "type": item.get("type", "unknown"),  # 确保type存在，避免None作为key
                 "is_cf": item.get("is_cf", False),  # 将None视为False
             }
