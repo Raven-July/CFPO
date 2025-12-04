@@ -1,0 +1,6012 @@
+[
+    {
+        "images": [
+            "geo3k_test_0.png"
+        ],
+        "problem": "<image>Chords $\\overline{A C}$ and $\\overline{D F}$ are equidistant from the center. If the radius of $\\odot G$ is 26 find $A C$",
+        "answer": "48",
+        "id": "geo3k_test-0",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_1.png"
+        ],
+        "problem": "<image>Find the length of $\\widehat {ZY}$. Round to the nearest hundredth.",
+        "answer": "7.85",
+        "id": "geo3k_test-1",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_2.png"
+        ],
+        "problem": "<image>Find the area of the figure to the nearest tenth.",
+        "answer": "31.1",
+        "id": "geo3k_test-2",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_3.png"
+        ],
+        "problem": "<image>If pentagons $A B C D E$ and $P Q R S T$ are similar, find $S R$",
+        "answer": "4 \\frac { 4 } { 11 }",
+        "id": "geo3k_test-3",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_4.png"
+        ],
+        "problem": "<image>In $\\triangle PQR$, $\\overline{ST} \\| \\overline{R Q}$ . If  $PS=12.5$, $SR=5$, and $PT=15$, find $TQ$.",
+        "answer": "6",
+        "id": "geo3k_test-4",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_5.png"
+        ],
+        "problem": "<image>$a=14, b=48,$ and $c=50$ find $cosA$",
+        "answer": "0.96",
+        "id": "geo3k_test-5",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_6.png"
+        ],
+        "problem": "<image>$\\overline{A C}$ is a diagonal of rhombus $A B C D$ If $m \\angle C D E$ is $116,$ what is $m \\angle A C D ?$",
+        "answer": "58",
+        "id": "geo3k_test-6",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_7.png"
+        ],
+        "problem": "<image>Use parallelogram $JKLM$ to find $m \\angle KLM$",
+        "answer": "71",
+        "id": "geo3k_test-7",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_8.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram.",
+        "answer": "78",
+        "id": "geo3k_test-8",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_9.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "5 \\sqrt { 3 }",
+        "id": "geo3k_test-9",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_10.png"
+        ],
+        "problem": "<image>Find $PS$.",
+        "answer": "9",
+        "id": "geo3k_test-10",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_11.png"
+        ],
+        "problem": "<image>In the figure, $m∠1 = 50$ and $m∠3 = 60$. Find the measure of $\\angle 8$.",
+        "answer": "120",
+        "id": "geo3k_test-11",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_12.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "4",
+        "id": "geo3k_test-12",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_13.png"
+        ],
+        "problem": "<image>Quadrilateral $ABDC$ is a rectangle. If $m\\angle1 = 38$, find $m \\angle 2$",
+        "answer": "52",
+        "id": "geo3k_test-13",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_14.png"
+        ],
+        "problem": "<image>What is the value of $x$ below to the nearest tenth?",
+        "answer": "22.5",
+        "id": "geo3k_test-14",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_15.png"
+        ],
+        "problem": "<image>Find $m\\angle W$",
+        "answer": "108",
+        "id": "geo3k_test-15",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_16.png"
+        ],
+        "problem": "<image>Express the ratio of $\\cos B$ as a decimal to the nearest hundredth.",
+        "answer": "0.38",
+        "id": "geo3k_test-16",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_17.png"
+        ],
+        "problem": "<image>Find the measure of $JK$.",
+        "answer": "31",
+        "id": "geo3k_test-17",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_18.png"
+        ],
+        "problem": "<image>For trapezoid $T R S V, M$ and $N$ are midpoints of the legs. If $T R=32$ and $M N=25,$ find $V S$",
+        "answer": "18",
+        "id": "geo3k_test-18",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_19.png"
+        ],
+        "problem": "<image>Find $x$ so that each quadrilateral is a parallelogram.",
+        "answer": "4",
+        "id": "geo3k_test-19",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_20.png"
+        ],
+        "problem": "<image>Find $WR$.",
+        "answer": "8",
+        "id": "geo3k_test-20",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_21.png"
+        ],
+        "problem": "<image>Find the value of $x$",
+        "answer": "74",
+        "id": "geo3k_test-21",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_22.png"
+        ],
+        "problem": "<image>Find the area of the trapezoid.",
+        "answer": "678.5",
+        "id": "geo3k_test-22",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_23.png"
+        ],
+        "problem": "<image>The diameters of $\\odot A, \\odot B,$ and $\\odot C$ are 10, 30 and 10 units, respectively. Find ZX if $\\overline{A Z} \\cong \\overline{C W}$ and $C W=2$.",
+        "answer": "3",
+        "id": "geo3k_test-23",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_24.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "6 \\sqrt { 6 }",
+        "id": "geo3k_test-24",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_25.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "52.5",
+        "id": "geo3k_test-25",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_26.png"
+        ],
+        "problem": "<image>Find $y$ so that each quadrilateral is a parallelogram.",
+        "answer": "31",
+        "id": "geo3k_test-26",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_27.png"
+        ],
+        "problem": "<image>Find $K J$ if $G J=8, G H=12,$ and $H I=4$",
+        "answer": "2",
+        "id": "geo3k_test-27",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_28.png"
+        ],
+        "problem": "<image>Find $QP$.",
+        "answer": "3.6",
+        "id": "geo3k_test-28",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_29.png"
+        ],
+        "problem": "<image>In $\\odot T, Z V=1,$ and $T W=13$. Find XY",
+        "answer": "10",
+        "id": "geo3k_test-29",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_30.png"
+        ],
+        "problem": "<image>In the figure, $m∠11 = 62$ and $m∠14 = 38$. Find the measure of $\\angle 1$.",
+        "answer": "38",
+        "id": "geo3k_test-30",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_31.png"
+        ],
+        "problem": "<image>The two polygons are similar. Find UT.",
+        "answer": "22.5",
+        "id": "geo3k_test-31",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_32.png"
+        ],
+        "problem": "<image>Find the measure of $∠A$ to the nearest tenth.",
+        "answer": "41.8",
+        "id": "geo3k_test-32",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_33.png"
+        ],
+        "problem": "<image>Find $m \\angle H$.",
+        "answer": "31",
+        "id": "geo3k_test-33",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_34.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "90",
+        "id": "geo3k_test-34",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_35.png"
+        ],
+        "problem": "<image>$m \\widehat{AC}=160$ and $m \\angle BEC=38$. What is $m \\angle AEB$?",
+        "answer": "42",
+        "id": "geo3k_test-35",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_36.png"
+        ],
+        "problem": "<image>A plane travels from Des Moines to Phoenix, on to Atlanta, and back to Des Moines, as shown below. Find the distance in miles from  Phoenix to Atlanta if the total trip was 3482 miles.",
+        "answer": "1591",
+        "id": "geo3k_test-36",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_37.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "123",
+        "id": "geo3k_test-37",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_38.png"
+        ],
+        "problem": "<image>Solve for x in the figure. Round to the nearest tenth if necessary.",
+        "answer": "3",
+        "id": "geo3k_test-38",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_39.png"
+        ],
+        "problem": "<image>In the figure, $\\overline{A D}$ is perpendicular to $\\overline{B C}$ and $\\overline{A B}$ is perpendicular to $\\overline{A C}$. What is $B C ?$",
+        "answer": "20",
+        "id": "geo3k_test-39",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_40.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth.",
+        "answer": "30.2",
+        "id": "geo3k_test-40",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_41.png"
+        ],
+        "problem": "<image>If $c=5,$ find $b$",
+        "answer": "2.5 \\sqrt { 3 }",
+        "id": "geo3k_test-41",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_42.png"
+        ],
+        "problem": "<image>Find $z$.",
+        "answer": "12",
+        "id": "geo3k_test-42",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_43.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Assume that the polygon is regular unless otherwise stated. Round to the nearest tenth.",
+        "answer": "216.6",
+        "id": "geo3k_test-43",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_44.png"
+        ],
+        "problem": "<image>Find $m \\angle 2$.",
+        "answer": "39",
+        "id": "geo3k_test-44",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_45.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.\r\n",
+        "answer": "5.8",
+        "id": "geo3k_test-45",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_46.png"
+        ],
+        "problem": "<image>$m$ is the perpendicular bisector of $XZ$, $WZ=14.9$. Find $WX$.",
+        "answer": "14.9",
+        "id": "geo3k_test-46",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_47.png"
+        ],
+        "problem": "<image>$m∠9 = 2x - 4$, $m∠10 = 2x + 4$. Find the measure of $∠10$.",
+        "answer": "94",
+        "id": "geo3k_test-47",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_48.png"
+        ],
+        "problem": "<image>Find $JL$.",
+        "answer": "14",
+        "id": "geo3k_test-48",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_49.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "91.9",
+        "id": "geo3k_test-49",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_50.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "15",
+        "id": "geo3k_test-50",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_51.png"
+        ],
+        "problem": "<image>Find $ST$.",
+        "answer": "19",
+        "id": "geo3k_test-51",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_52.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "18 \\sqrt { 6 }",
+        "id": "geo3k_test-52",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_53.png"
+        ],
+        "problem": "<image>Find $EG$ if $G$ is the incenter of $\\triangle ABC$.",
+        "answer": "5",
+        "id": "geo3k_test-53",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_54.png"
+        ],
+        "problem": "<image>Find $x$ so that each quadrilateral is a parallelogram.",
+        "answer": "13",
+        "id": "geo3k_test-54",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_55.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "3",
+        "id": "geo3k_test-55",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_56.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "1",
+        "id": "geo3k_test-56",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_57.png"
+        ],
+        "problem": "<image>Tangent $\\overline{M P}$ is drawn to $\\odot O .$ Find $x$ if $M O=20$",
+        "answer": "12",
+        "id": "geo3k_test-57",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_58.png"
+        ],
+        "problem": "<image>In H, the diameter is $18$, $LM = 12$, and $m \\widehat {LM} = 84$. Find $HP$. Round to the nearest hundredth.",
+        "answer": "6.71",
+        "id": "geo3k_test-58",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_59.png"
+        ],
+        "problem": "<image>Find x to the nearest tenth. Assume that segments that appear to be tangent are tangent.",
+        "answer": "21.6",
+        "id": "geo3k_test-59",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_60.png"
+        ],
+        "problem": "<image>If $m \\widehat{F E}=118, m \\widehat{A B}=108$, $m \\angle E G B=52,$ and $m \\angle E F B=30$, find $m \\widehat{C F}$",
+        "answer": "44",
+        "id": "geo3k_test-60",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_61.png"
+        ],
+        "problem": "<image>If $c=5,$ find $a$",
+        "answer": "2.5",
+        "id": "geo3k_test-61",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_62.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "5",
+        "id": "geo3k_test-62",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_63.png"
+        ],
+        "problem": "<image>Find the length of $\\widehat {AB}$. Round to the nearest hundredth.",
+        "answer": "9.77",
+        "id": "geo3k_test-63",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_64.png"
+        ],
+        "problem": "<image>In the figure, line $l$ is parallel to line $m$. Line $n$ intersects both $l$ and $m$. Which of the following lists includes all of the angles that are supplementary to $ ∠1 $?",
+        "answer": "angles 2,3, 6, and 7",
+        "id": "geo3k_test-64",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_65.png"
+        ],
+        "problem": "<image>In the figure, $m∠3 = 43$. Find the measure of $\\angle 11$.",
+        "answer": "43",
+        "id": "geo3k_test-65",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_66.png"
+        ],
+        "problem": "<image>If AB || DC, find x.",
+        "answer": "115",
+        "id": "geo3k_test-66",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_67.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 2$.",
+        "answer": "33",
+        "id": "geo3k_test-67",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_68.png"
+        ],
+        "problem": "<image>The diagram shows the layout of Elm, Plum, and Oak streets. Find the value of $x.$",
+        "answer": "125",
+        "id": "geo3k_test-68",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_69.png"
+        ],
+        "problem": "<image>Find $y$.",
+        "answer": "5 \\sqrt { 5 }",
+        "id": "geo3k_test-69",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_70.png"
+        ],
+        "problem": "<image>In $\\odot P, m \\angle M P L=65$ and $\\overline{N P} \\perp \\overline{P L}$.\r\nFind $m \\widehat{N M}$",
+        "answer": "25",
+        "id": "geo3k_test-70",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_71.png"
+        ],
+        "problem": "<image>Each pair of polygons is similar. Find y",
+        "answer": "5",
+        "id": "geo3k_test-71",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_72.png"
+        ],
+        "problem": "<image>Use parallelogram $JKLM$ to find $m \\angle KJL$.",
+        "answer": "30",
+        "id": "geo3k_test-72",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_73.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "63",
+        "id": "geo3k_test-73",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_74.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "76",
+        "id": "geo3k_test-74",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_75.png"
+        ],
+        "problem": "<image>Trapezoid $GHJK$ has an area of 75 square meters. Find the height.",
+        "answer": "5",
+        "id": "geo3k_test-75",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_76.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "58",
+        "id": "geo3k_test-76",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_77.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "30.2",
+        "id": "geo3k_test-77",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_78.png"
+        ],
+        "problem": "<image>For the pair of similar figures, find the area of the green figure.",
+        "answer": "9",
+        "id": "geo3k_test-78",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_79.png"
+        ],
+        "problem": "<image>In $\\odot X, A B=30, C D=30,$ and $m \\widehat{C Z}=40$\r\nFind $m\\widehat{C D}$",
+        "answer": "80",
+        "id": "geo3k_test-79",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_80.png"
+        ],
+        "problem": "<image>Quadrilateral EFGH is a rectangle. If FK = 32 feet, find EG.",
+        "answer": "64",
+        "id": "geo3k_test-80",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_81.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "7",
+        "id": "geo3k_test-81",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_82.png"
+        ],
+        "problem": "<image>In the figure, $m \\angle 1=4 p+15$, $m \\angle 3=3 p-10$ and $m \\angle 4=6 r+5 $. Find the value of $p$.",
+        "answer": "25",
+        "id": "geo3k_test-82",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_83.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "\\sqrt { 21 }",
+        "id": "geo3k_test-83",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_84.png"
+        ],
+        "problem": "<image>Find $BC$.",
+        "answer": "13",
+        "id": "geo3k_test-84",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_85.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "24 \\sqrt { 3 }",
+        "id": "geo3k_test-85",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_86.png"
+        ],
+        "problem": "<image>If $ZP = 4x - 9$ and $PY = 2x + 5$, find $ZX$.",
+        "answer": "38",
+        "id": "geo3k_test-86",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_87.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "6 \\sqrt { 3 }",
+        "id": "geo3k_test-87",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_88.png"
+        ],
+        "problem": "<image>Find the measure of $∠T$ to the nearest tenth.",
+        "answer": "21.8",
+        "id": "geo3k_test-88",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_89.png"
+        ],
+        "problem": "<image>Find x to the nearest tenth. Assume that segments that appear to be tangent are tangent.",
+        "answer": "7.2",
+        "id": "geo3k_test-89",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_90.png"
+        ],
+        "problem": "<image>$\\overline{AB} \\cong \\overline{DF}$. Find $x$.",
+        "answer": "2",
+        "id": "geo3k_test-90",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_91.png"
+        ],
+        "problem": "<image>Find $m \\angle WYZ$.",
+        "answer": "23",
+        "id": "geo3k_test-91",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_92.png"
+        ],
+        "problem": "<image>Find the area of the shaded region.",
+        "answer": "22.1",
+        "id": "geo3k_test-92",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_93.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "2",
+        "id": "geo3k_test-93",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_94.png"
+        ],
+        "problem": "<image>In $\\odot O, \\overline{E C}$ and $\\overline{A B}$ are diameters, and $\\angle B O D \\cong \\angle D O E \\cong \\angle E O F \\cong \\angle F O A$\r\nFind $m\\widehat{A D}$",
+        "answer": "135",
+        "id": "geo3k_test-94",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_95.png"
+        ],
+        "problem": "<image>Find $x$  if $AE=3, AB=2$, $BC=6,$ and $ED=2x-3$",
+        "answer": "6",
+        "id": "geo3k_test-95",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_96.png"
+        ],
+        "problem": "<image>Find $A E$ if $A B=12, A C=16,$ and $E D=5$",
+        "answer": "15",
+        "id": "geo3k_test-96",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_97.png"
+        ],
+        "problem": "<image>Find $x$ in the given parallelogram",
+        "answer": "38",
+        "id": "geo3k_test-97",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_98.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "115",
+        "id": "geo3k_test-98",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_99.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "129.9",
+        "id": "geo3k_test-99",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_100.png"
+        ],
+        "problem": "<image>Find $a$ in the given parallelogram",
+        "answer": "9",
+        "id": "geo3k_test-100",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_101.png"
+        ],
+        "problem": "<image>Find $m\\angle B$",
+        "answer": "120",
+        "id": "geo3k_test-101",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_102.png"
+        ],
+        "problem": "<image>Find GH in the kite",
+        "answer": "\\sqrt { 369 }",
+        "id": "geo3k_test-102",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_103.png"
+        ],
+        "problem": "<image>Find the value of the variable $x$ in the figure.",
+        "answer": "125",
+        "id": "geo3k_test-103",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_104.png"
+        ],
+        "problem": "<image>Refer to the figure at the right. Find the value of $m ∠FCE$ if $ p \\parallel q $.",
+        "answer": "105",
+        "id": "geo3k_test-104",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_105.png"
+        ],
+        "problem": "<image>What is the measure of $\\angle B$ if $m \\angle A=10 ?$",
+        "answer": "30",
+        "id": "geo3k_test-105",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_106.png"
+        ],
+        "problem": "<image>Express the ratio of $\\cos N$ as a decimal to the nearest hundredth.",
+        "answer": "0.38",
+        "id": "geo3k_test-106",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_107.png"
+        ],
+        "problem": "<image>Find $m \\angle R$",
+        "answer": "29.1",
+        "id": "geo3k_test-107",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_108.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "8",
+        "id": "geo3k_test-108",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_109.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth.",
+        "answer": "50.2",
+        "id": "geo3k_test-109",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_110.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "21 \\sqrt { 3 }",
+        "id": "geo3k_test-110",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_111.png"
+        ],
+        "problem": "<image>Find the area of the shaded sector. Round to the nearest tenth.",
+        "answer": "182.6",
+        "id": "geo3k_test-111",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_112.png"
+        ],
+        "problem": "<image>$\\triangle K L N$ and $\\triangle L M N$ are isosceles and $m \\angle J K N=130$. Find the measure of $\\angle J$.",
+        "answer": "106",
+        "id": "geo3k_test-112",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_113.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "12",
+        "id": "geo3k_test-113",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_114.png"
+        ],
+        "problem": "<image>$ABCD$ is a rhombus. If $PB = 12$, $AB = 15$, and $m \\angle ABD = 24$, Find $m\\angle BDA$",
+        "answer": "24",
+        "id": "geo3k_test-114",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_115.png"
+        ],
+        "problem": "<image>Find $y$.",
+        "answer": "12",
+        "id": "geo3k_test-115",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_116.png"
+        ],
+        "problem": "<image>Find the value of $x$ in each diagram",
+        "answer": "68",
+        "id": "geo3k_test-116",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_117.png"
+        ],
+        "problem": "<image>Find $m \\angle RST$.",
+        "answer": "55",
+        "id": "geo3k_test-117",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_118.png"
+        ],
+        "problem": "<image>$∠6$ and $∠8$ are complementary, $m∠8 = 47$. Find the measure of $\\angle 7$.",
+        "answer": "90",
+        "id": "geo3k_test-118",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_119.png"
+        ],
+        "problem": "<image>Find the measure of $m\\angle 1$. Assume that segments that appear\r\ntangent are tangent.",
+        "answer": "129",
+        "id": "geo3k_test-119",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_120.png"
+        ],
+        "problem": "<image>Let $\\overline{G H}$ be the median of $R S B A .$ Find $G H$",
+        "answer": "62",
+        "id": "geo3k_test-120",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_121.png"
+        ],
+        "problem": "<image>Use parallelogram PQRS to find $QP$",
+        "answer": "5",
+        "id": "geo3k_test-121",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_122.png"
+        ],
+        "problem": "<image>Quadrilateral $WXYZ$ is inscribed in $\\odot V$. Find $m \\angle X$.",
+        "answer": "120",
+        "id": "geo3k_test-122",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_123.png"
+        ],
+        "problem": "<image>Find the height of the parallelogram given its area with 2000 square units.",
+        "answer": "40",
+        "id": "geo3k_test-123",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_124.png"
+        ],
+        "problem": "<image>Find $m \\angle A$ of quadrilateral ABCD",
+        "answer": "135",
+        "id": "geo3k_test-124",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_125.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "10",
+        "id": "geo3k_test-125",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_126.png"
+        ],
+        "problem": "<image>Find the measure of the altitude drawn to the hypotenuse.",
+        "answer": "4 \\sqrt { 3 }",
+        "id": "geo3k_test-126",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_127.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Round to the nearest tenth.",
+        "answer": "157.1",
+        "id": "geo3k_test-127",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_128.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "30.7",
+        "id": "geo3k_test-128",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_129.png"
+        ],
+        "problem": "<image>Find $y$ in each figure.",
+        "answer": "6",
+        "id": "geo3k_test-129",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_130.png"
+        ],
+        "problem": "<image>Find $m \\angle S$.",
+        "answer": "34",
+        "id": "geo3k_test-130",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_131.png"
+        ],
+        "problem": "<image>In the figure, $m∠3 = 110$ and $m ∠ 12 = 55$. Find the measure of $∠13$.",
+        "answer": "55",
+        "id": "geo3k_test-131",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_132.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "3 \\sqrt { 35 }",
+        "id": "geo3k_test-132",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_133.png"
+        ],
+        "problem": "<image>Quadrilateral EFGH is a rectangle. If $m \\angle HGE = 13$, find $m\\angle FGE$.",
+        "answer": "77",
+        "id": "geo3k_test-133",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_134.png"
+        ],
+        "problem": "<image>Find x in the parallelogram",
+        "answer": "37",
+        "id": "geo3k_test-134",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_135.png"
+        ],
+        "problem": "<image>Find the side length in isosceles triangle $DEF$.",
+        "answer": "11",
+        "id": "geo3k_test-135",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_136.png"
+        ],
+        "problem": "<image>Find the length of $\\widehat {JK}$. Round to the nearest hundredth.",
+        "answer": "13.74",
+        "id": "geo3k_test-136",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_137.png"
+        ],
+        "problem": "<image>Use parallelogram to find $b$",
+        "answer": "11",
+        "id": "geo3k_test-137",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_138.png"
+        ],
+        "problem": "<image>If PR || KL, KN = 9, LN = 16, PM = 2 KP, find MN",
+        "answer": "12",
+        "id": "geo3k_test-138",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_139.png"
+        ],
+        "problem": "<image>Find $x$. Round to the nearest tenth.",
+        "answer": "14.1",
+        "id": "geo3k_test-139",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_140.png"
+        ],
+        "problem": "<image>Find the area of the rhombus. ",
+        "answer": "132",
+        "id": "geo3k_test-140",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_141.png"
+        ],
+        "problem": "<image>Find TX if $E X=24$ and $D E=7$",
+        "answer": "32",
+        "id": "geo3k_test-141",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_142.png"
+        ],
+        "problem": "<image>Find $m \\widehat {LP}$.",
+        "answer": "150",
+        "id": "geo3k_test-142",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_143.png"
+        ],
+        "problem": "<image>Express the ratio of $\\sin N$ as a decimal to the nearest hundredth.",
+        "answer": "0.92",
+        "id": "geo3k_test-143",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_144.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "1",
+        "id": "geo3k_test-144",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_145.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest hundredth, if necessary.",
+        "answer": "4.8",
+        "id": "geo3k_test-145",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_146.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "3.5",
+        "id": "geo3k_test-146",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_147.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m\\angle ADC$",
+        "answer": "128",
+        "id": "geo3k_test-147",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_148.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 3$ if $\\overline{A B} \\perp \\overline{B C}$.",
+        "answer": "76",
+        "id": "geo3k_test-148",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_149.png"
+        ],
+        "problem": "<image>In $\\triangle DEF, m \\angle E=108, m \\angle F=26$, and $f=20$, Find $d$ to the nearest whole number.",
+        "answer": "33",
+        "id": "geo3k_test-149",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_150.png"
+        ],
+        "problem": "<image>Find $y$ so that each quadrilateral is a parallelogram.",
+        "answer": "4",
+        "id": "geo3k_test-150",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_151.png"
+        ],
+        "problem": "<image>Find $m \\angle 4$.",
+        "answer": "33",
+        "id": "geo3k_test-151",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_152.png"
+        ],
+        "problem": "<image>Find $cos C$",
+        "answer": "\\frac { 4 } { 5 }",
+        "id": "geo3k_test-152",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_153.png"
+        ],
+        "problem": "<image>In rhombus $A B C D, m \\angle D A B=2, m \\angle A D C$ and $C B=6$. Find $m \\angle A C D$",
+        "answer": "60",
+        "id": "geo3k_test-153",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_154.png"
+        ],
+        "problem": "<image>Find AB",
+        "answer": "10",
+        "id": "geo3k_test-154",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_155.png"
+        ],
+        "problem": "<image>Find $x$ in the figure.",
+        "answer": "14",
+        "id": "geo3k_test-155",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_156.png"
+        ],
+        "problem": "<image>Circle $O$ has a radius of 13 inches. Radius $\\overline{O B}$ is perpendicular to chord $\\overline{C D}$ which is 24 inches long.\r\nIf $m \\widehat{C D}=134,$ find $m \\widehat{C B}$",
+        "answer": "67",
+        "id": "geo3k_test-156",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_157.png"
+        ],
+        "problem": "<image>In $\\odot M$, $FL=24,HJ=48$, and $m \\widehat {HP}=65$. Find $FG$.",
+        "answer": "48",
+        "id": "geo3k_test-157",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_158.png"
+        ],
+        "problem": "<image>Cut four congruent triangles off the corners of a rectangle to make an octagon. What is the area of the octagon?",
+        "answer": "528",
+        "id": "geo3k_test-158",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_159.png"
+        ],
+        "problem": "<image>Find $m\\angle A$",
+        "answer": "60",
+        "id": "geo3k_test-159",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_160.png"
+        ],
+        "problem": "<image>Use parallelogram JKLM to find $m \\angle KJL$ if $J K=2 b+3$ and $J M=3 a$.",
+        "answer": "30",
+        "id": "geo3k_test-160",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_161.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "\\frac { 17 } { 2 } \\sqrt { 3 }",
+        "id": "geo3k_test-161",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_162.png"
+        ],
+        "problem": "<image>Find $XZ$.",
+        "answer": "34",
+        "id": "geo3k_test-162",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_163.png"
+        ],
+        "problem": "<image>Find $XW$.",
+        "answer": "12",
+        "id": "geo3k_test-163",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_164.png"
+        ],
+        "problem": "<image>Find x so that $GJ \\parallel FK$. $G H=x+3.5, H J=x-8.5, F H=21, H K=7$.\r\n",
+        "answer": "14.5",
+        "id": "geo3k_test-164",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_165.png"
+        ],
+        "problem": "<image>In $\\odot P, m \\angle M P L=65$ and $\\overline{N P} \\perp \\overline{P L}$.\r\nFind $m \\widehat{N J K}$",
+        "answer": "155",
+        "id": "geo3k_test-165",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_166.png"
+        ],
+        "problem": "<image>A square is inscribed in a circle having a radius of $6$ inches. Find the length of each side of the square.",
+        "answer": "6 \\sqrt 2",
+        "id": "geo3k_test-166",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_167.png"
+        ],
+        "problem": "<image>One diagonal of a rhombus is twice as long as the other diagonal. If the area of the rhombus is 169 square millimeters, what are the lengths of the diagonals?",
+        "answer": "26",
+        "id": "geo3k_test-167",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_168.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "9",
+        "id": "geo3k_test-168",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_169.png"
+        ],
+        "problem": "<image>If $AB=12,AC=16$, and $ED=5$, find $AE$.",
+        "answer": "15",
+        "id": "geo3k_test-169",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_170.png"
+        ],
+        "problem": "<image>Find $x$ so that $\\overline{BE}$ and $\\overline{AD}$ are perpendicular.",
+        "answer": "10",
+        "id": "geo3k_test-170",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_171.png"
+        ],
+        "problem": "<image>Find DE",
+        "answer": "9",
+        "id": "geo3k_test-171",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_172.png"
+        ],
+        "problem": "<image>Find the area of the shaded region formed by the circle and regular polygon. Round to the nearest tenth.",
+        "answer": "76.4",
+        "id": "geo3k_test-172",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_173.png"
+        ],
+        "problem": "<image>In the figure, $m ∠ 12 = 64$. Find the measure of $ \\angle 7$.",
+        "answer": "64",
+        "id": "geo3k_test-173",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_174.png"
+        ],
+        "problem": "<image>Find $BC$.",
+        "answer": "9",
+        "id": "geo3k_test-174",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_175.png"
+        ],
+        "problem": "<image>Find $m \\angle 1$.",
+        "answer": "37.5",
+        "id": "geo3k_test-175",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_176.png"
+        ],
+        "problem": "<image>Express the ratio of $\\sin P$ as a decimal to the nearest hundredth.",
+        "answer": "0.88",
+        "id": "geo3k_test-176",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_177.png"
+        ],
+        "problem": "<image>Find $x$. $A=357$ in$^2$. ",
+        "answer": "21",
+        "id": "geo3k_test-177",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_178.png"
+        ],
+        "problem": "<image>Find $x$ so that $a ∥ b$.",
+        "answer": "14",
+        "id": "geo3k_test-178",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_179.png"
+        ],
+        "problem": "<image>$\\overline{GJ}$ is a diameter of $\\odot K$. Find $m \\widehat {GLJ}$.",
+        "answer": "180",
+        "id": "geo3k_test-179",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_180.png"
+        ],
+        "problem": "<image>Find $C F$ if $\\overline{B F}$ bisects $\\angle A B C$ and $\\overline{A C} \\| \\overline{E D}, B A=6, B C=7.5$, $A C=9,$ and $D E=9$",
+        "answer": "5",
+        "id": "geo3k_test-180",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_181.png"
+        ],
+        "problem": "<image>Find $m \\angle K$",
+        "answer": "100",
+        "id": "geo3k_test-181",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_182.png"
+        ],
+        "problem": "<image>Find the value of the variable $y$ in the figure.",
+        "answer": "50",
+        "id": "geo3k_test-182",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_183.png"
+        ],
+        "problem": "<image>Find the value of $t$ in the parallelogram.",
+        "answer": "7",
+        "id": "geo3k_test-183",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_184.png"
+        ],
+        "problem": "<image>Find the perimeter of the triangle. Round to the nearest hundredth.",
+        "answer": "8.73",
+        "id": "geo3k_test-184",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_185.png"
+        ],
+        "problem": "<image>The segment is tangent to the circle. Find the value of $x$.",
+        "answer": "3",
+        "id": "geo3k_test-185",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_186.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Round to the nearest tenth.",
+        "answer": "58.9",
+        "id": "geo3k_test-186",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_187.png"
+        ],
+        "problem": "<image>Find the measure of $m \\widehat{YXZ}$.",
+        "answer": "166",
+        "id": "geo3k_test-187",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_188.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "14",
+        "id": "geo3k_test-188",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_189.png"
+        ],
+        "problem": "<image>Find $y$.",
+        "answer": "2",
+        "id": "geo3k_test-189",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_190.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "8 \\sqrt { 5 }",
+        "id": "geo3k_test-190",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_191.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "48",
+        "id": "geo3k_test-191",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_192.png"
+        ],
+        "problem": "<image>Use parallelogram WXYZ to find $m\\angle XYZ$",
+        "answer": "105",
+        "id": "geo3k_test-192",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_193.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "9.5",
+        "id": "geo3k_test-193",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_194.png"
+        ],
+        "problem": "<image>Find the measure of $m\\angle 2$. Assume that segments that appear\r\ntangent are tangent.",
+        "answer": "157.5",
+        "id": "geo3k_test-194",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_195.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "64",
+        "id": "geo3k_test-195",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_196.png"
+        ],
+        "problem": "<image>Quadrilateral DEFG is a rectangle.  If $m \\angle EFD = 2x - 3$ and $m \\angle DFG = x + 12$,\r\nfind $m \\angle EFD$.",
+        "answer": "51",
+        "id": "geo3k_test-196",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_197.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "4 \\sqrt { 2 }",
+        "id": "geo3k_test-197",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_198.png"
+        ],
+        "problem": "<image>Circle $O$ has a radius of 13 inches. Radius $\\overline{O B}$ is perpendicular to chord $\\overline{C D}$ which is 24 inches long.\r\nFind OX",
+        "answer": "5",
+        "id": "geo3k_test-198",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_199.png"
+        ],
+        "problem": "<image>Find the area of $▱ JKLM$.",
+        "answer": "24",
+        "id": "geo3k_test-199",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_200.png"
+        ],
+        "problem": "<image>Find $m \\angle 1$.",
+        "answer": "108",
+        "id": "geo3k_test-200",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_201.png"
+        ],
+        "problem": "<image>Find $AB$.",
+        "answer": "4.1",
+        "id": "geo3k_test-201",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_202.png"
+        ],
+        "problem": "<image>Find $RS$ if $\\triangle QRS$ is an equilateral triangle.",
+        "answer": "2",
+        "id": "geo3k_test-202",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_203.png"
+        ],
+        "problem": "<image>If two sides of a triangle measure 12 and 7, which of the following cannot be the perimeter of the triangle?",
+        "answer": "38",
+        "id": "geo3k_test-203",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_204.png"
+        ],
+        "problem": "<image>Find the area of the triangle. Round to the nearest hundredth.",
+        "answer": "7.51",
+        "id": "geo3k_test-204",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_205.png"
+        ],
+        "problem": "<image>$\\overline{AB}$ is a diameter, $AC=8$ inches, and $BC=15$ inches. Find the radius of the circle.",
+        "answer": "8.5",
+        "id": "geo3k_test-205",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_206.png"
+        ],
+        "problem": "<image>Find $m \\angle 1$.",
+        "answer": "70",
+        "id": "geo3k_test-206",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_207.png"
+        ],
+        "problem": "<image>Find $w$ in the given parallelogram",
+        "answer": "5",
+        "id": "geo3k_test-207",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_208.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "\\frac { 5 } { 3 }",
+        "id": "geo3k_test-208",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_209.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "5",
+        "id": "geo3k_test-209",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_210.png"
+        ],
+        "problem": "<image>If $\\triangle L M N \\sim \\triangle Q R S, Q R=35, R S=37, S Q=12$, and $N L=5$, find the perimeter of $\\triangle L M N$. ",
+        "answer": "35",
+        "id": "geo3k_test-210",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_211.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 7$ if $m∠4= m∠5$.",
+        "answer": "89",
+        "id": "geo3k_test-211",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_212.png"
+        ],
+        "problem": "<image>$\\overline{XY}$ and $\\overline{XZ}$ are midsegments of $\\triangle RST$. Find $ST$.",
+        "answer": "14",
+        "id": "geo3k_test-212",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_213.png"
+        ],
+        "problem": "<image>If $m∠5 = 7x - 5$ and $m∠4 = 2x + 23$, find $x$.",
+        "answer": "18",
+        "id": "geo3k_test-213",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_214.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 2$.",
+        "answer": "76",
+        "id": "geo3k_test-214",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_215.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m\\angle ACD$",
+        "answer": "29",
+        "id": "geo3k_test-215",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_216.png"
+        ],
+        "problem": "<image>Find $CD$ if $AC=x-3$, $BE=20, AB=16,$ and $CD=x+5$",
+        "answer": "40",
+        "id": "geo3k_test-216",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_217.png"
+        ],
+        "problem": "<image>$UJ=9, VJ=3$, and $ZT=18$. Find $SV$.",
+        "answer": "9",
+        "id": "geo3k_test-217",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_218.png"
+        ],
+        "problem": "<image>In $\\odot O, \\overline{E C}$ and $\\overline{A B}$ are diameters, and $\\angle B O D \\cong \\angle D O E \\cong \\angle E O F \\cong \\angle F O A$\r\nFind $m\\widehat{A E}$",
+        "answer": "90",
+        "id": "geo3k_test-218",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_219.png"
+        ],
+        "problem": "<image>In $\\triangle PQR$, $ZQ=3a-11$, $ZP=a+5$, $PY=2 c-1$, $YR=4 c-11$, $m \\angle PRZ=4 b-17$, $m \\angle ZRQ=3 b-4$, $m \\angle QYR=7 b+6$, and $m \\angle PXR=2 a+10$.  If $\\overline{RZ}$ is an angle bisector, find $m∠PRZ$.",
+        "answer": "35",
+        "id": "geo3k_test-219",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_220.png"
+        ],
+        "problem": "<image>Which segments are parallel?",
+        "answer": "A D and B E",
+        "id": "geo3k_test-220",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_221.png"
+        ],
+        "problem": "<image>Use parallelogram MNPR to find $m \\angle RMN$",
+        "answer": "109",
+        "id": "geo3k_test-221",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_222.png"
+        ],
+        "problem": "<image>If WXYZ is a kite, find WP",
+        "answer": "\\sqrt { 20 }",
+        "id": "geo3k_test-222",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_223.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "17",
+        "id": "geo3k_test-223",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_224.png"
+        ],
+        "problem": "<image>In the figure below, $∠ABC$ is intersected by parallel lines $l$ and $m$. What is the measure of $∠ABC$? Express your answer in degrees.",
+        "answer": "71",
+        "id": "geo3k_test-224",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_225.png"
+        ],
+        "problem": "<image>Find z",
+        "answer": "6",
+        "id": "geo3k_test-225",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_226.png"
+        ],
+        "problem": "<image>If DB = 24, AE = 3, and EC = 18, find AD",
+        "answer": "4",
+        "id": "geo3k_test-226",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_227.png"
+        ],
+        "problem": "<image>Find the measure of $m∠1$.",
+        "answer": "109",
+        "id": "geo3k_test-227",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_228.png"
+        ],
+        "problem": "<image>In the figure, $m∠1 = 50$ and $m∠3 = 60$. Find the measure of $\\angle 6$.",
+        "answer": "70",
+        "id": "geo3k_test-228",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_229.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "35",
+        "id": "geo3k_test-229",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_230.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "50",
+        "id": "geo3k_test-230",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_231.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m\\angle DAC$",
+        "answer": "72",
+        "id": "geo3k_test-231",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_232.png"
+        ],
+        "problem": "<image>In the figure, $m∠1 = 123$. Find the measure of $\\angle 14$.",
+        "answer": "57",
+        "id": "geo3k_test-232",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_233.png"
+        ],
+        "problem": "<image>Use parallelogram $JKLM$ to find $m \\angle JKL$.",
+        "answer": "80",
+        "id": "geo3k_test-233",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_234.png"
+        ],
+        "problem": "<image>Refer to the figure at the right. Find y.",
+        "answer": "6.75",
+        "id": "geo3k_test-234",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_235.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "95",
+        "id": "geo3k_test-235",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_236.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "6",
+        "id": "geo3k_test-236",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_237.png"
+        ],
+        "problem": "<image>For the pair of similar figures, use the given areas to find $x$.",
+        "answer": "16",
+        "id": "geo3k_test-237",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_238.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "8",
+        "id": "geo3k_test-238",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_239.png"
+        ],
+        "problem": "<image>Find $a,$ if $F G=18, G H=42,$ and $F K=15$",
+        "answer": "57",
+        "id": "geo3k_test-239",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_240.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "22.1",
+        "id": "geo3k_test-240",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_241.png"
+        ],
+        "problem": "<image>Find PT",
+        "answer": "\\frac { 20 } { 3 }",
+        "id": "geo3k_test-241",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_242.png"
+        ],
+        "problem": "<image>Find $GD$.",
+        "answer": "14",
+        "id": "geo3k_test-242",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_243.png"
+        ],
+        "problem": "<image>Find the area of the regular polygon figure. Round to the nearest tenth.",
+        "answer": "101.8",
+        "id": "geo3k_test-243",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_244.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "120",
+        "id": "geo3k_test-244",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_245.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "45",
+        "id": "geo3k_test-245",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_246.png"
+        ],
+        "problem": "<image>Find the area of the rhombus.",
+        "answer": "168",
+        "id": "geo3k_test-246",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_247.png"
+        ],
+        "problem": "<image>Find $AB$ if $\\triangle ABC$ is an isosceles triangle with $\\overline{AB} \\cong \\overline{BC}$. ",
+        "answer": "7",
+        "id": "geo3k_test-247",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_248.png"
+        ],
+        "problem": "<image>Find x. Round the side measure to the nearest tenth.",
+        "answer": "69.8",
+        "id": "geo3k_test-248",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_249.png"
+        ],
+        "problem": "<image>Circle $J$ has a radius of $10$ units, $\\odot K$ has a radius of $8$ units, and $BC=5.4$ units. Find $JK$.",
+        "answer": "12.6",
+        "id": "geo3k_test-249",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_250.png"
+        ],
+        "problem": "<image>The perimeter of this polygon is 60 centimeters. Find the length of each side of the polygon.\r\n",
+        "answer": "12",
+        "id": "geo3k_test-250",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_251.png"
+        ],
+        "problem": "<image>If $XN=6,XM=2$, and $XY=10$, find $NZ$.",
+        "answer": "24",
+        "id": "geo3k_test-251",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_252.png"
+        ],
+        "problem": "<image>Find $x$ ",
+        "answer": "1",
+        "id": "geo3k_test-252",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_253.png"
+        ],
+        "problem": "<image>Find BC",
+        "answer": "6",
+        "id": "geo3k_test-253",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_254.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "30",
+        "id": "geo3k_test-254",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_255.png"
+        ],
+        "problem": "<image>Find $\\widehat{\\mathrm{WN}}$ if $\\triangle \\mathrm{IWN}$ is equilateral and $W N=5$",
+        "answer": "\\frac { 5 } { 3 } \\pi",
+        "id": "geo3k_test-255",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_256.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "4 \\sqrt { 15 }",
+        "id": "geo3k_test-256",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_257.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "4 \\sqrt { 2 }",
+        "id": "geo3k_test-257",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_258.png"
+        ],
+        "problem": "<image>Find the value of the variable $x$ in the figure.",
+        "answer": "54",
+        "id": "geo3k_test-258",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_259.png"
+        ],
+        "problem": "<image>The area $A$ of the shaded region is given. Find $x$. $A = 66$ cm$^2$ .",
+        "answer": "13.0",
+        "id": "geo3k_test-259",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_260.png"
+        ],
+        "problem": "<image>Find the value of x.",
+        "answer": "163",
+        "id": "geo3k_test-260",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_261.png"
+        ],
+        "problem": "<image>$\\overline{CH} \\cong \\overline{KJ}$. Find $x$.",
+        "answer": "55",
+        "id": "geo3k_test-261",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_262.png"
+        ],
+        "problem": "<image>In regular hexagon UVWXYZ, each side is 12 centimeters long. Find $W Y$.",
+        "answer": "12 \\sqrt { 3 }",
+        "id": "geo3k_test-262",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_263.png"
+        ],
+        "problem": "<image>Find $\\angle 5$",
+        "answer": "50",
+        "id": "geo3k_test-263",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_264.png"
+        ],
+        "problem": "<image>In the figure, $m ∠1 = 58 $, $m ∠2 = 47 $, and $m ∠3 = 26 $. Find the measure of $∠9$.",
+        "answer": "49",
+        "id": "geo3k_test-264",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_265.png"
+        ],
+        "problem": "<image>Find $m \\widehat {QTS}$.",
+        "answer": "248",
+        "id": "geo3k_test-265",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_266.png"
+        ],
+        "problem": "<image>Use the Pythagorean Theorem to find the length of the hypotenuse of each right triangle.",
+        "answer": "13",
+        "id": "geo3k_test-266",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_267.png"
+        ],
+        "problem": "<image>$∠1$ and $∠2$ form a linear pair and $m∠2 = 67$. Find the measure of $\\angle 1$.",
+        "answer": "113",
+        "id": "geo3k_test-267",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_268.png"
+        ],
+        "problem": "<image>The diameters of $\\odot A, \\odot B,$ and $\\odot C$ are 10, 30 and 10 units, respectively. Find YW if $\\overline{A Z} \\cong \\overline{C W}$ and $C W=2$.",
+        "answer": "3",
+        "id": "geo3k_test-268",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_269.png"
+        ],
+        "problem": "<image>Find $m\\angle MPQ$.",
+        "answer": "101",
+        "id": "geo3k_test-269",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_270.png"
+        ],
+        "problem": "<image>Find x to the nearest hundredth.",
+        "answer": "43.86",
+        "id": "geo3k_test-270",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_271.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "10.5",
+        "id": "geo3k_test-271",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_272.png"
+        ],
+        "problem": "<image>Find $\\angle 9$",
+        "answer": "120",
+        "id": "geo3k_test-272",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_273.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "9.6",
+        "id": "geo3k_test-273",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_274.png"
+        ],
+        "problem": "<image>Find z.",
+        "answer": "6 \\sqrt { 5 }",
+        "id": "geo3k_test-274",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_275.png"
+        ],
+        "problem": "<image>Use rectangle LMNP, parallelogram LKMJ to solve the problem.\r\nIf $L N=10, L J=2 x+1,$ and $P J=3 x-1,$ find $x$",
+        "answer": "2",
+        "id": "geo3k_test-275",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_276.png"
+        ],
+        "problem": "<image>In $\\odot P$, $JK=10$ and $\\widehat {JKL}=134$. Find $m \\widehat{JL}$.",
+        "answer": "67",
+        "id": "geo3k_test-276",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_277.png"
+        ],
+        "problem": "<image>Find $m \\angle N C L$",
+        "answer": "120",
+        "id": "geo3k_test-277",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_278.png"
+        ],
+        "problem": "<image>Find $m \\angle 1$.",
+        "answer": "79",
+        "id": "geo3k_test-278",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_279.png"
+        ],
+        "problem": "<image>The pair of polygons is similar. Find x",
+        "answer": "6",
+        "id": "geo3k_test-279",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_280.png"
+        ],
+        "problem": "<image>$m \\angle 3=x-12$ and $m \\angle 6=72$. Find $x$.",
+        "answer": "84",
+        "id": "geo3k_test-280",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_281.png"
+        ],
+        "problem": "<image>Find the perimeter of  $\\triangle D E F,$ if $\\triangle D E F \\sim \\triangle C B F,$ perimeter of $\\triangle C B F=27, D F=6,$ and $F C=8$",
+        "answer": "20.25",
+        "id": "geo3k_test-281",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_282.png"
+        ],
+        "problem": "<image>Find $TQ$.",
+        "answer": "12",
+        "id": "geo3k_test-282",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_283.png"
+        ],
+        "problem": "<image>Quadrilateral ABCD is a rectangle. $m\\angle 2 = 40$. Find $m \\angle 3$",
+        "answer": "40",
+        "id": "geo3k_test-283",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_284.png"
+        ],
+        "problem": "<image>Find $h$ in the triangle.",
+        "answer": "8",
+        "id": "geo3k_test-284",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_285.png"
+        ],
+        "problem": "<image>The diameters of $\\odot A, \\odot B,$ and $\\odot C$ are 10, 30 and 10 units, respectively. Find AC if $\\overline{A Z} \\cong \\overline{C W}$ and $C W=2$.",
+        "answer": "34",
+        "id": "geo3k_test-285",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_286.png"
+        ],
+        "problem": "<image>Find $m∠1$.",
+        "answer": "53",
+        "id": "geo3k_test-286",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_287.png"
+        ],
+        "problem": "<image>In rhombus $A B C D, m \\angle D A B=2, m \\angle A D C$ and $C B=6$. Find $m \\angle A D B$",
+        "answer": "30",
+        "id": "geo3k_test-287",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_288.png"
+        ],
+        "problem": "<image>$\\overline{WTY} \\cong \\overline{TWY}$. Find $x$.",
+        "answer": "5",
+        "id": "geo3k_test-288",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_289.png"
+        ],
+        "problem": "<image>Quadrilateral $WXYZ$ is a rectangle. Find the measure of $\\angle 6$ if $m∠1 = 30$.",
+        "answer": "60",
+        "id": "geo3k_test-289",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_290.png"
+        ],
+        "problem": "<image>In $\\odot Z, \\angle W Z X \\cong \\angle X Z Y, m \\angle V Z U=4 x$, $m \\angle U Z Y=2 x+24,$ and $\\overline{V Y}$ and $\\overline{W U}$ are diameters.\r\nFind $m\\widehat{W U X}$",
+        "answer": "308",
+        "id": "geo3k_test-290",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_291.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "10",
+        "id": "geo3k_test-291",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_292.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent. Round to the nearest tenth if necessary.",
+        "answer": "10",
+        "id": "geo3k_test-292",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_293.png"
+        ],
+        "problem": "<image>Find the perimeter of the figure.",
+        "answer": "32",
+        "id": "geo3k_test-293",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_294.png"
+        ],
+        "problem": "<image>Find the measure of the altitude drawn to the hypotenuse.",
+        "answer": "\\sqrt { 336 }",
+        "id": "geo3k_test-294",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_295.png"
+        ],
+        "problem": "<image>Use parallelogram MNPR to find $m \\angle MNP$",
+        "answer": "71",
+        "id": "geo3k_test-295",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_296.png"
+        ],
+        "problem": "<image>In the figure, $\\triangle A B C \\sim \\triangle D E F . \\overline{B G}$ is a median of $\\triangle A B C,$ and $\\overline{E H}$ is a median of $\\triangle D E F .$ Find $E H$ if $B C=30, B G=15,$ and $E F=15$",
+        "answer": "7.5",
+        "id": "geo3k_test-296",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_297.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth if necessary. Assume that segments that appear\r\nto be tangent are tangent.",
+        "answer": "2",
+        "id": "geo3k_test-297",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_298.png"
+        ],
+        "problem": "<image>Find $m \\angle Y$",
+        "answer": "80",
+        "id": "geo3k_test-298",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_299.png"
+        ],
+        "problem": "<image>Equilateral pentagon $P Q R S T$ is inscribed in $\\odot U$. Find $m \\widehat{Q R}$",
+        "answer": "72",
+        "id": "geo3k_test-299",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_300.png"
+        ],
+        "problem": "<image>In the figure, $m ∠9 = 75$. Find the measure of $\\angle 6$.",
+        "answer": "105",
+        "id": "geo3k_test-300",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_301.png"
+        ],
+        "problem": "<image>Given that the perimeter of $\\triangle A B C=25,$ find $x$. Assume that segments that appear tangent to circles are tangent.",
+        "answer": "3",
+        "id": "geo3k_test-301",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_302.png"
+        ],
+        "problem": "<image>$\\overline{HK}$ and $\\overline{IG}$ are diameters of $\\odot L$. Find $m \\widehat {IHJ}$.",
+        "answer": "270",
+        "id": "geo3k_test-302",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_303.png"
+        ],
+        "problem": "<image>Find the scale factor from $W$ to $W'$.",
+        "answer": "\\frac { 1 } { 3 }",
+        "id": "geo3k_test-303",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_304.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "\\sqrt { 7 }",
+        "id": "geo3k_test-304",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_305.png"
+        ],
+        "problem": "<image>Find tan X",
+        "answer": "\\frac { 5 } { 12 }",
+        "id": "geo3k_test-305",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_306.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "1440",
+        "id": "geo3k_test-306",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_307.png"
+        ],
+        "problem": "<image>If $A B C D$ is a rhombus, and $m \\angle A B C=70^{\\circ}$, what is $m \\angle 1 ?$",
+        "answer": "55",
+        "id": "geo3k_test-307",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_308.png"
+        ],
+        "problem": "<image>$MC=7,RM=4$, and $AT=16$. Find $MS$.",
+        "answer": "3.5",
+        "id": "geo3k_test-308",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_309.png"
+        ],
+        "problem": "<image>For trapezoid $ABCD$, $S$ and $T$ are midpoints of the legs. If $CD=14$, $ST=10$, and $AB=2x$, find $x$.",
+        "answer": "3",
+        "id": "geo3k_test-309",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_310.png"
+        ],
+        "problem": "<image>Find $m \\angle 4$.",
+        "answer": "71.5",
+        "id": "geo3k_test-310",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_311.png"
+        ],
+        "problem": "<image>Circles $G, J,$ and $K$ all intersect at $L$ If $G H=10$, find FH",
+        "answer": "20",
+        "id": "geo3k_test-311",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_312.png"
+        ],
+        "problem": "<image>Find DE",
+        "answer": "10",
+        "id": "geo3k_test-312",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_313.png"
+        ],
+        "problem": "<image>$\\triangle ABC \\sim \\triangle FDG$. Find the value of $x$.",
+        "answer": "10",
+        "id": "geo3k_test-313",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_314.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent.",
+        "answer": "5",
+        "id": "geo3k_test-314",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_315.png"
+        ],
+        "problem": "<image>For trapezoid QRTU, V and S are midpoints of the legs. If QR = 4 and UT = 16, find VS.",
+        "answer": "10",
+        "id": "geo3k_test-315",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_316.png"
+        ],
+        "problem": "<image>Find z",
+        "answer": "36 \\sqrt { 7 }",
+        "id": "geo3k_test-316",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_317.png"
+        ],
+        "problem": "<image>Lines $l$, $m$, and $n$ are perpendicular bisectors of $\\triangle PQR$ and meet at $T$. If $TQ = 2x$, $PT = 3y - 1$, and $TR = 8$, find $z$.",
+        "answer": "3",
+        "id": "geo3k_test-317",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_318.png"
+        ],
+        "problem": "<image>Use parallelogram JKLM to find $m \\angle JML$",
+        "answer": "109",
+        "id": "geo3k_test-318",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_319.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "12.75",
+        "id": "geo3k_test-319",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_320.png"
+        ],
+        "problem": "<image>Find $\\angle C$ of quadrilateral ABCD",
+        "answer": "90",
+        "id": "geo3k_test-320",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_321.png"
+        ],
+        "problem": "<image>$P Q R S$ is a rhombus inscribed in a circle. Find $m \\widehat{SP}$ ",
+        "answer": "90",
+        "id": "geo3k_test-321",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_322.png"
+        ],
+        "problem": "<image>Find the variable of $x$ to the nearest tenth. Assume that segments that appear to be tangent are tangent.",
+        "answer": "6.0",
+        "id": "geo3k_test-322",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_323.png"
+        ],
+        "problem": "<image>The segment is tangent to the circle. Find $x$. Round to the nearest tenth.",
+        "answer": "8.5",
+        "id": "geo3k_test-323",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_324.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "16",
+        "id": "geo3k_test-324",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_325.png"
+        ],
+        "problem": "<image>If $ST=8, TR=4$, and $PT=6$, find $QR$.",
+        "answer": "9",
+        "id": "geo3k_test-325",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_326.png"
+        ],
+        "problem": "<image>Find the value of $x$ in each diagram",
+        "answer": "71",
+        "id": "geo3k_test-326",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_327.png"
+        ],
+        "problem": "<image>$m \\angle 2=2 x, m \\angle 3=x$ Find $m\\angle 2$",
+        "answer": "60",
+        "id": "geo3k_test-327",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_328.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "76",
+        "id": "geo3k_test-328",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_329.png"
+        ],
+        "problem": "<image>$\\triangle JKL \\sim \\triangle WYZ$. Find $x$.",
+        "answer": "21",
+        "id": "geo3k_test-329",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_330.png"
+        ],
+        "problem": "<image>Find $KL$.",
+        "answer": "12",
+        "id": "geo3k_test-330",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_331.png"
+        ],
+        "problem": "<image>Find $QS$.",
+        "answer": "25",
+        "id": "geo3k_test-331",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_332.png"
+        ],
+        "problem": "<image>parallelogram MNPQ with $m \\angle M=10 x$ and $m \\angle N=20 x$, find $\\angle M$",
+        "answer": "60",
+        "id": "geo3k_test-332",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_333.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "90",
+        "id": "geo3k_test-333",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_334.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "2 \\sqrt { 6 }",
+        "id": "geo3k_test-334",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_335.png"
+        ],
+        "problem": "<image>$\\overline{AB} \\perp \\overline{DC}$ and $\\overline{GH} \\perp \\overline{FE}$.\r\nIf $\\triangle ACD \\sim \\triangle GEF$, find $AB$.",
+        "answer": "2.2",
+        "id": "geo3k_test-335",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_336.png"
+        ],
+        "problem": "<image>Find $JQ$ if $Q$ is the incenter of $\\triangle JLN$.  Rounded to the nearest hundredth.",
+        "answer": "18.79",
+        "id": "geo3k_test-336",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_337.png"
+        ],
+        "problem": "<image>If $FGHJ$ is a kite, find $m\\angle GFJ$.",
+        "answer": "80",
+        "id": "geo3k_test-337",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_338.png"
+        ],
+        "problem": "<image>Find $x$ so that $m || n$.",
+        "answer": "20",
+        "id": "geo3k_test-338",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_339.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "2 \\sqrt { 11 }",
+        "id": "geo3k_test-339",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_340.png"
+        ],
+        "problem": "<image>For the pair of similar figures, use the given areas to find the scale factor from the blue to the green figure.",
+        "answer": "\\frac { 1 } { 2 }",
+        "id": "geo3k_test-340",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_341.png"
+        ],
+        "problem": "<image>Find the value of the variable $y$ in the figure.",
+        "answer": "10",
+        "id": "geo3k_test-341",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_342.png"
+        ],
+        "problem": "<image>Find $m \\widehat {XZ}$.",
+        "answer": "88",
+        "id": "geo3k_test-342",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_343.png"
+        ],
+        "problem": "<image>Express the ratio of $\\tan M$ as a decimal to the nearest hundredth.",
+        "answer": "0.42",
+        "id": "geo3k_test-343",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_344.png"
+        ],
+        "problem": "<image>Express the ratio of $\\tan L$ as a decimal to the nearest hundredth.",
+        "answer": "0.42",
+        "id": "geo3k_test-344",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_345.png"
+        ],
+        "problem": "<image>In $\\odot S$, $m \\widehat {PQR}=98$, Find $m \\widehat {PQ}$.",
+        "answer": "49",
+        "id": "geo3k_test-345",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_346.png"
+        ],
+        "problem": "<image>Find $h$ in each triangle.",
+        "answer": "11",
+        "id": "geo3k_test-346",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_347.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "93",
+        "id": "geo3k_test-347",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_348.png"
+        ],
+        "problem": "<image>$m \\angle 4=2 y+32$ and $m \\angle 5=3 y-3$. Find $y$.",
+        "answer": "35",
+        "id": "geo3k_test-348",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_349.png"
+        ],
+        "problem": "<image>In the figure, square $ABDC$ is inscribed in $\\odot K$. Find the measure of a central angle.",
+        "answer": "90",
+        "id": "geo3k_test-349",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_350.png"
+        ],
+        "problem": "<image>Circle $J$ has a radius of $10$ units, $\\odot K$ has a radius of $8$ units, and $BC=5.4$ units. Find $CK$.",
+        "answer": "2.6",
+        "id": "geo3k_test-350",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_351.png"
+        ],
+        "problem": "<image>Find $x$ so that the quadrilateral is a parallelogram.",
+        "answer": "5",
+        "id": "geo3k_test-351",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_352.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "14",
+        "id": "geo3k_test-352",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_353.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent.",
+        "answer": "\\frac { 14 } { 3 }",
+        "id": "geo3k_test-353",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_354.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest hundredth.",
+        "answer": "27.44",
+        "id": "geo3k_test-354",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_355.png"
+        ],
+        "problem": "<image>In $\\odot M$, $FL=24,HJ=48$, and $m \\widehat {HP}=65$. Find $NJ$.",
+        "answer": "24",
+        "id": "geo3k_test-355",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_356.png"
+        ],
+        "problem": "<image>Find the length of $AC$ in the isosceles triangle ABC. ",
+        "answer": "7",
+        "id": "geo3k_test-356",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_357.png"
+        ],
+        "problem": "<image>Find $m \\angle D$.",
+        "answer": "80",
+        "id": "geo3k_test-357",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_358.png"
+        ],
+        "problem": "<image>The degree measures of minor arc $\\widehat{A C}$ and major arc $\\widehat{A D C}$ are $x$ and $y$ respectively. If $m∠ABC = 70°$, find $x$.",
+        "answer": "110",
+        "id": "geo3k_test-358",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_359.png"
+        ],
+        "problem": "<image>Circles $G, J,$ and $K$ all intersect at $L$ If $G H=10,$ find each measure.\r\nFind JL",
+        "answer": "5",
+        "id": "geo3k_test-359",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_360.png"
+        ],
+        "problem": "<image>Quadrilateral DEFG is a rectangle. If $m\\angle EDF = 5x - 3$ and $m\\angle DFG = 3x + 7$, find $m\\angle EDF$.",
+        "answer": "22",
+        "id": "geo3k_test-360",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_361.png"
+        ],
+        "problem": "<image>Find the area of the figure.",
+        "answer": "120",
+        "id": "geo3k_test-361",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_362.png"
+        ],
+        "problem": "<image>Find z",
+        "answer": "\\frac { 40 } { 3 }",
+        "id": "geo3k_test-362",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_363.png"
+        ],
+        "problem": "<image>Find $m \\angle B$.",
+        "answer": "61",
+        "id": "geo3k_test-363",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_364.png"
+        ],
+        "problem": "<image>For trapezoid $Q R S T, A$ and $B$ are midpoints of the legs. Find $m \\angle S$",
+        "answer": "135",
+        "id": "geo3k_test-364",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_365.png"
+        ],
+        "problem": "<image>If $CE=t-2$. $EB=t+1$, $CD=2$, and $CA=10$, find $CE$.",
+        "answer": "1",
+        "id": "geo3k_test-365",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_366.png"
+        ],
+        "problem": "<image>Use parallelogram MNPR to find $m \\angle RNP$",
+        "answer": "38",
+        "id": "geo3k_test-366",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_367.png"
+        ],
+        "problem": "<image>Find $x$. Assume that segments that appear to be tangent are tangent.",
+        "answer": "6",
+        "id": "geo3k_test-367",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_368.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 3$ in the figure.",
+        "answer": "68",
+        "id": "geo3k_test-368",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_369.png"
+        ],
+        "problem": "<image>$\\triangle LMN \\cong \\triangle QRS$. Find $x$.",
+        "answer": "5",
+        "id": "geo3k_test-369",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_370.png"
+        ],
+        "problem": "<image>Find the area of the triangle. Round to the nearest tenth if necessary.",
+        "answer": "54",
+        "id": "geo3k_test-370",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_371.png"
+        ],
+        "problem": "<image>$\\triangle RST \\cong \\triangle ABC$. Find $x$.",
+        "answer": "10",
+        "id": "geo3k_test-371",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_372.png"
+        ],
+        "problem": "<image>Find the area of the regular polygon. Round to the nearest tenth.",
+        "answer": "23.4",
+        "id": "geo3k_test-372",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_373.png"
+        ],
+        "problem": "<image>Use parallelogram $ABCD$ to find $AD$",
+        "answer": "18",
+        "id": "geo3k_test-373",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_374.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "10.2",
+        "id": "geo3k_test-374",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_375.png"
+        ],
+        "problem": "<image>Trapezoid $GHJK$ has an area of 188.35 square feet. If $HJ$ is 16.5 feet, find $GK$.",
+        "answer": "26.8",
+        "id": "geo3k_test-375",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_376.png"
+        ],
+        "problem": "<image>Which of the following facts would be sufficient to prove that line $d$ is parallel to $\\overline {XZ}$?",
+        "answer": "\\angle 3 \\cong \\angle Z",
+        "id": "geo3k_test-376",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_377.png"
+        ],
+        "problem": "<image>If $LK=4,MP=3,PQ=6,KJ=2,RS=6$, and $LP=2$, find $ML$.",
+        "answer": "2",
+        "id": "geo3k_test-377",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_378.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "4 \\sqrt { 6 }",
+        "id": "geo3k_test-378",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_379.png"
+        ],
+        "problem": "<image>Find $x$. $A=148$ $m^2$. ",
+        "answer": "18.5",
+        "id": "geo3k_test-379",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_380.png"
+        ],
+        "problem": "<image>ABCD is a parallelogram with side lengths as indicated in the figure at the right. The perimeter of ABCD is 22. Find AB",
+        "answer": "7",
+        "id": "geo3k_test-380",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_381.png"
+        ],
+        "problem": "<image>Find x to the nearest tenth. Assume that segments that appear to be tangent are tangent.",
+        "answer": "11.2",
+        "id": "geo3k_test-381",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_382.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "30",
+        "id": "geo3k_test-382",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_383.png"
+        ],
+        "problem": "<image>If $XM=4,XN=6$, and $NZ=9$, find $XY$.",
+        "answer": "10",
+        "id": "geo3k_test-383",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_384.png"
+        ],
+        "problem": "<image>In $\\odot O, \\overline{E C}$ and $\\overline{A B}$ are diameters, and $\\angle B O D \\cong \\angle D O E \\cong \\angle E O F \\cong \\angle F O A$\r\nFind $m\\widehat{A C}$",
+        "answer": "90",
+        "id": "geo3k_test-384",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_385.png"
+        ],
+        "problem": "<image>Find z.",
+        "answer": "3 \\sqrt { 19 }",
+        "id": "geo3k_test-385",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_386.png"
+        ],
+        "problem": "<image>In $\\odot F, \\overline{F H} \\cong \\overline{F L}$ and $\\mathrm{FK}=17$.\r\nFind JG",
+        "answer": "30",
+        "id": "geo3k_test-386",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_387.png"
+        ],
+        "problem": "<image>$\\overrightarrow{BA}$ and $\\overrightarrow{BC}$ are opposite rays and $\\overrightarrow{BD}$ bisects $\\angle ABF$. If $m \\angle FBC=2x+25$ and $m \\angle ABF=10x-1$, find $m \\angle DBF$.",
+        "answer": "64.5",
+        "id": "geo3k_test-387",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_388.png"
+        ],
+        "problem": "<image>Find $XY$ of isosceles $\\triangle XYZ$",
+        "answer": "7",
+        "id": "geo3k_test-388",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_389.png"
+        ],
+        "problem": "<image>Find $z$ in the given parallelogram",
+        "answer": "4.5",
+        "id": "geo3k_test-389",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_390.png"
+        ],
+        "problem": "<image>$\\overline{MN} \\| \\overline{BC}$. Solve for $x$.",
+        "answer": "9",
+        "id": "geo3k_test-390",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_391.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "28",
+        "id": "geo3k_test-391",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_392.png"
+        ],
+        "problem": "<image>Find the scale factor from $Q$ to $Q'$.",
+        "answer": "3",
+        "id": "geo3k_test-392",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_393.png"
+        ],
+        "problem": "<image>$MC=7,RM=4$, and $AT = 16$. Find $MB$.",
+        "answer": "8",
+        "id": "geo3k_test-393",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_394.png"
+        ],
+        "problem": "<image>Find the perimeter of $\\triangle B C D,$ if $\\triangle B C D \\sim \\triangle F D E, C D=12$, $F D=5, F E=4,$ and $D E=8$.",
+        "answer": "25.5",
+        "id": "geo3k_test-394",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_395.png"
+        ],
+        "problem": "<image>In rhombus LMPQ, $m \\angle Q L M=2 x^{2}-10$, $m \\angle Q P M=8 x$,  and $M P=10$ . \r\nFind the perimeter of $LMPQ$",
+        "answer": "40",
+        "id": "geo3k_test-395",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_396.png"
+        ],
+        "problem": "<image>Find $BD$ if $\\overline{B F}$ bisects $\\angle A B C$ and $\\overline{A C} \\| \\overline{E D}, B A=6, B C=7.5$, $A C=9,$ and $D E=9$",
+        "answer": "13.5",
+        "id": "geo3k_test-396",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_397.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "12 \\sqrt { 2 }",
+        "id": "geo3k_test-397",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_398.png"
+        ],
+        "problem": "<image>Quadrilateral EFGH is a rectangle. If EF = 4x - 6 and HG = x + 3, find EF.",
+        "answer": "6",
+        "id": "geo3k_test-398",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_399.png"
+        ],
+        "problem": "<image>Find $m \\angle R C M$",
+        "answer": "43",
+        "id": "geo3k_test-399",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_400.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m \\angle CDF $",
+        "answer": "43",
+        "id": "geo3k_test-400",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_401.png"
+        ],
+        "problem": "<image>Point $D$ is the center of the circle. What is $m \\angle A B C ?$",
+        "answer": "90",
+        "id": "geo3k_test-401",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_402.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 3$.",
+        "answer": "95",
+        "id": "geo3k_test-402",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_403.png"
+        ],
+        "problem": "<image>Quadrilateral $WXYZ$ is a rectangle. Find the measure of $\\angle 3$ if $m∠1 = 30$.",
+        "answer": "60",
+        "id": "geo3k_test-403",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_404.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent.",
+        "answer": "4",
+        "id": "geo3k_test-404",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_405.png"
+        ],
+        "problem": "<image>Find $m \\angle 2$ if $m \\widehat{B C}=30$ and $m \\widehat{A D}=20$",
+        "answer": "155",
+        "id": "geo3k_test-405",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_406.png"
+        ],
+        "problem": "<image>Find x. Assume that any segment that appears to be tangent is tangent.",
+        "answer": "25",
+        "id": "geo3k_test-406",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_407.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Assume that all polygons that appear to be regular are regular. Round to the nearest tenth.",
+        "answer": "56.9",
+        "id": "geo3k_test-407",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_408.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "37.2",
+        "id": "geo3k_test-408",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_409.png"
+        ],
+        "problem": "<image>If RL = 5, RT = 9, and WS = 6, find RW.",
+        "answer": "7.5",
+        "id": "geo3k_test-409",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_410.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle AFB$ on $\\odot F$ with diameter $\\overline{AC} $.",
+        "answer": "108",
+        "id": "geo3k_test-410",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_411.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "4 \\sqrt { 6 }",
+        "id": "geo3k_test-411",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_412.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "207.8",
+        "id": "geo3k_test-412",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_413.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "178.2",
+        "id": "geo3k_test-413",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_414.png"
+        ],
+        "problem": "<image>Find the area of the regular polygon figure. Round to the nearest tenth.",
+        "answer": "65.0",
+        "id": "geo3k_test-414",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_415.png"
+        ],
+        "problem": "<image>A regular pentagon and a square share a mutual vertex $X$. The sides $\\overline{X Y}$ and $\\overline{X Z}$ are sides of a third regular polygon with a vertex at $X .$ How many sides does this polygon have?",
+        "answer": "20",
+        "id": "geo3k_test-415",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_416.png"
+        ],
+        "problem": "<image>Find $x$ if $\\triangle JLM \\sim \\triangle QST$.",
+        "answer": "1.5",
+        "id": "geo3k_test-416",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_417.png"
+        ],
+        "problem": "<image>$\\triangle WXY \\cong \\triangle WXZ$. Find $y$.",
+        "answer": "4",
+        "id": "geo3k_test-417",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_418.png"
+        ],
+        "problem": "<image>Polygon ABCD ~ polygon AEFG, $m\\angle AGF = 108$, GF = 14, AD = 12, DG = 4.5, EF = 8, and AB = 26.\r\nFind $m\\angle ADC$",
+        "answer": "108",
+        "id": "geo3k_test-418",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_419.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 3$ if $m∠4= m∠5$.",
+        "answer": "116",
+        "id": "geo3k_test-419",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_420.png"
+        ],
+        "problem": "<image>Use parallelogram MNPR to find $x$",
+        "answer": "8",
+        "id": "geo3k_test-420",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_421.png"
+        ],
+        "problem": "<image>The segment is tangent to the circle. Find $x$.",
+        "answer": "16",
+        "id": "geo3k_test-421",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_422.png"
+        ],
+        "problem": "<image>JKLM is a rectangle. MLPR is a rhombus. $\\angle J M K \\cong \\angle R M P$, $m \\angle J M K=55, \\text { and } m \\angle M R P=70 . Find $m \\angle K M L$",
+        "answer": "35",
+        "id": "geo3k_test-422",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_423.png"
+        ],
+        "problem": "<image>Quadrilateral ABCD is a rectangle. $m\\angle 2 = 40$. Find $m \\angle 8$",
+        "answer": "100",
+        "id": "geo3k_test-423",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_424.png"
+        ],
+        "problem": "<image>Find $m \\angle 3$.",
+        "answer": "38",
+        "id": "geo3k_test-424",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_425.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "8 \\sqrt { 3 }",
+        "id": "geo3k_test-425",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_426.png"
+        ],
+        "problem": "<image>Each pair of polygons is similar. Find AC",
+        "answer": "7.6",
+        "id": "geo3k_test-426",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_427.png"
+        ],
+        "problem": "<image>$\\odot  P \\cong \\odot Q$, Find $x$.",
+        "answer": "11",
+        "id": "geo3k_test-427",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_428.png"
+        ],
+        "problem": "<image>$\\overline{AD}$ and $\\overline{CG}$ are diameters of $\\odot B$. Find $m \\widehat {AG}$.",
+        "answer": "55",
+        "id": "geo3k_test-428",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_429.png"
+        ],
+        "problem": "<image>Refer to the triangle shown below. Find $y$ to the nearest tenth.",
+        "answer": "2 \\sqrt { 41 }",
+        "id": "geo3k_test-429",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_430.png"
+        ],
+        "problem": "<image>Find $PN$.",
+        "answer": "30",
+        "id": "geo3k_test-430",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_431.png"
+        ],
+        "problem": "<image>Find $m \\angle A B C$\r\nif $m \\angle C D A=61$",
+        "answer": "140",
+        "id": "geo3k_test-431",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_432.png"
+        ],
+        "problem": "<image>Find $m\\angle 2$",
+        "answer": "90",
+        "id": "geo3k_test-432",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_433.png"
+        ],
+        "problem": "<image>The diagonals of rhombus FGHJ intersect at K. If $GH = x + 9$ and $JH = 5x - 2$, find $x$.",
+        "answer": "2.75",
+        "id": "geo3k_test-433",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_434.png"
+        ],
+        "problem": "<image>$\\triangle RSV \\cong \\triangle TVS$. Find $x$.",
+        "answer": "12",
+        "id": "geo3k_test-434",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_435.png"
+        ],
+        "problem": "<image>In $\\odot M$, $FL=24,HJ=48$, and $m \\widehat {HP}=65$. Find $m \\widehat {HJ}$.",
+        "answer": "130",
+        "id": "geo3k_test-435",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_436.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "17.4",
+        "id": "geo3k_test-436",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_437.png"
+        ],
+        "problem": "<image>If $\\frac{I J}{X J}=\\frac{HJ}{YJ}, m \\angle W X J=130$\r\nand $m \\angle WZG=20,$ find $m \\angle J$",
+        "answer": "60",
+        "id": "geo3k_test-437",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_438.png"
+        ],
+        "problem": "<image>The ratio of the measures of the angles of the triangle below is 3 : 2 : 1. Which of the following is not an angle measure of the triangle?",
+        "answer": "45",
+        "id": "geo3k_test-438",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_439.png"
+        ],
+        "problem": "<image>Find $G I$ if $G H=9, G K=6,$ and $K J=4$",
+        "answer": "15",
+        "id": "geo3k_test-439",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_440.png"
+        ],
+        "problem": "<image>Find $AB$.",
+        "answer": "6.25",
+        "id": "geo3k_test-440",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_441.png"
+        ],
+        "problem": "<image>In the figure, a regular polygon is inscribed in a circle. Find the measure of a central angle.",
+        "answer": "60",
+        "id": "geo3k_test-441",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_442.png"
+        ],
+        "problem": "<image>In rhombus $A B C D, A B=2 x+3$ and $B C=5 x$. Find AD.",
+        "answer": "5",
+        "id": "geo3k_test-442",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_443.png"
+        ],
+        "problem": "<image>In the figure, $m∠3 = 110$ and $m ∠ 12 = 55$. Find the measure of $∠1$.",
+        "answer": "110",
+        "id": "geo3k_test-443",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_444.png"
+        ],
+        "problem": "<image>Quadrilateral $WXYZ$ is a rectangle. Find the measure of $\\angle 5$ if $m∠1 = 30$.",
+        "answer": "30",
+        "id": "geo3k_test-444",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_445.png"
+        ],
+        "problem": "<image>Each pair of polygons is similar. Find GF",
+        "answer": "7.5",
+        "id": "geo3k_test-445",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_446.png"
+        ],
+        "problem": "<image>$a=14, b=48,$ and $c=50$ find $sinA$",
+        "answer": "0.28",
+        "id": "geo3k_test-446",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_447.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "10 \\sqrt { 3 }",
+        "id": "geo3k_test-447",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_448.png"
+        ],
+        "problem": "<image>Find $m \\angle JKL$.",
+        "answer": "37",
+        "id": "geo3k_test-448",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_449.png"
+        ],
+        "problem": "<image>Find $m \\widehat {JKL}$.",
+        "answer": "232",
+        "id": "geo3k_test-449",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_450.png"
+        ],
+        "problem": "<image>Find the area of the kite.",
+        "answer": "336",
+        "id": "geo3k_test-450",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_451.png"
+        ],
+        "problem": "<image>Find the area of the figure in feet. Round to the nearest tenth, if necessary.",
+        "answer": "34.6",
+        "id": "geo3k_test-451",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_452.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "\\frac { 97 } { 6 }",
+        "id": "geo3k_test-452",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_453.png"
+        ],
+        "problem": "<image>In $\\odot F, m \\angle D F A=50$ and $\\overline{C F} \\perp \\overline{F B}$. Find $m \\widehat{A C E}$",
+        "answer": "230",
+        "id": "geo3k_test-453",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_454.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "8 \\sqrt { 3 }",
+        "id": "geo3k_test-454",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_455.png"
+        ],
+        "problem": "<image>Find the area of the trapezoid.",
+        "answer": "132",
+        "id": "geo3k_test-455",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_456.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Assume that the polygon is regular unless otherwise stated. Round to the nearest tenth.",
+        "answer": "1208.1",
+        "id": "geo3k_test-456",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_457.png"
+        ],
+        "problem": "<image>If $PR \\parallel  KL$, KN = 9, LN = 16, PM = 2 KP, find PR",
+        "answer": "\\frac { 50 } { 3 }",
+        "id": "geo3k_test-457",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_458.png"
+        ],
+        "problem": "<image>Find $m \\angle CAD$.",
+        "answer": "44",
+        "id": "geo3k_test-458",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_459.png"
+        ],
+        "problem": "<image>The rectangle is inscribed into the circle. Find the exact circumference of the circle.",
+        "answer": "10 \\pi",
+        "id": "geo3k_test-459",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_460.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent.",
+        "answer": "12",
+        "id": "geo3k_test-460",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_461.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "5",
+        "id": "geo3k_test-461",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_462.png"
+        ],
+        "problem": "<image>The diameter of $\\odot S$ is $30$ units, the diameter of $\\odot R$ is $20$ units, and $DS=9$ units. Find $RC$.",
+        "answer": "4",
+        "id": "geo3k_test-462",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_463.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth.",
+        "answer": "28.3",
+        "id": "geo3k_test-463",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_464.png"
+        ],
+        "problem": "<image>In $\\odot M$, $FL=24,HJ=48$, and $m \\widehat {HP}=65$. Find $m \\widehat {PJ}$.",
+        "answer": "65",
+        "id": "geo3k_test-464",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_465.png"
+        ],
+        "problem": "<image>$\\overline{AB}$ is a diameter, $AC=8$ inches, and $BC=15$ inches. Find the circumference of the circle.",
+        "answer": "17 \\pi",
+        "id": "geo3k_test-465",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_466.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "70",
+        "id": "geo3k_test-466",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_467.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "65",
+        "id": "geo3k_test-467",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_468.png"
+        ],
+        "problem": "<image>$m \\angle BAC=38$, $BC=5$, and $DC=5$, find $m \\angle DAC$.",
+        "answer": "38",
+        "id": "geo3k_test-468",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_469.png"
+        ],
+        "problem": "<image>JKLM is a rectangle. MLPR is a rhombus. $\\angle J M K \\cong \\angle R M P$, $m \\angle J M K=55, \\text { and } m \\angle M R P=70 . Find $m \\angle K L P$",
+        "answer": "160",
+        "id": "geo3k_test-469",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_470.png"
+        ],
+        "problem": "<image>In $\\odot P$, the radius is $2$ inches, find the length of $\\widehat {RS}$. Round to the nearest hundredth.",
+        "answer": "4.54",
+        "id": "geo3k_test-470",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_471.png"
+        ],
+        "problem": "<image>Find the perimeter of $\\triangle W Z X$, if $\\triangle W Z X \\sim \\triangle S R T, S T=6$, $W X=5,$ and the perimeter of $\\triangle S R T=15$.",
+        "answer": "12.5",
+        "id": "geo3k_test-471",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_472.png"
+        ],
+        "problem": "<image>Equilateral pentagon $P Q R S T$ is inscribed in $\\odot U$.\r\nFind $m \\angle P S R$",
+        "answer": "72",
+        "id": "geo3k_test-472",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_473.png"
+        ],
+        "problem": "<image>$\\overline{EB} \\| \\overline{DC}$. Find $AB$.",
+        "answer": "7.5",
+        "id": "geo3k_test-473",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_474.png"
+        ],
+        "problem": "<image>Quadrilateral ABCD is a rectangle. Find x",
+        "answer": "12",
+        "id": "geo3k_test-474",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_475.png"
+        ],
+        "problem": "<image>Express the ratio of $\\cos P$ as a decimal to the nearest hundredth.",
+        "answer": "0.47",
+        "id": "geo3k_test-475",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_476.png"
+        ],
+        "problem": "<image>Find the area of the shaded sector. Round to the nearest tenth.",
+        "answer": "1.8",
+        "id": "geo3k_test-476",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_477.png"
+        ],
+        "problem": "<image>Find y. Round to the nearest tenth, if necessary.",
+        "answer": "7.4",
+        "id": "geo3k_test-477",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_478.png"
+        ],
+        "problem": "<image>$Q$ is the centroid and $BE=9$. Find $BQ$.",
+        "answer": "6",
+        "id": "geo3k_test-478",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_479.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle CFD$ on $\\odot F$ with diameter $\\overline{AC} $.",
+        "answer": "123",
+        "id": "geo3k_test-479",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_480.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "33 \\sqrt { 3 }",
+        "id": "geo3k_test-480",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_481.png"
+        ],
+        "problem": "<image>Find the perimeter of $\\triangle R U W$ if $\\triangle R U W \\sim \\triangle S T V$, $S T=24, V S=12, V T=18$ and $U W=21$",
+        "answer": "63",
+        "id": "geo3k_test-481",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_482.png"
+        ],
+        "problem": "<image>Find the perimeter of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "44",
+        "id": "geo3k_test-482",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_483.png"
+        ],
+        "problem": "<image>Find x. Assume that segments that appear to be tangent are tangent.",
+        "answer": "2",
+        "id": "geo3k_test-483",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_484.png"
+        ],
+        "problem": "<image>Use a Pythagorean Triple to find x.",
+        "answer": "70",
+        "id": "geo3k_test-484",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_485.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram.",
+        "answer": "552",
+        "id": "geo3k_test-485",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_486.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "12.5",
+        "id": "geo3k_test-486",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_487.png"
+        ],
+        "problem": "<image>Find $m\\angle R$",
+        "answer": "58",
+        "id": "geo3k_test-487",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_488.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest hundredth.",
+        "answer": "16.64",
+        "id": "geo3k_test-488",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_489.png"
+        ],
+        "problem": "<image>What is the area of $▱ ABCD$?",
+        "answer": "48",
+        "id": "geo3k_test-489",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_490.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "180",
+        "id": "geo3k_test-490",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_491.png"
+        ],
+        "problem": "<image>Use a calculator to find the measure of $∠J$ to the nearest degree.",
+        "answer": "40",
+        "id": "geo3k_test-491",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_492.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "6 \\sqrt { 2 }",
+        "id": "geo3k_test-492",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_493.png"
+        ],
+        "problem": "<image>Find x.",
+        "answer": "4 \\sqrt { 2 }",
+        "id": "geo3k_test-493",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_494.png"
+        ],
+        "problem": "<image>Each pair of polygons is similar. Find x",
+        "answer": "8",
+        "id": "geo3k_test-494",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_495.png"
+        ],
+        "problem": "<image>In the figure, $m∠1 = 50$ and $m∠3 = 60$. Find the measure of $\\angle 4$.",
+        "answer": "50",
+        "id": "geo3k_test-495",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_496.png"
+        ],
+        "problem": "<image>Find $KL$.",
+        "answer": "12",
+        "id": "geo3k_test-496",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_497.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m\\angle DAB$",
+        "answer": "101",
+        "id": "geo3k_test-497",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_498.png"
+        ],
+        "problem": "<image>Find $m \\angle ABC$.",
+        "answer": "51",
+        "id": "geo3k_test-498",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_499.png"
+        ],
+        "problem": "<image>Find BC",
+        "answer": "4",
+        "id": "geo3k_test-499",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_500.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "528",
+        "id": "geo3k_test-500",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_501.png"
+        ],
+        "problem": "<image>$UJ=9, VJ=3$, and $ZT=18$. Find $SJ$.",
+        "answer": "6",
+        "id": "geo3k_test-501",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_502.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "30",
+        "id": "geo3k_test-502",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_503.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 1$.",
+        "answer": "65",
+        "id": "geo3k_test-503",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_504.png"
+        ],
+        "problem": "<image>Find the value of the variable t.",
+        "answer": "5",
+        "id": "geo3k_test-504",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_505.png"
+        ],
+        "problem": "<image>Find $x$ so that the quadrilateral is a parallelogram.",
+        "answer": "4",
+        "id": "geo3k_test-505",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_506.png"
+        ],
+        "problem": "<image>Find $AB$.",
+        "answer": "23",
+        "id": "geo3k_test-506",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_507.png"
+        ],
+        "problem": "<image>Find $m \\angle 1$ in the figure.",
+        "answer": "113",
+        "id": "geo3k_test-507",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_508.png"
+        ],
+        "problem": "<image>Quadrilateral ABCD is a rhombus. If $AB = 2x + 3$ and $BC = x + 7$, find $CD$.",
+        "answer": "11",
+        "id": "geo3k_test-508",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_509.png"
+        ],
+        "problem": "<image>In the figure, KL is tangent to $\\odot M$ at K. Find the value of x.",
+        "answer": "9.45",
+        "id": "geo3k_test-509",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_510.png"
+        ],
+        "problem": "<image>in $\\triangle XYZ$, $P$ is the centroid, $KP=3$, and $XJ=8$. Find $YJ$.",
+        "answer": "8",
+        "id": "geo3k_test-510",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_511.png"
+        ],
+        "problem": "<image>Find $QM$.",
+        "answer": "12",
+        "id": "geo3k_test-511",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_512.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "2256",
+        "id": "geo3k_test-512",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_513.png"
+        ],
+        "problem": "<image>Find $m \\angle 6$",
+        "answer": "35",
+        "id": "geo3k_test-513",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_514.png"
+        ],
+        "problem": "<image>If $LK=4,MP=3,PQ=6,KJ=2,RS=6$, and $LP=2$, find $JH$.",
+        "answer": "4",
+        "id": "geo3k_test-514",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_515.png"
+        ],
+        "problem": "<image>Find $m\\angle V X W$",
+        "answer": "65",
+        "id": "geo3k_test-515",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_516.png"
+        ],
+        "problem": "<image>In the figure, $m ∠1 = 58 $, $m ∠2 = 47 $, and $m ∠3 = 26 $. Find the measure of $∠5$.",
+        "answer": "47",
+        "id": "geo3k_test-516",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_517.png"
+        ],
+        "problem": "<image>Quadrilateral $A B C D$ is inscribed in $\\odot Z$ such that $m \\angle B Z A=104, m \\widehat{C B}=94,$ and $\\overline{A B} \\| \\overline{D C} .$\r\nFind $m \\angle Z A C$",
+        "answer": "9",
+        "id": "geo3k_test-517",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_518.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "22.5",
+        "id": "geo3k_test-518",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_519.png"
+        ],
+        "problem": "<image>Find $m \\angle 3$.",
+        "answer": "66",
+        "id": "geo3k_test-519",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_520.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "1.4",
+        "id": "geo3k_test-520",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_521.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "16 \\sqrt { 5 }",
+        "id": "geo3k_test-521",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_522.png"
+        ],
+        "problem": "<image>Find the area of the rhombus.",
+        "answer": "136",
+        "id": "geo3k_test-522",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_523.png"
+        ],
+        "problem": "<image>Find x. Round the angle measure to the nearest degree",
+        "answer": "98",
+        "id": "geo3k_test-523",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_524.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "6",
+        "id": "geo3k_test-524",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_525.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "4.5",
+        "id": "geo3k_test-525",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_526.png"
+        ],
+        "problem": "<image>Find $y$ so that the quadrilateral is a parallelogram",
+        "answer": "14",
+        "id": "geo3k_test-526",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_527.png"
+        ],
+        "problem": "<image>Find y.",
+        "answer": "\\frac { 28 \\sqrt 3 } { 3 }",
+        "id": "geo3k_test-527",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_528.png"
+        ],
+        "problem": "<image>$\\triangle BCD \\cong \\triangle WXY$. Find $x$.",
+        "answer": "3",
+        "id": "geo3k_test-528",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_529.png"
+        ],
+        "problem": "<image>Quadrilateral $WXYZ$ is a rectangle. Find the measure of $\\angle 2$ if $m∠1 = 30$.",
+        "answer": "60",
+        "id": "geo3k_test-529",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_530.png"
+        ],
+        "problem": "<image>Refer to the figure at the right. Find x.",
+        "answer": "5.17",
+        "id": "geo3k_test-530",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_531.png"
+        ],
+        "problem": "<image>$m \\angle 2=2 x, m \\angle 3=x$ Find $m\\angle 3$",
+        "answer": "30",
+        "id": "geo3k_test-531",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_532.png"
+        ],
+        "problem": "<image>Use parallelogram ABCD to find $m \\angle AFD $",
+        "answer": "97",
+        "id": "geo3k_test-532",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_533.png"
+        ],
+        "problem": "<image>For the pair of similar figures, use the given areas to find $x$.",
+        "answer": "8",
+        "id": "geo3k_test-533",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_534.png"
+        ],
+        "problem": "<image>The square is circumscribed to the circle. Find the exact circumference of the circle.",
+        "answer": "14 \\pi",
+        "id": "geo3k_test-534",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_535.png"
+        ],
+        "problem": "<image>In $\\odot R$, find $TV$. Round to the nearest hundredth.",
+        "answer": "18.44",
+        "id": "geo3k_test-535",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_536.png"
+        ],
+        "problem": "<image>The area of trapezoid $JKLM$ is 138 square feet. The area of trapezoid $QRST$ is 5.52 square feet. If trapezoid $J K L M$ $ \\sim$ trapezoid $QRST$, find the value of $x$.",
+        "answer": "1",
+        "id": "geo3k_test-536",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_537.png"
+        ],
+        "problem": "<image>Find $m \\angle Z$",
+        "answer": "110",
+        "id": "geo3k_test-537",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_538.png"
+        ],
+        "problem": "<image>$\\Delta EFG$ is equilateral, and $\\overline{E H}$ bisects $\\angle E$. Find $m \\angle 2$.",
+        "answer": "30",
+        "id": "geo3k_test-538",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_539.png"
+        ],
+        "problem": "<image>Circle $A$ has diameters $\\overline{D F}$ and $\\overline{P G}$\r\nIf $D F=10$, find $D A$",
+        "answer": "5",
+        "id": "geo3k_test-539",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_540.png"
+        ],
+        "problem": "<image>Find the area of the triangle.",
+        "answer": "285",
+        "id": "geo3k_test-540",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_541.png"
+        ],
+        "problem": "<image>Find the length of $\\widehat {JK}$. Round to the nearest hundredth.",
+        "answer": "1.05",
+        "id": "geo3k_test-541",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_542.png"
+        ],
+        "problem": "<image>Triangle $LMN$ is equilateral, and $\\overline{MP}$ bisects $\\overline{LN}$. Find the measure of each side of $\\triangle LMN$.",
+        "answer": "10",
+        "id": "geo3k_test-542",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_543.png"
+        ],
+        "problem": "<image>In the figure, $m∠4 = 101$. Find the measure of $\\angle 6$.",
+        "answer": "101",
+        "id": "geo3k_test-543",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_544.png"
+        ],
+        "problem": "<image>In rhombus $A B C D, A B=2 x+3$ and $B C=5 x$. Find $m \\angle AEB$.",
+        "answer": "90",
+        "id": "geo3k_test-544",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_545.png"
+        ],
+        "problem": "<image>If $\\frac{I J}{X J}=\\frac{HJ}{YJ}, m \\angle W X J=130$\r\nand $m \\angle WZG=20,$ find $m \\angle YIZ$",
+        "answer": "50",
+        "id": "geo3k_test-545",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_546.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth if necessary. Assume that segments that appear\r\nto be tangent are tangent.",
+        "answer": "5.6",
+        "id": "geo3k_test-546",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_547.png"
+        ],
+        "problem": "<image>Find $m \\angle B G E$",
+        "answer": "60",
+        "id": "geo3k_test-547",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_548.png"
+        ],
+        "problem": "<image>In the figure, $\\overline{CP}$ is an altitude, $\\overline{CQ}$ is the angle bisector of $∠ACB$, and $R$ is the midpoint of $\\overline{AB}$. Find  $m∠ACQ$ if $m∠ACB=123-x$ and $m∠QCB = 42 + x$.",
+        "answer": "55",
+        "id": "geo3k_test-548",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_549.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "10 \\sqrt { 3 }",
+        "id": "geo3k_test-549",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_550.png"
+        ],
+        "problem": "<image>Find $m\\angle CAM$",
+        "answer": "28",
+        "id": "geo3k_test-550",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_551.png"
+        ],
+        "problem": "<image>Triangle $LMN$ is equilateral, and $\\overline{MP}$ bisects $\\overline{LN}$. Find $y$.",
+        "answer": "18",
+        "id": "geo3k_test-551",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_552.png"
+        ],
+        "problem": "<image>Find x in the figure.",
+        "answer": "34",
+        "id": "geo3k_test-552",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_553.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "23.4",
+        "id": "geo3k_test-553",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_554.png"
+        ],
+        "problem": "<image>Find the area of the shaded region. Round to the nearest tenth.",
+        "answer": "10.7",
+        "id": "geo3k_test-554",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_555.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth.",
+        "answer": "18.8",
+        "id": "geo3k_test-555",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_556.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 2$.",
+        "answer": "28",
+        "id": "geo3k_test-556",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_557.png"
+        ],
+        "problem": "<image>Find the area of the rhombus.",
+        "answer": "264",
+        "id": "geo3k_test-557",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_558.png"
+        ],
+        "problem": "<image>Find the value of x.",
+        "answer": "23",
+        "id": "geo3k_test-558",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_559.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram.",
+        "answer": "315",
+        "id": "geo3k_test-559",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_560.png"
+        ],
+        "problem": "<image>$\\overrightarrow{QP}$ and $\\overrightarrow{QR}$ are opposite rays, and $\\overrightarrow{QT}$ bisects $\\angle SOR$. If $m \\angle SOR=6x+8$ and $m \\angle TOR=4x-14,$ find $m \\angle SQT$.",
+        "answer": "58",
+        "id": "geo3k_test-560",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_561.png"
+        ],
+        "problem": "<image>Find $m\\angle W$",
+        "answer": "76",
+        "id": "geo3k_test-561",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_562.png"
+        ],
+        "problem": "<image>Find the area of the trapezoid. ",
+        "answer": "180",
+        "id": "geo3k_test-562",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_563.png"
+        ],
+        "problem": "<image>In $\\triangle CDF$, $K$ is the centroid and $DK=16$. Find $CD$.",
+        "answer": "18",
+        "id": "geo3k_test-563",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_564.png"
+        ],
+        "problem": "<image>Find PQ",
+        "answer": "6",
+        "id": "geo3k_test-564",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_565.png"
+        ],
+        "problem": "<image>Find the area of the parallelogram. Round to the nearest tenth if necessary.",
+        "answer": "169.7",
+        "id": "geo3k_test-565",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_566.png"
+        ],
+        "problem": "<image> In RSTV, RS $=6, V T=3$ and $R X$ is twice the length of $X V .$ Find $X Y .$",
+        "answer": "4",
+        "id": "geo3k_test-566",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_567.png"
+        ],
+        "problem": "<image>For trapezoid $ABCD$, $S$ and $T$ are midpoints of the legs. If $AB=x+4$, $CD=3x+2$, and $ST=9$, find $AB$.",
+        "answer": "7",
+        "id": "geo3k_test-567",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_568.png"
+        ],
+        "problem": "<image>Find $x$ for the equilateral triangle $RST$ if $RS = x + 9$, $ST = 2x$, and $RT = 3x - 9$.",
+        "answer": "9",
+        "id": "geo3k_test-568",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_569.png"
+        ],
+        "problem": "<image>Find x. Assume that any segment that appears to be tangent is tangent.",
+        "answer": "10",
+        "id": "geo3k_test-569",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_570.png"
+        ],
+        "problem": "<image>$\\overline{EB} \\| \\overline{DC}$. Find $x$.",
+        "answer": "9.5",
+        "id": "geo3k_test-570",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_571.png"
+        ],
+        "problem": "<image>Express the ratio of $\\cos X$ as a decimal to the nearest hundredth.",
+        "answer": "0.28",
+        "id": "geo3k_test-571",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_572.png"
+        ],
+        "problem": "<image>In $\\odot X, A B=30, C D=30,$ and $m \\widehat{C Z}=40$\r\nFind ND",
+        "answer": "15",
+        "id": "geo3k_test-572",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_573.png"
+        ],
+        "problem": "<image>Find z.",
+        "answer": "3",
+        "id": "geo3k_test-573",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_574.png"
+        ],
+        "problem": "<image>If $CW=WF$ and $ED=30$, what is $DF$?",
+        "answer": "15",
+        "id": "geo3k_test-574",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_575.png"
+        ],
+        "problem": "<image>A square is inscribed in a circle of area 18$\\pi$ square units. Find the length of a side of the square.",
+        "answer": "6",
+        "id": "geo3k_test-575",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_576.png"
+        ],
+        "problem": "<image>Find the scale from $B$ to $B'$.",
+        "answer": "\\frac { 4 } { 3 }",
+        "id": "geo3k_test-576",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_577.png"
+        ],
+        "problem": "<image>Find $m\\angle H$",
+        "answer": "97",
+        "id": "geo3k_test-577",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_578.png"
+        ],
+        "problem": "<image>Find the area of the figure. Round to the nearest tenth if necessary.",
+        "answer": "35.7",
+        "id": "geo3k_test-578",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_579.png"
+        ],
+        "problem": "<image>Find x. Round to the nearest tenth, if necessary.",
+        "answer": "3",
+        "id": "geo3k_test-579",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_580.png"
+        ],
+        "problem": "<image>Find the area of the figure.",
+        "answer": "60",
+        "id": "geo3k_test-580",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_581.png"
+        ],
+        "problem": "<image>Find the area of the figure.",
+        "answer": "144",
+        "id": "geo3k_test-581",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_582.png"
+        ],
+        "problem": "<image>If $A E=m-2, E C=m+4$， $A D=4,$ and $A B=20,$ find $m$",
+        "answer": "4",
+        "id": "geo3k_test-582",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_583.png"
+        ],
+        "problem": "<image>Find y",
+        "answer": "\\frac { 5 \\sqrt { 2 } } { 2 }",
+        "id": "geo3k_test-583",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_584.png"
+        ],
+        "problem": "<image>Find the perimeter of the figure. Round to the nearest tenth if necessary.",
+        "answer": "24",
+        "id": "geo3k_test-584",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_585.png"
+        ],
+        "problem": "<image>Find the measure of $\\angle 2$ if $\\overline{A B} \\perp \\overline{B C}$.",
+        "answer": "68",
+        "id": "geo3k_test-585",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_586.png"
+        ],
+        "problem": "<image>Find x",
+        "answer": "9.3",
+        "id": "geo3k_test-586",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_587.png"
+        ],
+        "problem": "<image>In $\\odot B$, $CE=13.5$. Find $BD$. Round to the nearest hundredth.",
+        "answer": "4.29",
+        "id": "geo3k_test-587",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_588.png"
+        ],
+        "problem": "<image>If $\\overline{PR} \\| \\overline{KL}, KN=9, LN=16,$ and $PM=2KP$, find $KM$.",
+        "answer": "15",
+        "id": "geo3k_test-588",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_589.png"
+        ],
+        "problem": "<image>Find $m \\angle ABC$.",
+        "answer": "22",
+        "id": "geo3k_test-589",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_590.png"
+        ],
+        "problem": "<image>Express the ratio of $\\cos A$ as a decimal to the nearest hundredth.",
+        "answer": "0.60",
+        "id": "geo3k_test-590",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_591.png"
+        ],
+        "problem": "<image>Find $AD$.",
+        "answer": "7.5",
+        "id": "geo3k_test-591",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_592.png"
+        ],
+        "problem": "<image>$\\triangle LMN \\cong \\triangle QRS$. Find $x$.",
+        "answer": "20",
+        "id": "geo3k_test-592",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_593.png"
+        ],
+        "problem": "<image>Find the circumference of the figure. Round to the nearest tenth.",
+        "answer": "19.5",
+        "id": "geo3k_test-593",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_594.png"
+        ],
+        "problem": "<image>find $sinS$",
+        "answer": "0.6",
+        "id": "geo3k_test-594",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_595.png"
+        ],
+        "problem": "<image>Find $BC$ if $AB=6, AF=8, BC=x, CD=y$, $DE=2y-3$, and $FE=x+\\frac{10}{3}$.",
+        "answer": "10",
+        "id": "geo3k_test-595",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_596.png"
+        ],
+        "problem": "<image>Find $x$ so that each quadrilateral is a parallelogram.",
+        "answer": "34",
+        "id": "geo3k_test-596",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_597.png"
+        ],
+        "problem": "<image>$P$ is the incenter of $\\triangle AEC$. Find $m \\angle DEP$.",
+        "answer": "28.5",
+        "id": "geo3k_test-597",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_598.png"
+        ],
+        "problem": "<image>Find $x$.",
+        "answer": "5",
+        "id": "geo3k_test-598",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_599.png"
+        ],
+        "problem": "<image>$m \\angle 4=42$. Find $m \\angle 7$.",
+        "answer": "138",
+        "id": "geo3k_test-599",
+        "type": "geometry",
+        "is_cf": false
+    },
+    {
+        "images": [
+            "geo3k_test_600.png"
+        ],
+        "problem": "<image>Find the measure of $∠Z$ to the nearest tenth.",
+        "answer": "33.7",
+        "id": "geo3k_test-600",
+        "type": "geometry",
+        "is_cf": false
+    }
+]

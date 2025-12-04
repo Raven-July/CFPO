@@ -11,12 +11,12 @@ BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 
 MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
 
-KL_CMVE_COEF=0.02
+KL_CMVE_COEF=0.01
 
 ## Double Entropy Loss
-USE_CMVE_ENTROPY_LOSS=false
+USE_CMVE_ENTROPY_LOSS=true
 CMVE_ENTROPY_LOSS_COEF=0.03
-USE_ORI_ENTROPY_LOSS=false
+USE_ORI_ENTROPY_LOSS=true
 ORI_ENTROPY_LOSS_COEF=0.03
 
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1
@@ -65,7 +65,7 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=False \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO_V2_ref_noentropy_fixed \
+    trainer.experiment_name=qwen2_5_vl_3b_CMCPO_V2_noref_entropy \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=30 \
@@ -73,7 +73,10 @@ python3 -m verl.trainer.main \
     trainer.val_freq=5 \
     trainer.save_freq=32 \
     trainer.save_limit=3 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V2_ref_noentropy_fixed \
+    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V2_noref_entropy \
+    trainer.load_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V2_noref_entropy/global_step_64/ \
+    algorithm.disable_kl=True \
+    algorithm.kl_coef=0 \
     algorithm.use_kl_cmve=True \
     algorithm.kl_cmve_penalty=low_var_kl \
     algorithm.kl_cmve_schedule=fixed \

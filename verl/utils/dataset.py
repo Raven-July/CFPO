@@ -78,7 +78,10 @@ def process_image(
         image = image.resize((width, height))
 
     if image.mode != "RGB":
-        image = image.convert("RGB")
+        if image.mode == "P":
+            image = image.convert("RGBA").convert("RGB")
+        else:
+            image = image.convert("RGB")
 
     return image
 
@@ -90,7 +93,8 @@ class RLHFDataset(Dataset):
 
     def __init__(
         self,
-        data_path: str,
+        # --- MODIFICATION: Changed data_path type hint ---
+        data_path: List[Dict[str, str]],
         tokenizer: PreTrainedTokenizer,
         processor: Optional[ProcessorMixin],
         prompt_key: str = "prompt",
@@ -109,32 +113,70 @@ class RLHFDataset(Dataset):
         self.prompt_key = prompt_key
         self.answer_key = answer_key
         self.image_key = image_key
-        self.image_dir = image_dir
+        self.image_dir = image_dir  # Global fallback
         self.max_prompt_length = max_prompt_length
         self.truncation = truncation
         self.min_pixels = min_pixels
         self.max_pixels = max_pixels
         self.filter_overlong_prompts = filter_overlong_prompts
 
-        if "@" in data_path:
-            data_path, data_split = data_path.split("@")
+        # --- MODIFICATION: Reworked dataset loading logic ---
+        all_datasets = []
+        if isinstance(data_path, list):
+            # New logic: use the provided list
+            dataset_configs = data_path
         else:
-            data_split = "train"
+            raise ValueError("data_path must be a list of dictionaries.")
 
-        if os.path.isdir(data_path):
-            # when we use dataset builder, we should always refer to the train split
-            file_type = os.path.splitext(os.listdir(data_path)[0])[-1][1:].replace(
-                "jsonl", "json"
-            )
-            self.dataset = load_dataset(file_type, data_dir=data_path, split=data_split)
-        elif os.path.isfile(data_path):
-            file_type = os.path.splitext(data_path)[-1][1:].replace("jsonl", "json")
-            self.dataset = load_dataset(
-                file_type, data_files=data_path, split=data_split
-            )
+        for config in dataset_configs:
+            current_data_path = config["dataset"]
+            # Use .get() for 'image_path', allowing it to be missing
+            current_image_path = config.get("image")
+
+            if "@" in current_data_path:
+                current_data_path, data_split = current_data_path.split("@")
+            else:
+                data_split = "train"
+
+            if os.path.isdir(current_data_path):
+                file_type = os.path.splitext(os.listdir(current_data_path)[0])[-1][
+                    1:
+                ].replace("jsonl", "json")
+                loaded_ds = load_dataset(
+                    file_type, data_dir=current_data_path, split=data_split
+                )
+            elif os.path.isfile(current_data_path):
+                file_type = os.path.splitext(current_data_path)[-1][1:].replace(
+                    "jsonl", "json"
+                )
+                loaded_ds = load_dataset(
+                    file_type, data_files=current_data_path, split=data_split
+                )
+            else:
+                # load remote dataset from huggingface hub
+                loaded_ds = load_dataset(current_data_path, split=data_split)
+
+            # Add the per-dataset image path as a new column
+            # Use a "private" name to avoid conflicts
+            if current_image_path is not None:
+                # Use num_proc=16 for consistency with filter logic
+                loaded_ds = loaded_ds.map(
+                    lambda example: {"__internal_image_path__": current_image_path},
+                    num_proc=16,
+                )
+            all_datasets.append(loaded_ds)
+
+        if not all_datasets:
+            # Handle case where data_path was an empty list
+            raise ValueError("No datasets were loaded. data_path was empty or invalid.")
+
+        if len(all_datasets) > 1:
+            from datasets import concatenate_datasets
+
+            self.dataset = concatenate_datasets(all_datasets)
         else:
-            # load remote dataset from huggingface hub
-            self.dataset = load_dataset(data_path, split=data_split)
+            self.dataset = all_datasets[0]
+        # --- END MODIFICATION ---
 
         self.format_prompt = None
         if format_prompt:
@@ -145,7 +187,7 @@ class RLHFDataset(Dataset):
             self.dataset = self.dataset.filter(
                 self._filter_overlong_prompts,
                 desc="Filtering overlong prompts",
-                num_proc=16,
+                num_proc=32,
             )
 
     def _build_messages(self, example: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -188,12 +230,19 @@ class RLHFDataset(Dataset):
                 messages, add_generation_prompt=True, tokenize=False
             )
             images = example[self.image_key] or []
+
+            # --- MODIFICATION: Get per-sample image path or fallback to global ---
+            current_image_dir = example["__internal_image_path__"]
+            # --- END MODIFICATION ---
+
             if (
-                self.image_dir is not None
+                current_image_dir is not None  # <-- MODIFIED
                 and len(images) != 0
                 and isinstance(images[0], str)
             ):  # image paths
-                images = [os.path.join(self.image_dir, image) for image in images]
+                images = [
+                    os.path.join(current_image_dir, image) for image in images
+                ]  # <-- MODIFIED
 
             resized_images = [
                 process_image(
@@ -223,12 +272,18 @@ class RLHFDataset(Dataset):
                 messages, add_generation_prompt=True, tokenize=False
             )
             images = example.pop(self.image_key)
+
+            # --- MODIFICATION: Get per-sample image path or fallback to global ---
+            current_image_dir = example["__internal_image_path__"]
+            # --- END MODIFICATION ---
             if (
-                self.image_dir is not None
+                current_image_dir is not None  # <-- MODIFIED
                 and len(images) != 0
                 and isinstance(images[0], str)
             ):  # image paths
-                images = [os.path.join(self.image_dir, image) for image in images]
+                images = [
+                    os.path.join(current_image_dir, image) for image in images
+                ]  # <-- MODIFIED
 
             resized_images = [
                 process_image(

@@ -10,16 +10,20 @@ from typing import Optional
 from PIL import Image
 
 import torch
-import torch.distributed as dist
+
 from tqdm import tqdm
-from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
-from qwen_vl_utils import process_vision_info
+from transformers import AutoProcessor
 from mathruler.grader import grade_answer
+from vllm import LLM, SamplingParams  # (vLLM) 导入 vLLM
 
 # ----------------- 全局配置 -----------------
 warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
-MIN_PIXELS = 262_144  # 最小像素数
-MAX_PIXELS = 4_194_304  # 最大像素数
+MIN_PIXELS = 200704  # 最小像素数
+MAX_PIXELS = 1003520  # 最大像素数
+
+import os
+
+os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
 
 # ===================== 参数解析 =====================
@@ -32,27 +36,25 @@ def parse_args():
     parser.add_argument("--model_prefix", type=str, default="", help="模型前缀（可选）")
     parser.add_argument("--model_path", type=str, required=True, help="预训练模型路径")
     parser.add_argument(
-        "--dataset_name", type=str, required=True, help="要评估的数据集名称"
+        "--json_path", type=str, required=True, help="评估 JSON 文件的路径"
+    )
+    parser.add_argument(
+        "--image_root", type=str, required=True, help="图像文件的根目录"
     )
     parser.add_argument("--output_dir", type=str, required=True, help="保存结果的目录")
-    parser.add_argument("--batch_size", type=int, default=4, help="推理批大小")
+    # (vLLM) batch_size 不再由我们控制，但可以保留参数以兼容旧命令（尽管未使用）
+    parser.add_argument("--batch_size", type=int, default=4, help="（vLLM 下未使用）")
     parser.add_argument(
         "--cot", action="store_true", help="是否启用 CoT（链式思维）推理"
     )
+    # (vLLM) 添加 tensor_parallel_size 参数
+    parser.add_argument(
+        "--tensor_parallel_size",
+        type=int,
+        default=None,
+        help="vLLM 使用的 GPU 数量 (默认: all available)",
+    )
     return parser.parse_args()
-
-
-# ===================== 分布式设置 =====================
-def setup_distributed():
-    """初始化分布式训练/推理环境"""
-    local_rank = int(os.environ.get("LOCAL_RANK", 0))
-    torch.cuda.set_device(local_rank)
-    dist.init_process_group(backend="nccl")
-
-    world_size = dist.get_world_size()
-    rank = dist.get_rank()
-    print(f"[Distributed Init] Rank {rank}/{world_size} on cuda:{local_rank}")
-    return local_rank, world_size, rank
 
 
 # ===================== 图像预处理 =====================
@@ -72,75 +74,54 @@ def process_image(
         factor = math.sqrt(min_pixels / (image.width * image.height))
         image = image.resize((int(image.width * factor), int(image.height * factor)))
 
+    if image.mode != "RGB":
+        if image.mode == "P":
+            image = image.convert("RGBA").convert("RGB")
+        else:
+            image = image.convert("RGB")
     # 转换为 RGB 模式
-    return image.convert("RGB") if image.mode != "RGB" else image
-
-
-# ===================== 数据加载 =====================
-def get_dataset_config(dataset_name: str):
-    """根据数据集名称返回路径和图片根目录"""
-    DATA_ROOT = "eval_data"
-    if dataset_name == "C-VQA-Real":
-        return (
-            os.path.join(DATA_ROOT, "C-VQA-Real.json"),
-            "/eaas/default/groups/xitucheng213/home/share/swr/Datasets/Counterfactual/C-VQA/C-VQA-Real/C-VQA-Real_images",
-        )
-    elif dataset_name == "C-VQA-Synthetic":
-        return (
-            os.path.join(DATA_ROOT, "C-VQA-Synthetic.json"),
-            "/eaas/default/groups/xitucheng213/home/share/swr/Datasets/Counterfactual/C-VQA/C-VQA-Synthetic/C-VQA-Synthetic_images",
-        )
-    elif dataset_name == "MARS_Bench":
-        return (
-            os.path.join(DATA_ROOT, "MARS_Bench_test.json"),
-            "/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/Datasets/COCO_val2014",
-        )
-    else:
-        raise ValueError(f"不支持的数据集: {dataset_name}")
-
-
-# ===================== 模型加载 =====================
-def load_model_and_processor(model_name: str, model_path: str, device):
-    """根据名称加载模型和处理器"""
-    if "qwen2.5-vl-3b" in model_name.lower() or "qwen2.5-vl-7b" in model_name.lower():
-        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            model_path,
-            torch_dtype=torch.bfloat16,
-            attn_implementation="flash_attention_2",
-            device_map={"": device},
-        )
-        processor = AutoProcessor.from_pretrained(model_path)
-        return model, processor
-    else:
-        raise ValueError(f"暂不支持加载模型: {model_name}")
+    return image
 
 
 # ===================== 主流程 =====================
 def main():
     args = parse_args()
-    local_rank, world_size, rank = setup_distributed()
-    device = f"cuda:{local_rank}"
+    # (vLLM) vLLM 自动处理多 GPU
+    if args.tensor_parallel_size:
+        world_size = args.tensor_parallel_size
+    else:
+        world_size = torch.cuda.device_count()
 
     # ---- 数据集与 Prompt 配置 ----
-    ds_path, image_root = get_dataset_config(args.dataset_name)
+    ds_path = args.json_path
+    image_root = args.image_root
+    dataset_name = os.path.basename(ds_path).split(".")[0]
+
     prompt_template = (
-        "The user asks a question, and then you solve it. "
+        "The user asks a question, and then you solve it based on the images provided. "
         "You FIRST think about the reasoning process step by step as an internal monologue "
         "and then provide the final answer. "
         "The reasoning process MUST BE enclosed within <think> </think> tags. "
-        "The final answer(SIMPLEST WORDS or SELECTION LETTER) MUST BE enclosed within <answer> </answer> tags."
+        "The final answer(SIMPLEST WORDS) MUST BE enclosed within <answer> </answer> tags."
         if args.cot
-        else "The user asks a question, and then you solve it. "
-        "Please directly give out the final answer(SIMPLEST WORDS or SELECTION LETTER), which MUST BE enclosed within <answer> </answer> tags."
+        else "The user asks a question, and then you solve it based on the images provided. "
+        "Please directly give out the final answer(SIMPLEST WORDS), which MUST BE enclosed within <answer> </answer> tags."
     )
 
-    if rank == 0:
-        print(f"[INFO] Loading dataset: {args.dataset_name}")
-        print(f"[INFO] Loading model: {args.model_name} from {args.model_path}")
-
-    model, processor = load_model_and_processor(
-        args.model_name, args.model_path, local_rank
+    print(f"[INFO] Loading dataset from: {args.json_path}")
+    print(
+        f"[INFO] Loading model: {args.model_name} from {args.model_path} with TP={world_size}"
     )
+    # (vLLM) 加载 vLLM 模型
+    llm = LLM(
+        model=args.model_path,
+        trust_remote_code=True,
+        tensor_parallel_size=world_size,
+        gpu_memory_utilization=0.8,
+        dtype="bfloat16",  # 假设为 bfloat16
+    )
+    # (vLLM) 仍然需要 Processor 来构建提示模板
+    processor = AutoProcessor.from_pretrained(args.model_path, trust_remote_code=True)
 
     # ---- 数据加载与划分 ----
     with open(ds_path, "r") as f:
@@ -148,136 +129,165 @@ def main():
 
     random.seed(42)
     random.shuffle(data)
-    per_rank_data = len(data) // world_size
-    start_idx, end_idx = rank * per_rank_data, (
-        (rank + 1) * per_rank_data if rank < world_size - 1 else len(data)
+
+    # (vLLM) vLLM 只需要一个统一的输入列表
+    vllm_inputs = []
+
+    print(f"[INFO] Preparing {len(data)} samples for vLLM...")
+    # (vLLM) 循环 'data'
+    for item in tqdm(data):
+        problem_text = item["problem"]
+        image_files = item["images"]
+
+        # 1. 为这个 item 加载 PIL 图像
+        item_images_pil = []
+        for img_name in image_files:
+            image_path = os.path.join(image_root, img_name)
+            try:
+                img = Image.open(image_path)
+                img = process_image(img, MIN_PIXELS, MAX_PIXELS)
+                item_images_pil.append(img)
+            except Exception as e:
+                print(f"Warning: Failed to load image {image_path}: {e}")
+                # 添加一个占位符灰色图像以避免崩溃
+                item_images_pil.append(Image.new("RGB", (448, 448), "grey"))
+
+        # 2. 构建 'messages' 列表（使用虚拟图像路径）
+        # Processor 需要这个结构来正确插入 <image> 相关的特殊 token
+        content_list = []
+        parts = problem_text.split("<image>")
+        # 使用虚拟迭代器检查图像数量是否匹配
+        image_iter_check = iter(item_images_pil)
+
+        for i, part in enumerate(parts):
+            if i != 0:
+                try:
+                    # 仅用于模板构建，路径不重要，但类型必须是 "image"
+                    # (修改) 移除虚拟路径，仅保留类型
+                    content_list.append({"type": "image"})
+                    next(image_iter_check)  # 推进迭代器
+                except StopIteration:
+                    print(
+                        f"Warning: Mismatch between <image> tags and image list for item id {item.get('id', 'N/A')}."
+                    )
+
+            if part:
+                content_list.append({"type": "text", "text": part})
+
+        messages_for_item = [
+            {"role": "system", "content": prompt_template},
+            {"role": "user", "content": content_list},
+        ]
+
+        # 3. 应用聊天模板获取最终的文本提示
+        try:
+            final_prompt_text = processor.apply_chat_template(
+                messages_for_item, tokenize=False, add_generation_prompt=True
+            )
+        except Exception as e:
+            print(f"Error applying template for item {item.get('id', 'N/A')}: {e}")
+            final_prompt_text = "Error: Could not format prompt."  # 占位符
+
+        # 4. (修改) 存储 vLLM 需要的统一输入字典
+        vllm_inputs.append(
+            {
+                "prompt": final_prompt_text,
+                "multi_modal_data": {"image": item_images_pil},
+            }
+        )
+
+    # ---- 批量推理 (vLLM) ----
+    print("[INFO] Starting vLLM generation...")
+
+    # (vLLM) 定义采样参数
+    sampling_params = SamplingParams(
+        temperature=0.0,  # 对应 do_sample=False
+        max_tokens=2048,  # 对应 max_new_tokens
     )
-    rank_data = data[start_idx:end_idx]
 
-    # ---- 构建消息 ----
-    messages = []
-    for item in rank_data:
-        image_path = os.path.join(image_root, item["image"])
-        messages.append(
-            [
-                {"role": "system", "content": prompt_template},
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "image", "image": f"file://{image_path}"},
-                        {"type": "text", "text": item["problem"]},
-                    ],
-                },
-            ]
-        )
+    # (vLLM) 一次性调用 generate
+    # (修改)
+    vllm_outputs = llm.generate(
+        prompts=vllm_inputs,  # 传入统一的输入列表
+        sampling_params=sampling_params,
+        # multi_modal_data=... # 已合并到 prompts 中
+    )
 
-    # ---- 批量推理 ----
-    outputs = []
-    for i in tqdm(range(0, len(messages), args.batch_size), disable=rank != 0):
-        batch_messages = messages[i : i + args.batch_size]
-        texts = [
-            processor.apply_chat_template(m, tokenize=False, add_generation_prompt=True)
-            for m in batch_messages
-        ]
-        image_inputs, video_inputs = process_vision_info(batch_messages)
-        resized_images = (
-            [process_image(img, MIN_PIXELS, MAX_PIXELS) for img in image_inputs]
-            if image_inputs
-            else None
-        )
+    print(f"[INFO] vLLM generation complete. Received {len(vllm_outputs)} outputs.")
 
-        inputs = processor(
-            text=texts,
-            images=resized_images,
-            videos=video_inputs,
-            padding=True,
-            padding_side="left",
-            return_tensors="pt",
-        ).to(device)
-
-        generated_ids = model.generate(
-            **inputs,
-            use_cache=True,
-            max_new_tokens=512,
-            do_sample=False,
-            top_p=1.0,
-            top_k=50,
-        )
-        trimmed_ids = [
-            out[len(inp) :] for inp, out in zip(inputs.input_ids, generated_ids)
-        ]
-        outputs.extend(processor.batch_decode(trimmed_ids, skip_special_tokens=True))
-
-    print(f"[INFO] Rank {rank} 完成 {len(outputs)} 条样本处理")
+    # (vLLM) 从 vLLM 的 RequestOutput 对象中提取纯文本
+    # vLLM 保证输出顺序与输入顺序一致
+    all_outputs = [out.outputs[0].text for out in vllm_outputs]
 
     # ---- 分布式收集结果 ----
-    gathered_results = [None] * world_size
-    dist.all_gather_object(
-        gathered_results, [(start_idx + i, o) for i, o in enumerate(outputs)]
-    )
+    # (vLLM) 不再需要
+    # ... (代码已移除) ...
 
     # ---- 主进程计算准确率并保存 ----
-    if rank == 0:
-        all_outputs = [None] * len(data)
-        for results in gathered_results:
-            for idx, output in results:
-                all_outputs[idx] = output
+    # (vLLM) 移除 rank == 0 判断
+    # if rank == 0:
 
-        totals, corrects, final_output = defaultdict(int), defaultdict(int), []
-        for i, (item, raw_output) in enumerate(zip(data, all_outputs)):
-            gt = item["solution"]
-            match = re.search(
-                r"<answer>(.*?)</answer>", raw_output, re.DOTALL
-            ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
-            answer = match.group(1).strip() if match else raw_output.strip()
-            is_correct = grade_answer(answer, gt)
+    # 确保我们有对应的数据
+    if len(all_outputs) != len(data):
+        print(
+            f"CRITICAL ERROR: Mismatch in output count. Expected {len(data)}, Got {len(all_outputs)}"
+        )
+        # 尽力而为，截断数据以匹配输出
+        data = data[: len(all_outputs)]
 
-            if not is_correct and ":" in answer:
-                is_correct = grade_answer(answer[0], gt)
+    totals, corrects, final_output = defaultdict(int), defaultdict(int), []
+    for i, (item, raw_output) in enumerate(zip(data, all_outputs)):
+        gt = item["answer"]
+        match = re.search(
+            r"<answer>(.*?)</answer>", raw_output, re.DOTALL
+        ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
+        answer = match.group(1).strip() if match else raw_output.strip()
+        is_correct = grade_answer(answer, gt)
 
-            cf_type = "cf" if item.get("is_cf") else "ncf"
-            q_type = item.get("type", "unknown")
+        if not is_correct and ":" in answer:
+            is_correct = grade_answer(answer[0], gt)
 
-            # 统计数量
-            for key in ["all", cf_type, q_type, f"{q_type}_{cf_type}"]:
-                totals[key] += 1
-                if is_correct:
-                    corrects[key] += 1
+        cf_type = "cf" if item.get("is_cf") else "ncf"
+        q_type = item.get("type", "unknown")
 
-            final_output.append(
-                {
-                    "image": item["image"],
-                    "question": item["problem"],
-                    "is_cf": item.get("is_cf", False),
-                    "type": item.get("type", "unknown"),
-                    "ground_truth": gt,
-                    "model_output": raw_output,
-                    "extracted_answer": answer,
-                    "correct": int(is_correct),
-                }
-            )
+        # 统计数量
+        for key in ["all", cf_type, q_type, f"{q_type}_{cf_type}"]:
+            totals[key] += 1
+            if is_correct:
+                corrects[key] += 1
 
-        # ---- 计算准确率 ----
-        print(f"\n--- {args.dataset_name} 准确率报告 ---")
-        accuracies = {}
-        for key in sorted(totals.keys()):
-            acc = (corrects[key] / totals[key]) * 100 if totals[key] > 0 else 0
-            accuracies[f"{key}_accuracy"] = acc
-            print(f"{key:<12} : {acc:.2f}% ({corrects[key]}/{totals[key]})")
+        final_output.append(
+            {
+                "images": item["images"],
+                "question": item["problem"],
+                "is_cf": item.get("is_cf", False),
+                "type": item.get("type", "unknown"),
+                "ground_truth": gt,
+                "model_output": raw_output,
+                "extracted_answer": answer,
+                "correct": int(is_correct),
+            }
+        )
 
-        # ---- 保存结果 ----
-        suffix = "_COT_" if args.cot else ""
-        prefix = f"-{args.model_prefix}" if args.model_prefix else ""
-        filename = f"results_{args.model_name}{prefix}_{args.dataset_name}{suffix}.json"
-        os.makedirs(args.output_dir, exist_ok=True)
-        output_path = os.path.join(args.output_dir, filename)
+    # ---- 计算准确率 ----
+    print(f"\n--- {dataset_name} 准确率报告 ---")
+    accuracies = {}
+    for key in sorted(totals.keys()):
+        acc = (corrects[key] / totals[key]) * 100 if totals[key] > 0 else 0
+        accuracies[f"{key}_accuracy"] = acc
+        print(f"{key:<12} : {acc:.2f}% ({corrects[key]}/{totals[key]})")
 
-        with open(output_path, "w") as f:
-            json.dump({"accuracies": accuracies, "results": final_output}, f, indent=4)
+    # ---- 保存结果 ----
+    suffix = "_COT" if args.cot else ""
+    prefix = f"-{args.model_prefix}" if args.model_prefix else ""
+    filename = f"results_{args.model_name}{prefix}_{dataset_name}{suffix}_vLLM.json"  # 添加 vLLM 后缀
+    os.makedirs(args.output_dir, exist_ok=True)
+    output_path = os.path.join(args.output_dir, filename)
 
-        print(f"\n[INFO] 结果已保存到: {output_path}\n{'-' * 100}")
+    with open(output_path, "w") as f:
+        json.dump({"accuracies": accuracies, "results": final_output}, f, indent=4)
 
-    dist.barrier()
+    print(f"\n[INFO] 结果已保存到: {output_path}\n{'-' * 100}")
 
 
 if __name__ == "__main__":

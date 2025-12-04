@@ -17,7 +17,7 @@ PPO config
 
 import os
 from dataclasses import asdict, dataclass, field, fields, is_dataclass
-from typing import Optional, Tuple, Dict, Any
+from typing import Optional, Tuple, Dict, Any, List
 
 from ..workers.config import WorkerConfig
 
@@ -33,8 +33,8 @@ def recursive_post_init(dataclass_obj):
 
 @dataclass
 class DataConfig:
-    train_files: str = ""
-    val_files: str = ""
+    train_files: List[Dict[str, str]]=field(default_factory=list)
+    val_files: List[Dict[str, str]]=field(default_factory=list)
     prompt_key: str = "prompt"
     answer_key: str = "answer"
     image_key: str = "images"
