@@ -1,0 +1,37 @@
+[
+    {
+        "dataset_name": "MARS_Bench",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/MARS_Bench_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_val2014_images"
+    },
+    {
+        "dataset_name": "C-VQA-Real",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/C-VQA-Real_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_val2014_images"
+    },
+    {
+        "dataset_name": "C-VQA-Synthetic",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/C-VQA-Synthetic_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/C-VQA-Synthetic_images"
+    },
+    {
+        "dataset_name": "Geometry3k",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/geometry3k_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/geometry3k_images"
+    },
+    {
+        "dataset_name": "A-OK-VQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/A-OK-VQA_val.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/A-OK-VQA_images"
+    },
+    {
+        "dataset_name": "GQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/GQA_val.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/GQA_images"
+    },
+    {
+        "dataset_name": "vqacp_v2",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/vqacp_v2_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_trainval2014_images"
+    }
+]
