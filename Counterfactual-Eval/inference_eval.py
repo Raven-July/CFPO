@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor  # 引入线程池
 
 from tqdm import tqdm
 from transformers import AutoProcessor
-from mathruler.grader import grade_answer
+from mathruler.grader import grade_answer,extract_boxed_content
 from vllm import LLM, SamplingParams
 
 # ----------------- 全局配置 -----------------
@@ -43,12 +43,15 @@ def parse_args():
     parser.add_argument(
         "--cot", action="store_true", help="是否启用 CoT（链式思维）推理"
     )
+    parser.add_argument(
+        "--papo", action="store_true", help="是否使用papo测试"
+    )
     # 显著减小默认值，因为大数据集的图像加载会爆 RAM
     parser.add_argument(
         "--batch_size",
         type=int,
-        default=2048,
-        help="BATCH_SIZE for vLLM inference (default: 2048)",
+        default=1024,
+        help="BATCH_SIZE for vLLM inference (default: 1024)",
     )
     parser.add_argument(
         "--tensor_parallel_size",
@@ -95,6 +98,7 @@ def load_and_preprocess_single_item(
     image_root: str,
     processor: AutoProcessor,
     prompt_template: str,
+    args: argparse.Namespace,
 ) -> Optional[Dict[str, Any]]:
     """并行加载、处理单个数据项（图像和提示）"""
     problem_text = item["problem"]
@@ -132,11 +136,16 @@ def load_and_preprocess_single_item(
 
         if part:
             content_list.append({"type": "text", "text": part})
-
-    messages_for_item = [
-        {"role": "system", "content": prompt_template},
-        {"role": "user", "content": content_list},
-    ]
+    if args.papo:
+        content_list.append({"type": "text", "text": "You first think through the reasoning process as an internal monologue, enclosed within <think> </think> tags. Then, provide your final answer enclosed within \\boxed{}."})
+        messages_for_item = [
+            {"role": "user", "content": content_list},
+        ]
+    else:
+        messages_for_item = [
+            {"role": "system", "content": prompt_template},
+            {"role": "user", "content": content_list},
+        ]
 
     # 3. 应用聊天模板获取最终的文本提示
     try:
@@ -215,6 +224,7 @@ def run_evaluation(
                     image_root,
                     processor,
                     prompt_template,
+                    args
                 )
                 for item in batch_data
             ]
@@ -239,7 +249,7 @@ def run_evaluation(
             # 定义采样参数
             sampling_params = SamplingParams(
                 temperature=0.0,
-                max_tokens=2048,
+                max_tokens=4096,
                 stop=["<|eot_id|>", "</s>"],  # 针对 Qwen 系列模型添加停止标记
             )
 
@@ -283,18 +293,22 @@ def run_evaluation(
 
     for i, (item, raw_output) in enumerate(zip(original_data_all, all_outputs_texts)):
         gt = item["answer"]
-        # 使用更稳健的答案提取
-        match = re.search(
-            r"<answer>(.*?)</answer>", raw_output, re.DOTALL
-        ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
-        answer = match.group(1).strip() if match else raw_output.strip()
+        if args.papo:
+            answer = extract_boxed_content(raw_output)
+            is_correct = grade_answer(answer, gt)
+        else:
+            # 使用更稳健的答案提取
+            match = re.search(
+                r"<answer>(.*?)</answer>", raw_output, re.DOTALL
+            ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
+            answer = match.group(1).strip() if match else raw_output.strip()
 
-        is_correct = grade_answer(answer, gt)
+            is_correct = grade_answer(answer, gt)
 
-        # 额外的检查，如您的原始代码所示（可能针对某些特殊情况）
-        if not is_correct and isinstance(answer, str) and ":" in answer:
-            # 假设只取冒号前的部分
-            is_correct = grade_answer(answer.split(":")[0].strip(), gt)
+            # 额外的检查，如您的原始代码所示（可能针对某些特殊情况）
+            if not is_correct and isinstance(answer, str) and ":" in answer:
+                # 假设只取冒号前的部分
+                is_correct = grade_answer(answer.split(":")[0].strip(), gt)
 
         cf_type = "cf" if item.get("is_cf") else "ncf"
         q_type = item.get("type", "unknown")
