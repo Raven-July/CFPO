@@ -182,10 +182,10 @@ def run_evaluation(
         "You FIRST think about the reasoning process step by step as an internal monologue "
         "and then provide the final answer. "
         "The reasoning process MUST BE enclosed within <think> </think> tags. "
-        "The final answer(SIMPLEST WORDS) MUST BE enclosed within <answer> </answer> tags."
+        "The final answer MUST BE put in \\boxed{}."
         if args.cot
         else "The user asks a question, and then you solve it based on the images provided. "
-        "Please directly give out the final answer(SIMPLEST WORDS), which MUST BE enclosed within <answer> </answer> tags."
+        "Please directly give out the final answer, which MUST BE put in \\boxed{}"
     )
 
     print(f"\n[INFO] Starting evaluation for dataset: **{dataset_name}**")
@@ -249,7 +249,7 @@ def run_evaluation(
             # 定义采样参数
             sampling_params = SamplingParams(
                 temperature=0.0,
-                max_tokens=4096,
+                max_tokens=2048,
                 stop=["<|eot_id|>", "</s>"],  # 针对 Qwen 系列模型添加停止标记
             )
 
@@ -298,13 +298,10 @@ def run_evaluation(
             is_correct = grade_answer(answer, gt)
         else:
             # 使用更稳健的答案提取
-            match = re.search(
-                r"<answer>(.*?)</answer>", raw_output, re.DOTALL
-            ) or re.search(r"<answer>(.*)", raw_output, re.DOTALL)
-            answer = match.group(1).strip() if match else raw_output.strip()
-
+            answer = extract_boxed_content(raw_output)
+            if answer == "None":
+                answer = raw_output.strip()
             is_correct = grade_answer(answer, gt)
-
             # 额外的检查，如您的原始代码所示（可能针对某些特殊情况）
             if not is_correct and isinstance(answer, str) and ":" in answer:
                 # 假设只取冒号前的部分

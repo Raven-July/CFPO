@@ -180,6 +180,8 @@ tensorboard_log/
 images/
 images*
 Counterfactual-Eval/eval_result
+Counterfactual-Eval/eval_result_1
 Counterfactual-Eval/eval_result_math
 Counterfactual-Eval/eval_result_old
 Counterfactual-Eval/eval_result_mixed_old
+Counterfactual-Eval/eval_result_math_boxed

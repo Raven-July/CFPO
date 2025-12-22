@@ -32,8 +32,8 @@ python3 -m verl.trainer.main \
     data.val_files=${val_files} \
     data.format_prompt=./examples/format_prompt/base.jinja \
     data.max_prompt_length=4096 \
-    data.max_response_length=3072 \
-    data.rollout_batch_size=128 \
+    data.max_response_length=2048 \
+    data.rollout_batch_size=384 \
     data.val_batch_size=512 \
     data.min_pixels=200704 \
     data.max_pixels=1003520 \
@@ -53,13 +53,13 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=True \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-math_V3_GRPO \
+    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=30 \
-    trainer.total_epochs=1 \
+    trainer.total_epochs=2 \
     trainer.val_freq=5 \
     trainer.save_freq=50 \
     trainer.save_limit=5 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math_V3_GRPO \
+    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO \
     algorithm.use_kl_cmve=False \

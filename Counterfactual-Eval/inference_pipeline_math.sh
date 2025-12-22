@@ -4,14 +4,14 @@ BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
 
 # --- 全局配置 ---
-OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math
+OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_1
 
 MODEL_NAME=Qwen2.5-VL-3B
-MODEL_PREFIX="GRPO-math-300"
+MODEL_PREFIX="GRPO-math-202"
 # MODEL_PREFIX=""
 # MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
 # MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-G-H-Qwen2.5-VL-3B
-MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math_V3_GRPO/global_step_300/actor/huggingface
+MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO/global_step_202/actor/huggingface
 # MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V3_ref_noentropy/global_step_304/actor/huggingface
 
 # --- 配置文件路径 ---
