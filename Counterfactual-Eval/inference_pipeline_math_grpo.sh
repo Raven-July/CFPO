@@ -7,11 +7,11 @@ cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
 OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8
 
 MODEL_NAME=Qwen2.5-VL-3B
-MODEL_PREFIX="CMCPO-math-202"
-# MODEL_PREFIX="PAPO"
+MODEL_PREFIX="GRPO-math-202"
+# MODEL_PREFIX=""
 # MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
 # MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-G-H-Qwen2.5-VL-3B
-MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_ref_noentropy/global_step_202/actor/huggingface
+MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO/global_step_202/actor/huggingface
 # MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V3_ref_noentropy/global_step_304/actor/huggingface
 
 # --- 配置文件路径 ---

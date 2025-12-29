@@ -65,6 +65,9 @@ def parse_args():
         default=8,
         help="用于并行数据加载的线程数",
     )
+    parser.add_argument(
+        "--n", type=int, default=1, help="Total number of attempts per sample (acc@n). If n > 1, temperature will be set to 1.0 automatically."
+    )
     return parser.parse_args()
 
 
@@ -172,7 +175,7 @@ def run_evaluation(
     processor: AutoProcessor,
     dataset_config: Dict[str, str],
 ):
-    """对单个数据集执行评估流程"""
+    """对单个数据集执行评估流程，计算标准的 avg@n"""
     ds_path = dataset_config["json_path"]
     image_root = dataset_config["image_root"]
     dataset_name = dataset_config["dataset_name"]
@@ -183,171 +186,129 @@ def run_evaluation(
         "and then provide the final answer. "
         "The reasoning process MUST BE enclosed within <think> </think> tags. "
         "The final answer MUST BE put in \\boxed{}."
-        if args.cot
-        else "The user asks a question, and then you solve it based on the images provided. "
+        if args.cot else 
+        "The user asks a question, and then you solve it based on the images provided. "
         "Please directly give out the final answer, which MUST BE put in \\boxed{}"
     )
 
     print(f"\n[INFO] Starting evaluation for dataset: **{dataset_name}**")
-    print(f"[INFO] Loading dataset from: {ds_path}")
-
-    # ---- 数据加载 (只加载 JSON 元数据) ----
+    
     with open(ds_path, "r") as f:
         data = json.load(f)
 
-    # 随机打乱以增加批次随机性（尽管 vLLM 不依赖此）
-    random.seed(42)
-    random.shuffle(data)
+    # -------------------------------------------------------
+    # 核心修改 1: SamplingParams 的 n 设置为 args.n
+    # -------------------------------------------------------
+    sampling_params = SamplingParams(
+        n=args.n,  # 一次性生成 n 个结果
+        temperature=1.0 if args.n > 1 else 0.0,
+        max_tokens=2048,
+        stop=["<|eot_id|>", "</s>"],
+    )
 
-    print(f"[INFO] Total {len(data)} samples loaded.")
-
-    # ---- 批量推理 (vLLM) 和数据准备 ----
-    all_outputs_texts = []  # 存储所有模型的原始输出文本
-    original_data_all = []  # 存储所有原始数据项（与输出严格对应）
-
+    all_final_results = []
     BATCH_SIZE = args.batch_size
     num_samples = len(data)
 
-    # 使用线程池进行并行数据加载和预处理
     with ThreadPoolExecutor(max_workers=args.num_workers) as executor:
-        for i in tqdm(
-            range(0, num_samples, BATCH_SIZE), desc="Overall Batch Processing"
-        ):
-            # 1. 获取当前批次的原始数据
+        for i in tqdm(range(0, num_samples, BATCH_SIZE), desc="Processing Batches"):
             batch_data = data[i : i + BATCH_SIZE]
-
-            # 2. 并行加载和预处理当前批次的图像和提示
+            
+            # 并行预处理图像和 Prompt
             futures = [
-                executor.submit(
-                    load_and_preprocess_single_item,
-                    item,
-                    image_root,
-                    processor,
-                    prompt_template,
-                    args
-                )
+                executor.submit(load_and_preprocess_single_item, item, image_root, processor, prompt_template, args)
                 for item in batch_data
             ]
+            
+            vllm_inputs = []
+            valid_items = []
+            for idx, future in enumerate(futures):
+                res = future.result()
+                if res:
+                    vllm_inputs.append(res)
+                    valid_items.append(batch_data[idx])
 
-            vllm_inputs_with_original = []
-            for future in futures:
-                result = future.result()
-                if result:
-                    vllm_inputs_with_original.append(result)
-
-            if not vllm_inputs_with_original:
-                print(f"\n[WARN] Batch {i//BATCH_SIZE} has no valid samples. Skipping.")
+            if not vllm_inputs:
                 continue
 
-            # 3. 分离 vLLM 输入和原始数据
-            vllm_inputs = [item_data for item_data in vllm_inputs_with_original]
-            current_original_data = [
-                item_data["original_item"] for item_data in vllm_inputs_with_original
-            ]
+            # -------------------------------------------------------
+            # 核心修改 2: vLLM 推理（每个 prompt 会得到 n 个 output）
+            # -------------------------------------------------------
+            outputs = llm.generate(prompts=vllm_inputs, sampling_params=sampling_params)
+            
+            for item, out in zip(valid_items, outputs):
+                sample_res = {
+                    "images": item["images"],
+                    "question": item["problem"],
+                    "ground_truth": item["answer"],
+                    "is_cf": item.get("is_cf", False),
+                    "type": item.get("type", "unknown"),
+                    "rollouts": []
+                }
+                
+                correct_count = 0
+                # 遍历这 n 个采样结果
+                for r_idx, completion in enumerate(out.outputs):
+                    raw_output = completion.text
+                    gt = item["answer"]
+                    
+                    # 提取与评分
+                    answer = extract_boxed_content(raw_output)
+                    if not args.papo and answer == "None":
+                        answer = raw_output.strip()
+                    
+                    is_correct = grade_answer(answer, gt)
+                    # 额外补正逻辑
+                    if not is_correct and not args.papo and isinstance(answer, str) and ":" in answer:
+                        is_correct = grade_answer(answer.split(":")[0].strip(), gt)
+                    
+                    if is_correct:
+                        correct_count += 1
+                    
+                    # 动态保存每一个 rollout 的结果
+                    sample_res["rollouts"].append({
+                        f"model_output_{r_idx+1}": raw_output,
+                        f"extracted_answer_{r_idx+1}": answer,
+                        f"score_{r_idx+1}": int(is_correct)
+                    })
+                
+                # 计算该样本的平均分 (e.g., 对了 2 次，则是 2/8 = 0.25)
+                sample_res["avg_score"] = correct_count / args.n
+                all_final_results.append(sample_res)
 
-            # 4. vLLM 推理
-            # 定义采样参数
-            sampling_params = SamplingParams(
-                temperature=0.0,
-                max_tokens=2048,
-                stop=["<|eot_id|>", "</s>"],  # 针对 Qwen 系列模型添加停止标记
-            )
+    # ---- 统计与保存 ----
+    totals, sum_avg_scores = defaultdict(int), defaultdict(float)
 
-            # 调用 generate
-            vllm_batch_outputs = llm.generate(
-                prompts=vllm_inputs,
-                sampling_params=sampling_params,
-            )
+    for res in all_final_results:
+        cf_type = "cf" if res["is_cf"] else "ncf"
+        q_type = res["type"]
+        avg_score = res["avg_score"]
 
-            # 5. 提取结果并合并
-            batch_outputs_texts = [out.outputs[0].text for out in vllm_batch_outputs]
-
-            all_outputs_texts.extend(batch_outputs_texts)
-            original_data_all.extend(current_original_data)
-
-            # **重要：手动释放当前批次的内存**
-            # 让 vllm_inputs_with_original, vllm_inputs, current_original_data, vllm_batch_outputs
-            # 以及它们内部的 PIL 图像对象引用超出作用域或显式删除（Python 会自行清理，但显式删除可读性更高）
-            del vllm_inputs_with_original
-            del vllm_inputs
-            del current_original_data
-            del vllm_batch_outputs
-            del batch_outputs_texts
-            # Python 的垃圾回收机制会处理 PIL 图像对象的释放，因为它们现在没有被引用。
-
-    print(
-        f"[INFO] vLLM generation complete. Received {len(all_outputs_texts)} outputs."
-    )
-
-    # ---- 计算准确率并保存 ----
-
-    # 确保我们有对应的数据
-    if len(all_outputs_texts) != len(original_data_all):
-        print(
-            f"CRITICAL ERROR: Mismatch in output count. Expected {len(original_data_all)}, Got {len(all_outputs_texts)}. Using minimum length."
-        )
-        # 尽力而为，截断数据以匹配输出
-        original_data_all = original_data_all[: len(all_outputs_texts)]
-
-    totals, corrects, final_output = defaultdict(int), defaultdict(int), []
-
-    for i, (item, raw_output) in enumerate(zip(original_data_all, all_outputs_texts)):
-        gt = item["answer"]
-        if args.papo:
-            answer = extract_boxed_content(raw_output)
-            is_correct = grade_answer(answer, gt)
-        else:
-            # 使用更稳健的答案提取
-            answer = extract_boxed_content(raw_output)
-            if answer == "None":
-                answer = raw_output.strip()
-            is_correct = grade_answer(answer, gt)
-            # 额外的检查，如您的原始代码所示（可能针对某些特殊情况）
-            if not is_correct and isinstance(answer, str) and ":" in answer:
-                # 假设只取冒号前的部分
-                is_correct = grade_answer(answer.split(":")[0].strip(), gt)
-
-        cf_type = "cf" if item.get("is_cf") else "ncf"
-        q_type = item.get("type", "unknown")
-
-        # 统计数量
         for key in ["all", cf_type, q_type, f"{q_type}_{cf_type}"]:
             totals[key] += 1
-            if is_correct:
-                corrects[key] += 1
+            sum_avg_scores[key] += avg_score
 
-        final_output.append(
-            {
-                "images": item["images"],
-                "question": item["problem"],
-                "is_cf": item.get("is_cf", False),
-                "type": item.get("type", "unknown"),
-                "ground_truth": gt,
-                "model_output": raw_output,
-                "extracted_answer": answer,
-                "correct": int(is_correct),
-            }
-        )
-
-    # ---- 计算准确率 ----
-    print(f"\n--- {dataset_name} 准确率报告 ---")
+    # ---- 计算并打印准确率 ----
+    print(f"\n--- {dataset_name} Avg@{args.n} 准确率报告 ---")
     accuracies = {}
     for key in sorted(totals.keys()):
-        acc = (corrects[key] / totals[key]) * 100 if totals[key] > 0 else 0
-        accuracies[f"{key}_accuracy"] = acc
-        print(f"{key:<12} : {acc:.2f}% ({corrects[key]}/{totals[key]})")
+        # 计算该类别所有样本 avg_score 的平均值
+        final_acc = (sum_avg_scores[key] / totals[key]) * 100 if totals[key] > 0 else 0
+        accuracies[f"{key}_avg@{args.n}_acc"] = final_acc
+        print(f"{key:<12} : {final_acc:.2f}% (Total samples: {totals[key]})")
 
-    # ---- 保存结果 ----
-    suffix = "_COT" if args.cot else ""
+    # ---- 保存详细 JSON ----
+    suffix = f"_avg@{args.n}"
+    if args.cot: suffix += "_COT"
     prefix = f"-{args.model_prefix}" if args.model_prefix else ""
-    filename = f"results_{args.model_name}{prefix}_{dataset_name}{suffix}_vLLM.json"
-    os.makedirs(args.output_dir, exist_ok=True)
+    filename = f"results_{args.model_name}{prefix}_{dataset_name}{suffix}.json"
     output_path = os.path.join(args.output_dir, filename)
 
+    os.makedirs(args.output_dir, exist_ok=True)
     with open(output_path, "w") as f:
-        json.dump({"accuracies": accuracies, "results": final_output}, f, indent=4)
+        json.dump({"accuracies": accuracies, "details": all_final_results}, f, indent=4)
 
-    print(f"\n[INFO] 结果已保存到: {output_path}\n{'-' * 100}")
+    print(f"\n[INFO] 结果已保存到: {output_path}")
 
 
 # ===================== 主流程 =====================
