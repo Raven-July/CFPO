@@ -207,6 +207,10 @@ def compute_advantage(
         advantages, returns = core_algos.compute_grpo_outcome_advantage(
             token_level_rewards, response_mask, index
         )
+    elif adv_estimator == AdvantageEstimator.DAPO:
+        advantages, returns = core_algos.compute_dapo_outcome_advantage(
+            token_level_rewards, response_mask, index
+        )
     elif adv_estimator == AdvantageEstimator.REINFORCE_PLUS_PLUS:
         advantages, returns = core_algos.compute_reinforce_plus_plus_outcome_advantage(
             token_level_rewards, response_mask, gamma

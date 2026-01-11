@@ -5,6 +5,7 @@ import math
 import random
 import argparse
 import warnings
+import logging  # <--- 1. 确保导入 logging
 from collections import defaultdict
 from typing import Optional, Dict, Any
 from PIL import Image
@@ -19,6 +20,11 @@ from vllm import LLM, SamplingParams
 warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 MIN_PIXELS = 200704  # 最小像素数
 MAX_PIXELS = 1003520  # 最大像素数
+
+# 2. [新增] 屏蔽 INFO 级别的日志噪音
+# 如果截图中的日志来自某个特定的 latex 解析库（通常在 tokenizer 内部调用），
+# 也可以尝试把根日志级别设高，或者屏蔽所有非必要的 INFO
+logging.basicConfig(level=logging.ERROR)  # 注意：这可能会影响你自己用 logging 打印的信息
 
 # vLLM 需要这个环境变量
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
@@ -50,8 +56,8 @@ def parse_args():
     parser.add_argument(
         "--batch_size",
         type=int,
-        default=1024,
-        help="BATCH_SIZE for vLLM inference (default: 1024)",
+        default=512,
+        help="BATCH_SIZE for vLLM inference (default: 512)",
     )
     parser.add_argument(
         "--tensor_parallel_size",
@@ -330,7 +336,7 @@ def main():
         model=args.model_path,
         trust_remote_code=True,
         tensor_parallel_size=args.tensor_parallel_size,
-        gpu_memory_utilization=0.8,
+        gpu_memory_utilization=0.6,
         dtype="bfloat16",
     )
     processor = AutoProcessor.from_pretrained(args.model_path, trust_remote_code=True)

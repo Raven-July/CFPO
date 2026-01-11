@@ -181,6 +181,7 @@ images/
 images*
 Counterfactual-Eval/eval_result
 Counterfactual-Eval/eval_result_math_8
+Counterfactual-Eval/eval_result_math_8_dapo
 Counterfactual-Eval/eval_result_math_8''
 Counterfactual-Eval/eval_result_math
 Counterfactual-Eval/eval_result_old

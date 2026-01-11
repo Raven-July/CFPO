@@ -4,15 +4,15 @@ BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
 
 # --- 全局配置 ---
-OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8
+OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8_dapo
 
 MODEL_NAME=Qwen2.5-VL-3B
-MODEL_PREFIX="GRPO-math-202"
-# MODEL_PREFIX=""
+# MODEL_PREFIX="CMCPO-D-math-202"
+MODEL_PREFIX="DAPO-math-150"
 # MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
-# MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-G-H-Qwen2.5-VL-3B
-MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO/global_step_202/actor/huggingface
-# MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V3_ref_noentropy/global_step_304/actor/huggingface
+# MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-D-H-Qwen2.5-VL-3B
+MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_DAPO/global_step_150/actor/huggingface
+# MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_ref_noentropy/global_step_202/actor/huggingface
 
 # --- 配置文件路径 ---
 # 注意：你需要确保这个文件包含所有数据集的配置
