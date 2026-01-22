@@ -184,15 +184,12 @@ def get_rope_index(
 
 
 def GMM_mask(
-    saliency,
+    sig,
+    thres_mode,
     valid_mask=None,  # <--- 新增参数：只统计有效部分
-    trim=False,
     head_wise=False,
-    token_wise=False,
-    high_thres=True,
-    low_thres=False,
 ):
-    data = saliency
+    data = sig
     
     # 如果没有传入 valid_mask，默认全部非零元素有效，或者全部有效
     if valid_mask is None:
@@ -205,65 +202,58 @@ def GMM_mask(
     # 防止全是0的情况导致 NaN
     if valid_data.numel() == 0:
         return torch.zeros_like(data), torch.tensor(0.0), torch.tensor(0.0)
-
-    if trim:
-        # 原逻辑 trim 比较特殊，这里暂且保留原意，但在 valid_data 上操作
-        # 注意：trim 逻辑在 mask 之后比较难直接对齐，建议结合 valid_mask 使用
-        # 这里简化处理：直接用 valid_data 算统计量
+    
+    # 注意：如果 head_wise=True，我们需要保持维度进行计算
+    # 但由于 valid_mask 可能是不规则形状，直接用 masked_select 会展平
+    # 针对 EasyR1 这种 Packed 场景，最稳健的方法是计算 Global scalar mean 或者小心处理维度
+    # 为了兼容你原来的逻辑，我们这里做“有效元素的统计”
+    
+    if head_wise:
+        # 这种情况下比较复杂，因为每个 head 的有效 token 数量可能不同
+        # 我们可以用 mask 后的 sum / count 来计算
+        
+        # 将 mask 广播到 data 形状
+        if valid_mask.ndim < data.ndim:
+            valid_mask = valid_mask.expand_as(data)
+            
+        # Count per head (dim 0, 2, 3) -> (bsz, num_heads, 1, 1)
+        # sum over q_len (dim 2) and k_len (dim 3)
+        valid_count = valid_mask.sum(dim=(0, 2, 3), keepdim=True).clamp(min=1.0)
+        
+        # Sum of values
+        valid_sum = (data * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
+        mean = valid_sum / valid_count
+        
+        # Std calculation (standard deviation formula)
+        # E[x^2] - (E[x])^2
+        valid_sum_sq = ((data ** 2) * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
+        mean_sq = valid_sum_sq / valid_count
+        std = torch.sqrt((mean_sq - mean ** 2).clamp(min=1e-10))
+    else:
+        # 全局统计
         mean = torch.mean(valid_data)
         std = torch.std(valid_data)
-    else:
-        # 注意：如果 head_wise=True，我们需要保持维度进行计算
-        # 但由于 valid_mask 可能是不规则形状，直接用 masked_select 会展平
-        # 针对 EasyR1 这种 Packed 场景，最稳健的方法是计算 Global scalar mean 或者小心处理维度
-        # 为了兼容你原来的逻辑，我们这里做“有效元素的统计”
-        
-        if head_wise:
-            # 这种情况下比较复杂，因为每个 head 的有效 token 数量可能不同
-            # 我们可以用 mask 后的 sum / count 来计算
-            
-            # 将 mask 广播到 data 形状
-            if valid_mask.ndim < data.ndim:
-                valid_mask = valid_mask.expand_as(data)
-                
-            # Count per head (dim 0, 2, 3) -> (bsz, num_heads, 1, 1)
-            # sum over q_len (dim 2) and k_len (dim 3)
-            valid_count = valid_mask.sum(dim=(0, 2, 3), keepdim=True).clamp(min=1.0)
-            
-            # Sum of values
-            valid_sum = (data * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
-            mean = valid_sum / valid_count
-            
-            # Std calculation (standard deviation formula)
-            # E[x^2] - (E[x])^2
-            valid_sum_sq = ((data ** 2) * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
-            mean_sq = valid_sum_sq / valid_count
-            std = torch.sqrt((mean_sq - mean ** 2).clamp(min=1e-10))
-            
-        elif token_wise:
-             # 类似逻辑，针对 token 维度
-             pass # 暂略，逻辑同上
-        else:
-            # 全局统计
-            mean = torch.mean(valid_data)
-            std = torch.std(valid_data)
 
-    if high_thres:
+    if thres_mode == "high":
         thres = mean + 2 * std
-    elif low_thres:
-        thres = mean - std
-    else:
+    elif thres_mode == "medium":
+        thres = mean + std
+    elif thres_mode == "low":
         thres = mean
+    elif thres_mode == "extra":
+        thres = mean + 3 * std
+    else:
+        raise ValueError(f"Unknown thres_mode: {thres_mode}")
 
     # 生成 mask (基于原始 data 形状)
-    mask = (saliency > thres).float()
+    mask = (sig > thres).float()
     
     # 重要：再次应用 valid_mask，确保被 Mask 掉的区域（如 Padding 或 其他样本）强制为 0
     if valid_mask is not None:
         mask = mask * valid_mask.float()
-    # 计算saliency > thres的比例
-    # ratio = torch.mean((saliency > thres).float()).item()
-    # print(f"比例 (saliency > thres): {ratio:.4f} ({ratio*100:.2f}%)")
+    # 计算sig > thres的比例
+    # ratio = torch.mean((sig > thres).float()).item()
+    # print(f"比例 (sig > thres): {ratio:.4f} ({ratio*100:.2f}%)")
     return mask, mean, std
 
 
@@ -271,6 +261,7 @@ def values_noise_multiply(
     attn_weights,
     image_pos, 
     value_states,
+    thres_mode
 ):
     bsz, num_heads, q_len, k_len = attn_weights.shape
     head_dim = value_states.shape[-1]
@@ -321,7 +312,7 @@ def values_noise_multiply(
                     
                     # 只有当切片内有有效值时才计算，否则全0
                     if valid_slice_mask.any():
-                        mask, _, _ = GMM_mask(img_attn_slice, valid_mask=valid_slice_mask)
+                        mask, _, _ = GMM_mask(img_attn_slice, valid_mask=valid_slice_mask, thres_mode=thres_mode)
                         final_mask[i : i + 1, :, end:, start:end] = mask
 
     final_mask = final_mask.to(value_states.dtype)
@@ -339,6 +330,7 @@ def qwen2_vl_attn_forward(
     ] = None,  # will become mandatory in v4.46
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
+    thres_mode: str = None,  # <-- 新增参数，阈值模式
     **kwargs,
 ) -> Tuple[torch.Tensor, None, None]:
     # print("qwen2_vl_attn_forward:" + str(apply_cmve))
@@ -400,7 +392,7 @@ def qwen2_vl_attn_forward(
         )
 
         final_mask, ave_value_states = values_noise_multiply(
-            attn_weights, image_pos, value_states
+            attn_weights, image_pos, value_states, thres_mode
         )
 
         delta_v = ave_value_states - value_states
@@ -569,6 +561,7 @@ def qwen2_vl_base_forward_new(
     video_grid_thw: Optional[torch.LongTensor] = None,
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
+    thres_mode: str = None,  # <-- 新增参数，阈值模式
     **kwargs,
 ):
     # print("qwen2_vl_base_forward_new:" + str(apply_cmve))
@@ -588,6 +581,7 @@ def qwen2_vl_base_forward_new(
         inputs_embeds=inputs_embeds,
         apply_cmve=apply_cmve,  # <-- 传递标志
         image_pos=image_pos,
+        thres_mode=thres_mode,
         **kwargs,
     )
 
@@ -611,9 +605,11 @@ def qwen2_vl_forward_new(
     image_grid_thw: Optional[torch.LongTensor] = None,
     video_grid_thw: Optional[torch.LongTensor] = None,
     alpha: float = 1,  # <-- CMVE 强度系数
+    thres_mode: str = None,  # <-- 新增参数，阈值模式
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
     print("THIS IS CMVE FORWARD")
+    print("Using thres_mode:", thres_mode)
     # --- START: 修正 image_pos 生成逻辑 (支持多图) ---
     image_pos = []  # 结构变为 List[List[dict]]
 
@@ -683,6 +679,7 @@ def qwen2_vl_forward_new(
         attention_mask=attention_mask,
         apply_cmve=True,  # <-- 触发变化 A
         image_pos=image_pos,  # <-- 传递图像位置
+        thres_mode=thres_mode,  # <-- 可以调整阈值模式
         **kwargs,
     )
     hidden_states_cf = outputs_mod[0]
@@ -722,6 +719,7 @@ def qwen2_vl_language_forward_new(
     cache_position: Optional[torch.LongTensor] = None,
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
+    thres_mode: str = None,  # <-- 新增参数，阈值模式
     **kwargs,
 ) -> Union[Tuple, BaseModelOutputWithPast]:
     # print("qwen2_vl_language_forward_new:" + str(apply_cmve))
@@ -811,6 +809,7 @@ def qwen2_vl_language_forward_new(
                 position_embeddings,
                 apply_cmve,  # <-- 传递标志
                 image_pos,
+                thres_mode,
                 **kwargs,
             )
         else:
@@ -825,6 +824,7 @@ def qwen2_vl_language_forward_new(
                 position_embeddings=position_embeddings,
                 apply_cmve=apply_cmve,  # <-- 传递标志
                 image_pos=image_pos,
+                thres_mode=thres_mode,
                 **kwargs,
             )
 
@@ -872,6 +872,7 @@ def qwen2_vl_decoder_forward_new(
     ] = None,  # necessary, but kept here for BC
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
+    thres_mode: str = None,  # <-- 新增参数，阈值模式
     **kwargs,
 ) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]:
     # print("qwen2_vl_decoder_forward_new:" + str(apply_cmve))
@@ -892,6 +893,7 @@ def qwen2_vl_decoder_forward_new(
         position_embeddings=position_embeddings,
         apply_cmve=apply_cmve,  # <-- 传递标志
         image_pos=image_pos,  # <-- 传递图像位置
+        thres_mode=thres_mode,  # <-- 传递阈值模式
         **kwargs,
     )
     hidden_states = residual + hidden_states

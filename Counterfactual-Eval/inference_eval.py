@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor  # 引入线程池
 
 from tqdm import tqdm
 from transformers import AutoProcessor
-from mathruler.grader import grade_answer,extract_boxed_content
+from mathruler.grader import grade_answer, extract_boxed_content
 from vllm import LLM, SamplingParams
 
 # ----------------- 全局配置 -----------------
@@ -24,7 +24,9 @@ MAX_PIXELS = 1003520  # 最大像素数
 # 2. [新增] 屏蔽 INFO 级别的日志噪音
 # 如果截图中的日志来自某个特定的 latex 解析库（通常在 tokenizer 内部调用），
 # 也可以尝试把根日志级别设高，或者屏蔽所有非必要的 INFO
-logging.basicConfig(level=logging.ERROR)  # 注意：这可能会影响你自己用 logging 打印的信息
+logging.basicConfig(
+    level=logging.ERROR
+)  # 注意：这可能会影响你自己用 logging 打印的信息
 
 # vLLM 需要这个环境变量
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
@@ -49,9 +51,7 @@ def parse_args():
     parser.add_argument(
         "--cot", action="store_true", help="是否启用 CoT（链式思维）推理"
     )
-    parser.add_argument(
-        "--papo", action="store_true", help="是否使用papo测试"
-    )
+    parser.add_argument("--papo", action="store_true", help="是否使用papo测试")
     # 显著减小默认值，因为大数据集的图像加载会爆 RAM
     parser.add_argument(
         "--batch_size",
@@ -72,7 +72,10 @@ def parse_args():
         help="用于并行数据加载的线程数",
     )
     parser.add_argument(
-        "--n", type=int, default=1, help="Total number of attempts per sample (acc@n). If n > 1, temperature will be set to 1.0 automatically."
+        "--n",
+        type=int,
+        default=1,
+        help="Total number of attempts per sample (acc@n). If n > 1, temperature will be set to 1.0 automatically.",
     )
     return parser.parse_args()
 
@@ -146,7 +149,12 @@ def load_and_preprocess_single_item(
         if part:
             content_list.append({"type": "text", "text": part})
     if args.papo:
-        content_list.append({"type": "text", "text": "You first think through the reasoning process as an internal monologue, enclosed within <think> </think> tags. Then, provide your final answer enclosed within \\boxed{}."})
+        content_list.append(
+            {
+                "type": "text",
+                "text": "You first think through the reasoning process as an internal monologue, enclosed within <think> </think> tags. Then, provide your final answer enclosed within \\boxed{}.",
+            }
+        )
         messages_for_item = [
             {"role": "user", "content": content_list},
         ]
@@ -192,13 +200,13 @@ def run_evaluation(
         "and then provide the final answer. "
         "The reasoning process MUST BE enclosed within <think> </think> tags. "
         "The final answer MUST BE put in \\boxed{}."
-        if args.cot else 
-        "The user asks a question, and then you solve it based on the images provided. "
+        if args.cot
+        else "The user asks a question, and then you solve it based on the images provided. "
         "Please directly give out the final answer, which MUST BE put in \\boxed{}"
     )
 
     print(f"\n[INFO] Starting evaluation for dataset: **{dataset_name}**")
-    
+
     with open(ds_path, "r") as f:
         data = json.load(f)
 
@@ -219,13 +227,20 @@ def run_evaluation(
     with ThreadPoolExecutor(max_workers=args.num_workers) as executor:
         for i in tqdm(range(0, num_samples, BATCH_SIZE), desc="Processing Batches"):
             batch_data = data[i : i + BATCH_SIZE]
-            
+
             # 并行预处理图像和 Prompt
             futures = [
-                executor.submit(load_and_preprocess_single_item, item, image_root, processor, prompt_template, args)
+                executor.submit(
+                    load_and_preprocess_single_item,
+                    item,
+                    image_root,
+                    processor,
+                    prompt_template,
+                    args,
+                )
                 for item in batch_data
             ]
-            
+
             vllm_inputs = []
             valid_items = []
             for idx, future in enumerate(futures):
@@ -241,7 +256,7 @@ def run_evaluation(
             # 核心修改 2: vLLM 推理（每个 prompt 会得到 n 个 output）
             # -------------------------------------------------------
             outputs = llm.generate(prompts=vllm_inputs, sampling_params=sampling_params)
-            
+
             for item, out in zip(valid_items, outputs):
                 sample_res = {
                     "images": item["images"],
@@ -249,35 +264,57 @@ def run_evaluation(
                     "ground_truth": item["answer"],
                     "is_cf": item.get("is_cf", False),
                     "type": item.get("type", "unknown"),
-                    "rollouts": []
+                    "rollouts": [],
                 }
-                
+
                 correct_count = 0
                 # 遍历这 n 个采样结果
                 for r_idx, completion in enumerate(out.outputs):
                     raw_output = completion.text
-                    gt = item["answer"]
-                    
                     # 提取与评分
                     answer = extract_boxed_content(raw_output)
                     if not args.papo and answer == "None":
                         answer = raw_output.strip()
-                    
-                    is_correct = grade_answer(answer, gt)
-                    # 额外补正逻辑
-                    if not is_correct and not args.papo and isinstance(answer, str) and ":" in answer:
-                        is_correct = grade_answer(answer.split(":")[0].strip(), gt)
-                    
+
+                    gt = item["answer"]
+                    if isinstance(gt, list):
+                        for gt_single in gt:
+                            is_correct = grade_answer(answer, gt_single)
+                            # 额外补正逻辑
+                            if (
+                                not is_correct
+                                and not args.papo
+                                and isinstance(answer, str)
+                                and ":" in answer
+                            ):
+                                is_correct = grade_answer(
+                                    answer.split(":")[0].strip(), gt_single
+                                )
+                            if is_correct:
+                                break
+                    else:
+                        is_correct = grade_answer(answer, gt)
+                        # 额外补正逻辑
+                        if (
+                            not is_correct
+                            and not args.papo
+                            and isinstance(answer, str)
+                            and ":" in answer
+                        ):
+                            is_correct = grade_answer(answer.split(":")[0].strip(), gt)
+
                     if is_correct:
                         correct_count += 1
-                    
+
                     # 动态保存每一个 rollout 的结果
-                    sample_res["rollouts"].append({
-                        f"model_output_{r_idx+1}": raw_output,
-                        f"extracted_answer_{r_idx+1}": answer,
-                        f"score_{r_idx+1}": int(is_correct)
-                    })
-                
+                    sample_res["rollouts"].append(
+                        {
+                            f"model_output_{r_idx+1}": raw_output,
+                            f"extracted_answer_{r_idx+1}": answer,
+                            f"score_{r_idx+1}": int(is_correct),
+                        }
+                    )
+
                 # 计算该样本的平均分 (e.g., 对了 2 次，则是 2/8 = 0.25)
                 sample_res["avg_score"] = correct_count / args.n
                 all_final_results.append(sample_res)
@@ -305,7 +342,8 @@ def run_evaluation(
 
     # ---- 保存详细 JSON ----
     suffix = f"_avg@{args.n}"
-    if args.cot: suffix += "_COT"
+    if args.cot:
+        suffix += "_COT"
     prefix = f"-{args.model_prefix}" if args.model_prefix else ""
     filename = f"results_{args.model_name}{prefix}_{dataset_name}{suffix}.json"
     output_path = os.path.join(args.output_dir, filename)

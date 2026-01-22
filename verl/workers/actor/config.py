@@ -29,6 +29,7 @@ class ModelConfig:
     trust_remote_code: bool = True
     freeze_vision_tower: bool = False
     apply_cmve: bool = False
+    thres_mode: str = "high"  # low, medium, high, extra
 
     def post_init(self):
         if self.tokenizer_path is None:

@@ -231,6 +231,7 @@ class FSDPWorker(Worker):
             self.print_rank0("Ulysses patch applied!")
             self.print_rank0("CMVE set to False by default")
         self.apply_cmve = model_config.apply_cmve
+        self.thres_mode = model_config.thres_mode
 
         if fsdp_config.torch_dtype is None:
             torch_dtype = torch.float32 if role != "ref" else torch.bfloat16
@@ -708,7 +709,7 @@ class FSDPWorker(Worker):
         # perform recompute log_prob
 
         if self.apply_cmve:
-            apply_ulysses_patch(self.model_config.model_type, self.apply_cmve)
+            apply_ulysses_patch(self.model_config.model_type, self.apply_cmve, self.thres_mode)
             self.print_rank0(
                 f"CMVE set to {self.apply_cmve} for old actor CMVE logprob"
             )

@@ -182,8 +182,12 @@ images*
 Counterfactual-Eval/eval_result
 Counterfactual-Eval/eval_result_math_8
 Counterfactual-Eval/eval_result_math_8_dapo
-Counterfactual-Eval/eval_result_math_8''
+Counterfactual-Eval/eval_result_math_8
 Counterfactual-Eval/eval_result_math
 Counterfactual-Eval/eval_result_old
 Counterfactual-Eval/eval_result_mixed_old
 Counterfactual-Eval/eval_result_math_boxed
+Counterfactual-Eval/eval_result_math_8_dapo_secondary
+Counterfactual-Eval/eval_result_vqas
+Counterfactual-Eval/eval_result_vqas_secondary
+Counterfactual-Eval/eval_result_8_dapo

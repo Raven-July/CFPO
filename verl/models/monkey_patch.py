@@ -19,17 +19,17 @@ from ..utils.py_functional import is_transformers_version_greater_than
 from .transformers.flash_attention_utils import flash_attention_forward
 
 
-def make_forward_with_default(func, default_a=1):
+def make_forward_with_default(func, thres_mode="high"):
     def wrapper(self, *args, **kwargs):
         # 如果用户没有传 a，就用默认值
-        if "a" not in kwargs:
-            kwargs["a"] = default_a
+        if "thres_mode" not in kwargs:
+            kwargs["thres_mode"] = thres_mode
         return func(self, *args, **kwargs)
 
     return wrapper
 
 
-def apply_ulysses_patch(model_type: str, apply_cmve: bool) -> None:
+def apply_ulysses_patch(model_type: str, apply_cmve: bool, thres_mode="high") -> None:
 
     if model_type in (
         "llama",
@@ -101,10 +101,10 @@ def apply_ulysses_patch(model_type: str, apply_cmve: bool) -> None:
                 Qwen2VLModel.forward = qwen2_vl_base_forward_new
                 Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
                 Qwen2VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, default_a=1
+                    qwen2_vl_forward_new, thres_mode=thres_mode
                 )
                 Qwen2_5_VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, default_a=1
+                    qwen2_vl_forward_new, thres_mode=thres_mode
                 )
                 Qwen2VLTextModel.forward = qwen2_vl_language_forward_new
                 Qwen2_5_VLTextModel.forward = qwen2_vl_language_forward_new
