@@ -299,9 +299,11 @@ def run_evaluation(
                             not is_correct
                             and not args.papo
                             and isinstance(answer, str)
-                            and ":" in answer
-                        ):
-                            is_correct = grade_answer(answer.split(":")[0].strip(), gt)
+                            ):
+                            if ":" in answer:
+                                is_correct = grade_answer(answer.split(":")[0].strip(), gt)
+                            elif answer=="No.":
+                                is_correct = grade_answer("No", gt)
 
                     if is_correct:
                         correct_count += 1

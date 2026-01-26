@@ -63,5 +63,35 @@
         "dataset_name": "C-VQA-Synthetic",
         "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/C-VQA-Synthetic_test.json",
         "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/C-VQA-Synthetic_images"
+    },
+    {
+        "dataset_name": "TextVQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/Textvqa_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/Textvqa_images"
+    },
+    {
+        "dataset_name": "DoCVQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/Docvqa_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/Docvqa_images"
+    },
+    {
+        "dataset_name": "InfographicVQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/Infovqa_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/Infovqa_images"
+    },
+    {
+        "dataset_name": "ChartVQA",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/ChartQA_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/ChartQA_images"
+    },
+    {
+        "dataset_name": "MME",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MME_test_fixed.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MME_images_fixed"
+    },
+    {
+        "dataset_name": "MMEBench",
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MMEBench_test.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MMEBench_images"
     }
 ]

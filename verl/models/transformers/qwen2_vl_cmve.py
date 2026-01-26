@@ -182,6 +182,30 @@ def get_rope_index(
 
     return position_ids
 
+def add_diffusion_noise(image_tensor, noise_step, gamma = 0.005):
+    num_steps = 1000  # Number of diffusion steps
+
+    # decide beta in each step
+    betas = torch.linspace(-6,6,num_steps)
+    betas = torch.sigmoid(betas) * (gamma - 1e-5) + 1e-5
+
+    # decide alphas in each step
+    alphas = 1 - betas
+    alphas_prod = torch.cumprod(alphas, dim=0)
+    alphas_bar_sqrt = torch.sqrt(alphas_prod)
+    one_minus_alphas_bar_sqrt = torch.sqrt(1 - alphas_prod)
+    # import pdb;pdb.set_trace()
+
+    def q_x(x_0,t):
+        noise = torch.randn_like(x_0)
+        alphas_t = alphas_bar_sqrt[t]
+        alphas_1_m_t = one_minus_alphas_bar_sqrt[t]
+        return (alphas_t*x_0 + alphas_1_m_t*noise)
+
+    noisy_image = image_tensor.clone()
+    image_tensor_cd = q_x(noisy_image,noise_step) 
+
+    return image_tensor_cd
 
 def GMM_mask(
     sig,
@@ -261,7 +285,8 @@ def values_noise_multiply(
     attn_weights,
     image_pos, 
     value_states,
-    thres_mode
+    thres_mode,
+    noise
 ):
     bsz, num_heads, q_len, k_len = attn_weights.shape
     head_dim = value_states.shape[-1]
@@ -273,21 +298,25 @@ def values_noise_multiply(
     # <Paste your Step 1 code here>
     # --------------------------------------------------------
     # 重新构建 Step 1 (为了完整性，快速写一个带 Mask 的 Mean 计算)
-    value_mask = torch.zeros((bsz, k_len), dtype=torch.bool, device=value_states.device)
-    num_tokens_per_item = torch.zeros((bsz, 1), dtype=value_states.dtype, device=value_states.device)
-    for i, intervals in enumerate(image_pos):
-        count = 0
-        for interval in intervals:
-            start, end = interval["image_token_start"], interval["image_token_end"]
-            if start < k_len and end <= k_len:
-                value_mask[i, start:end] = True
-                count += end - start
-        num_tokens_per_item[i] = max(count, 1.0)
-    
-    value_mask_expanded = value_mask.view(bsz, 1, k_len, 1).expand_as(value_states)
-    masked_values = value_states.where(value_mask_expanded, torch.tensor(0.0, dtype=value_states.dtype, device=value_states.device))
-    mean = torch.sum(masked_values, dim=(2, 3), keepdim=True) / (num_tokens_per_item.view(bsz, 1, 1, 1) * head_dim)
-    noise_value_states = mean.expand_as(value_states)
+    if noise:
+        noise_value_states = add_diffusion_noise(value_states.clone(), 999, 0.01)
+        print("actually added noise!")
+    else:
+        value_mask = torch.zeros((bsz, k_len), dtype=torch.bool, device=value_states.device)
+        num_tokens_per_item = torch.zeros((bsz, 1), dtype=value_states.dtype, device=value_states.device)
+        for i, intervals in enumerate(image_pos):
+            count = 0
+            for interval in intervals:
+                start, end = interval["image_token_start"], interval["image_token_end"]
+                if start < k_len and end <= k_len:
+                    value_mask[i, start:end] = True
+                    count += end - start
+            num_tokens_per_item[i] = max(count, 1.0)
+        
+        value_mask_expanded = value_mask.view(bsz, 1, k_len, 1).expand_as(value_states)
+        masked_values = value_states.where(value_mask_expanded, torch.tensor(0.0, dtype=value_states.dtype, device=value_states.device))
+        mean = torch.sum(masked_values, dim=(2, 3), keepdim=True) / (num_tokens_per_item.view(bsz, 1, 1, 1) * head_dim)
+        noise_value_states = mean.expand_as(value_states)
     # --------------------------------------------------------
 
     # --- 2. 循环计算 final_mask (核心修改) ---
@@ -331,6 +360,7 @@ def qwen2_vl_attn_forward(
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     thres_mode: str = None,  # <-- 新增参数，阈值模式
+    noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     **kwargs,
 ) -> Tuple[torch.Tensor, None, None]:
     # print("qwen2_vl_attn_forward:" + str(apply_cmve))
@@ -392,7 +422,7 @@ def qwen2_vl_attn_forward(
         )
 
         final_mask, ave_value_states = values_noise_multiply(
-            attn_weights, image_pos, value_states, thres_mode
+            attn_weights, image_pos, value_states, thres_mode, noise
         )
 
         delta_v = ave_value_states - value_states
@@ -562,6 +592,7 @@ def qwen2_vl_base_forward_new(
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     thres_mode: str = None,  # <-- 新增参数，阈值模式
+    noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     **kwargs,
 ):
     # print("qwen2_vl_base_forward_new:" + str(apply_cmve))
@@ -582,6 +613,7 @@ def qwen2_vl_base_forward_new(
         apply_cmve=apply_cmve,  # <-- 传递标志
         image_pos=image_pos,
         thres_mode=thres_mode,
+        noise=noise,
         **kwargs,
     )
 
@@ -606,10 +638,11 @@ def qwen2_vl_forward_new(
     video_grid_thw: Optional[torch.LongTensor] = None,
     alpha: float = 1,  # <-- CMVE 强度系数
     thres_mode: str = None,  # <-- 新增参数，阈值模式
+    noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
     print("THIS IS CMVE FORWARD")
-    print("Using thres_mode:", thres_mode)
+    print("Using thres_mode:", thres_mode, " Using noise:", noise)
     # --- START: 修正 image_pos 生成逻辑 (支持多图) ---
     image_pos = []  # 结构变为 List[List[dict]]
 
@@ -680,6 +713,7 @@ def qwen2_vl_forward_new(
         apply_cmve=True,  # <-- 触发变化 A
         image_pos=image_pos,  # <-- 传递图像位置
         thres_mode=thres_mode,  # <-- 可以调整阈值模式
+        noise=noise,
         **kwargs,
     )
     hidden_states_cf = outputs_mod[0]
@@ -720,6 +754,7 @@ def qwen2_vl_language_forward_new(
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     thres_mode: str = None,  # <-- 新增参数，阈值模式
+    noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     **kwargs,
 ) -> Union[Tuple, BaseModelOutputWithPast]:
     # print("qwen2_vl_language_forward_new:" + str(apply_cmve))
@@ -810,6 +845,7 @@ def qwen2_vl_language_forward_new(
                 apply_cmve,  # <-- 传递标志
                 image_pos,
                 thres_mode,
+                noise,
                 **kwargs,
             )
         else:
@@ -825,6 +861,7 @@ def qwen2_vl_language_forward_new(
                 apply_cmve=apply_cmve,  # <-- 传递标志
                 image_pos=image_pos,
                 thres_mode=thres_mode,
+                noise=noise,
                 **kwargs,
             )
 
@@ -873,6 +910,7 @@ def qwen2_vl_decoder_forward_new(
     apply_cmve: bool = False,  # <-- 新增标志（默认 False）
     image_pos: Optional[List[dict]] = None,  # <-- 新增参数，图像位置
     thres_mode: str = None,  # <-- 新增参数，阈值模式
+    noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     **kwargs,
 ) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]:
     # print("qwen2_vl_decoder_forward_new:" + str(apply_cmve))
@@ -894,6 +932,7 @@ def qwen2_vl_decoder_forward_new(
         apply_cmve=apply_cmve,  # <-- 传递标志
         image_pos=image_pos,  # <-- 传递图像位置
         thres_mode=thres_mode,  # <-- 传递阈值模式
+        noise=noise,  # <-- 传递是否添加噪声
         **kwargs,
     )
     hidden_states = residual + hidden_states

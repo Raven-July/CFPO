@@ -4,15 +4,15 @@ BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
 
 # --- 全局配置 ---
-OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_vqas
+OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8_dapo_exper
 
 MODEL_NAME=Qwen2.5-VL-3B
-# MODEL_PREFIX="CMCPO-D-orientropy-lowcoef-math-202"
-MODEL_PREFIX="PAPO-D"
+MODEL_PREFIX="CMCPO-D-douentropy-lowcoef-math-202"
+# MODEL_PREFIX="PAPO-D"
 # MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
-MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-D-H-Qwen2.5-VL-3B
+# MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-D-H-Qwen2.5-VL-3B
+MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_douentropy_lowcoef/global_step_202/actor/huggingface
 # MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_orientropy_lowcoef/global_step_202/actor/huggingface
-# MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO_V3_ref_noentropy/global_step_304/actor/huggingface
 
 # --- 配置文件路径 ---
 # 注意：你需要确保这个文件包含所有数据集的配置
@@ -32,7 +32,7 @@ python inference_eval.py \
     --config_path "$TEMP_CONFIG_PATH" \
     --output_dir "$OUTPUT_DIR" \
     --n 8 \
-    --papo  
+    --cot  
 
 # --- 清理临时文件 ---
 rm "${TEMP_CONFIG_PATH}"

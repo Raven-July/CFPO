@@ -30,6 +30,7 @@ class ModelConfig:
     freeze_vision_tower: bool = False
     apply_cmve: bool = False
     thres_mode: str = "high"  # low, medium, high, extra
+    noise: bool = False  # whether to apply noise
 
     def post_init(self):
         if self.tokenizer_path is None:

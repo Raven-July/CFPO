@@ -191,3 +191,6 @@ Counterfactual-Eval/eval_result_math_8_dapo_secondary
 Counterfactual-Eval/eval_result_vqas
 Counterfactual-Eval/eval_result_vqas_secondary
 Counterfactual-Eval/eval_result_8_dapo
+Counterfactual-Eval/eval_result_math_8_grpo_exper
+Counterfactual-Eval/eval_result_math_8_base
+Counterfactual-Eval/eval_result_math_8_dapo_exper

@@ -21,8 +21,8 @@
     },
     {
         "dataset_name": "MME",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MME_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MME_images"
+        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MME_test_fixed.json",
+        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MME_images_fixed"
     },
     {
         "dataset_name": "MMEBench",
