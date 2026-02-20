@@ -4,14 +4,14 @@ BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval
 
 # --- 全局配置 ---
-OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8_dapo_exper
+OUTPUT_DIR=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/Counterfactual-Eval/eval_result_math_8_grpo_exper
 
 MODEL_NAME=Qwen2.5-VL-3B
-MODEL_PREFIX="CMCPO-D-douentropy-lowcoef-math-202"
+MODEL_PREFIX="CMCPO-G-orientropy-math-202"
 # MODEL_PREFIX="PAPO-D"
 # MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct
 # MODEL_PATH=${BASE_PATH}/Pretrained/PAPO-D-H-Qwen2.5-VL-3B
-MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_douentropy_lowcoef/global_step_202/actor/huggingface
+MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy/global_step_202/actor/huggingface
 # MODEL_PATH=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_orientropy_lowcoef/global_step_202/actor/huggingface
 
 # --- 配置文件路径 ---

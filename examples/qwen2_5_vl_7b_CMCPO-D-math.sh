@@ -9,14 +9,14 @@ export SWANLAB_MODE='local'
 
 BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
 
-MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
+MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-7B-Instruct  # replace it with your local file path
 
-KL_CMVE_COEF=0.02
+KL_CMVE_COEF=0.01
 
 ## Double Entropy Loss
 USE_CMVE_ENTROPY_LOSS=false
 CMVE_ENTROPY_LOSS_COEF=0.03
-USE_ORI_ENTROPY_LOSS=True
+USE_ORI_ENTROPY_LOSS=true
 ORI_ENTROPY_LOSS_COEF=0.03
 
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1
@@ -45,6 +45,7 @@ python3 -m verl.trainer.main \
     data.val_batch_size=512 \
     data.min_pixels=200704 \
     data.max_pixels=1003520 \
+    data.mini_rollout_batch_size=128 \
     worker.actor.global_batch_size=128 \
     worker.actor.micro_batch_size_per_device_for_update=4 \
     worker.actor.micro_batch_size_per_device_for_experience=8 \
@@ -61,16 +62,24 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=True \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy \
+    trainer.experiment_name=qwen2_5_vl_7b_CMCPO-D-math-bs384_V3_noref_orientropy_lowcoef \
     trainer.logger=['console','swanlab'] \
-    trainer.n_gpus_per_node=2 \
+    trainer.n_gpus_per_node=4 \
     trainer.val_generations_to_log=30 \
     trainer.total_epochs=2 \
     trainer.val_freq=5 \
     trainer.save_freq=50 \
     trainer.save_limit=5 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy \
-    trainer.load_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy/global_step_150 \
+    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_7b_CMCPO-D-math-bs384_V3_noref_orientropy_lowcoef \
+    worker.actor.clip_ratio_low=0.2 \
+    worker.actor.clip_ratio_high=0.28 \
+    algorithm.disable_kl=true \
+    algorithm.adv_estimator=dapo \
+    algorithm.kl_coef=0.0 \
+    algorithm.online_filtering=true \
+    algorithm.filter_key=accuracy \
+    algorithm.filter_low=0.01 \
+    algorithm.filter_high=0.99 \
     algorithm.use_kl_cmve=True \
     algorithm.kl_cmve_penalty=low_var_kl \
     algorithm.kl_cmve_schedule=fixed \

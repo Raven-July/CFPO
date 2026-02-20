@@ -31,6 +31,7 @@ class ModelConfig:
     apply_cmve: bool = False
     thres_mode: str = "high"  # low, medium, high, extra
     noise: bool = False  # whether to apply noise
+    mean_mode: str = "image"  # image, text
 
     def post_init(self):
         if self.tokenizer_path is None:

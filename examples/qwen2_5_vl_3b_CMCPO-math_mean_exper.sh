@@ -16,7 +16,7 @@ KL_CMVE_COEF=0.02
 ## Double Entropy Loss
 USE_CMVE_ENTROPY_LOSS=false
 CMVE_ENTROPY_LOSS_COEF=0.03
-USE_ORI_ENTROPY_LOSS=True
+USE_ORI_ENTROPY_LOSS=false
 ORI_ENTROPY_LOSS_COEF=0.03
 
 cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1
@@ -51,6 +51,7 @@ python3 -m verl.trainer.main \
     worker.actor.model.model_path=${MODEL_PATH} \
     worker.actor.model.enable_gradient_checkpointing=True \
     worker.actor.model.apply_cmve=True \
+    worker.actor.model.mean_mode=text \
     worker.actor.fsdp.torch_dtype=bf16 \
     worker.actor.optim.strategy=adamw_bf16 \
     worker.actor.optim.lr=1e-6 \
@@ -61,7 +62,7 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=True \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy \
+    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_noentropy_text \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=30 \
@@ -69,8 +70,7 @@ python3 -m verl.trainer.main \
     trainer.val_freq=5 \
     trainer.save_freq=50 \
     trainer.save_limit=5 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy \
-    trainer.load_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_orientropy/global_step_150 \
+    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-G-math-bs384_V3_ref_noentropy_text \
     algorithm.use_kl_cmve=True \
     algorithm.kl_cmve_penalty=low_var_kl \
     algorithm.kl_cmve_schedule=fixed \
