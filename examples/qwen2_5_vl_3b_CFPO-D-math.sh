@@ -4,35 +4,39 @@ set -x
 
 export PYTHONUNBUFFERED=1
 
-export SWANLAB_DIR='/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/train_logs'
+export SWANLAB_DIR='/Counterfact-Projects/train_logs'
 export SWANLAB_MODE='local'
 
-BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
-
-MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
+MODEL_PATH=/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
 
 KL_CMVE_COEF=0.01
 
 ## Double Entropy Loss
-USE_CMVE_ENTROPY_LOSS=true
+USE_CMVE_ENTROPY_LOSS=false
 CMVE_ENTROPY_LOSS_COEF=0.03
 USE_ORI_ENTROPY_LOSS=true
 ORI_ENTROPY_LOSS_COEF=0.03
 
-cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1
+cd /Counterfact-Projects/Counterfactual-R1
 
-train_files='['
-train_files="${train_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/ViRL39K_train.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/ViRL39K_images\"}"
-train_files="${train_files}]"
+# 从 JSON 配置文件读取数据集配置
+train_files=$(python3 - <<PY
+import json
+import os
+with open("./examples/datasets_math_train.json") as f:
+    configs = json.load(f)
+print(json.dumps(configs, ensure_ascii=False))
+PY
+)
 
-val_files='['
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/C-VQA-Synthetic_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/C-VQA-Synthetic_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/geometry3k_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/geometry3k_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/LogicVista_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/LogicVista_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MathVerse_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MathVerse_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MathVista_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MathVista_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MMMUPro_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MMMUPro_images\"}" # <-- 最后一个没有逗号
-val_files="${val_files}]"
+val_files=$(python3 - <<PY
+import json
+import os
+with open("./examples/datasets_math_val.json") as f:
+    configs = json.load(f)
+print(json.dumps(configs, ensure_ascii=False))
+PY
+)
 
 python3 -m verl.trainer.main \
     config=./examples/config.yaml \
@@ -62,7 +66,7 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=True \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_douentropy_lowcoef \
+    trainer.experiment_name=qwen2_5_vl_3b_CFPO-D-math-bs384_V3_noref_orientropy_lowcoef \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=30 \
@@ -70,7 +74,7 @@ python3 -m verl.trainer.main \
     trainer.val_freq=5 \
     trainer.save_freq=50 \
     trainer.save_limit=5 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-D-math-bs384_V3_noref_douentropy_lowcoef \
+    trainer.save_checkpoint_path=/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CFPO-D-math-bs384_V3_noref_orientropy_lowcoef \
     worker.actor.clip_ratio_low=0.2 \
     worker.actor.clip_ratio_high=0.28 \
     algorithm.disable_kl=true \

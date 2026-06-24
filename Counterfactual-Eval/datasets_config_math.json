@@ -1,52 +1,52 @@
 [
     {
         "dataset_name": "geometry3k",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/geometry3k_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/geometry3k_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/geometry3k_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/geometry3k_images"
     },
     {
         "dataset_name": "WeMath",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/WeMath_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/WeMath_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/WeMath_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/WeMath_images"
     },
     {
         "dataset_name": "MMK12",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MMK12_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MMK12_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/MMK12_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/MMK12_images"
     },
     {
         "dataset_name": "MathVerse_fixed",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MathVerse-closed_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MathVerse_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/MathVerse-closed_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/MathVerse_images"
     },
     {
         "dataset_name": "LogicVista",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/LogicVista_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/LogicVista_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/LogicVista_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/LogicVista_images"
     },
     {
         "dataset_name": "MMMUPro-Vision",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MMMUPro-Vision_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/MMMUPro-Vision_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/MMMUPro-Vision_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/MMMUPro-Vision_images"
     },
     {
         "dataset_name": "POPE",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/POPE_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_val2014_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/POPE_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/COCO_val2014_images"
     },
     {
         "dataset_name": "MARS_Bench",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/MARS_Bench_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_val2014_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3/MARS_Bench_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/COCO_val2014_images"
     },
     {
         "dataset_name": "C-VQA-Real",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3/C-VQA-Real_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/COCO_val2014_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3/C-VQA-Real_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/COCO_val2014_images"
     },
     {
         "dataset_name": "TextVQA",
-        "json_path": "${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/Textvqa_test.json",
-        "image_root": "${BASE_PATH}/Counterfact-Projects/Datasets/Textvqa_images"
+        "json_path": "/Counterfact-Projects/Datasets/V3-math/Textvqa_test.json",
+        "image_root": "/Counterfact-Projects/Datasets/Textvqa_images"
     }
 ]

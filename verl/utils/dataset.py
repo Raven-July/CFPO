@@ -348,5 +348,20 @@ class RLHFDataset(Dataset):
         example["attention_mask"] = attention_mask
         example["position_ids"] = position_ids
         example["raw_prompt_ids"] = raw_prompt_ids
-        example["ground_truth"] = example.pop(self.answer_key)
+        answer_val = example.pop(self.answer_key)
+
+        # 动态判断并组装 ground_truth
+        # tensor形状通常是 (num_images, 3)，取第一张图转为 list: [t, h, w]
+        if "solution" in example:
+            # print("rec mission!")
+            example["ground_truth"] = {
+                "answer": answer_val,
+                "solution": example.pop("solution"),
+                # 这里假设前面已经处理好了 images 和 model_inputs
+                "image_path": images if (current_image_dir is not None and len(images) != 0) else [],
+                "image_grid_thw": model_inputs.get("image_grid_thw")[0].tolist() if model_inputs.get("image_grid_thw") is not None else []
+            }
+        else:
+            example["ground_truth"] = answer_val
+
         return example

@@ -22,7 +22,6 @@ import torch
 from ...utils.py_functional import is_transformers_version_greater_than
 from .flash_attention_utils import flash_attention_forward
 
-from vllm.model_executor.models.qwen2_5_vl import Qwen2_5_VisionTransformer
 
 if is_transformers_version_greater_than("4.52.0"):
     from transformers.models.qwen2_vl.modeling_qwen2_vl import (
@@ -182,11 +181,12 @@ def get_rope_index(
 
     return position_ids
 
-def add_diffusion_noise(image_tensor, noise_step, gamma = 0.005):
+
+def add_diffusion_noise(image_tensor, noise_step, gamma=0.005):
     num_steps = 1000  # Number of diffusion steps
 
     # decide beta in each step
-    betas = torch.linspace(-6,6,num_steps)
+    betas = torch.linspace(-6, 6, num_steps)
     betas = torch.sigmoid(betas) * (gamma - 1e-5) + 1e-5
 
     # decide alphas in each step
@@ -196,67 +196,40 @@ def add_diffusion_noise(image_tensor, noise_step, gamma = 0.005):
     one_minus_alphas_bar_sqrt = torch.sqrt(1 - alphas_prod)
     # import pdb;pdb.set_trace()
 
-    def q_x(x_0,t):
+    def q_x(x_0, t):
         noise = torch.randn_like(x_0)
         alphas_t = alphas_bar_sqrt[t]
         alphas_1_m_t = one_minus_alphas_bar_sqrt[t]
-        return (alphas_t*x_0 + alphas_1_m_t*noise)
+        return alphas_t * x_0 + alphas_1_m_t * noise
 
     noisy_image = image_tensor.clone()
-    image_tensor_cd = q_x(noisy_image,noise_step) 
+    image_tensor_cd = q_x(noisy_image, noise_step)
 
     return image_tensor_cd
+
 
 def GMM_mask(
     sig,
     thres_mode,
-    valid_mask=None,  # <--- 新增参数：只统计有效部分
-    head_wise=False,
+    valid_mask=None,  # 只统计有效部分
 ):
     data = sig
-    
+
     # 如果没有传入 valid_mask，默认全部非零元素有效，或者全部有效
     if valid_mask is None:
         # 简单的做法是认为 > 0 的才是有效的 attention (排除了 casual mask 和 sample packing 的 mask)
-        valid_mask = data > 1e-6 
-    
+        valid_mask = data > 1e-6
+
     # 提取有效数据用于统计计算
     valid_data = data[valid_mask]
-    
+
     # 防止全是0的情况导致 NaN
     if valid_data.numel() == 0:
         return torch.zeros_like(data), torch.tensor(0.0), torch.tensor(0.0)
-    
-    # 注意：如果 head_wise=True，我们需要保持维度进行计算
-    # 但由于 valid_mask 可能是不规则形状，直接用 masked_select 会展平
-    # 针对 EasyR1 这种 Packed 场景，最稳健的方法是计算 Global scalar mean 或者小心处理维度
-    # 为了兼容你原来的逻辑，我们这里做“有效元素的统计”
-    
-    if head_wise:
-        # 这种情况下比较复杂，因为每个 head 的有效 token 数量可能不同
-        # 我们可以用 mask 后的 sum / count 来计算
-        
-        # 将 mask 广播到 data 形状
-        if valid_mask.ndim < data.ndim:
-            valid_mask = valid_mask.expand_as(data)
-            
-        # Count per head (dim 0, 2, 3) -> (bsz, num_heads, 1, 1)
-        # sum over q_len (dim 2) and k_len (dim 3)
-        valid_count = valid_mask.sum(dim=(0, 2, 3), keepdim=True).clamp(min=1.0)
-        
-        # Sum of values
-        valid_sum = (data * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
-        mean = valid_sum / valid_count
-        
-        # Std calculation (standard deviation formula)
-        # E[x^2] - (E[x])^2
-        valid_sum_sq = ((data ** 2) * valid_mask.float()).sum(dim=(0, 2, 3), keepdim=True)
-        mean_sq = valid_sum_sq / valid_count
-        std = torch.sqrt((mean_sq - mean ** 2).clamp(min=1e-10))
-    else:
-        # 全局统计
-        mean = torch.mean(valid_data)
-        std = torch.std(valid_data)
+
+    # 全局统计
+    mean = torch.mean(valid_data)
+    std = torch.std(valid_data)
 
     if thres_mode == "high":
         thres = mean + 2 * std
@@ -271,8 +244,8 @@ def GMM_mask(
 
     # 生成 mask (基于原始 data 形状)
     mask = (sig > thres).float()
-    
-    # 重要：再次应用 valid_mask，确保被 Mask 掉的区域（如 Padding 或 其他样本）强制为 0
+
+    # 再次应用 valid_mask，确保被 Mask 掉的区域（如 Padding 或 其他样本）强制为 0
     if valid_mask is not None:
         mask = mask * valid_mask.float()
     # 计算sig > thres的比例
@@ -282,23 +255,11 @@ def GMM_mask(
 
 
 def values_noise_multiply(
-    attn_weights,
-    image_pos, 
-    value_states,
-    thres_mode,
-    noise,
-    mean_mode
+    attn_weights, image_pos, value_states, thres_mode, noise, mean_mode
 ):
     bsz, num_heads, q_len, k_len = attn_weights.shape
     head_dim = value_states.shape[-1]
 
-    # ... (Step 1 均值计算逻辑保持不变，或者同样加上 mask 保护，这里略过以聚焦核心问题) ...
-    # 为了简化，假设你的 Step 1 逻辑是正确的（它主要看 k_len，影响不大）
-    
-    # 这里我们复用你原来的 mean 计算部分，为了节省篇幅省略 ...
-    # <Paste your Step 1 code here>
-    # --------------------------------------------------------
-    # 重新构建 Step 1 (为了完整性，快速写一个带 Mask 的 Mean 计算)
     if noise:
         noise_value_states = add_diffusion_noise(value_states.clone(), 999, 0.01)
         # print("actually added noise!")
@@ -306,15 +267,21 @@ def values_noise_multiply(
         # 根据 mean_mode 初始化 mask
         if mean_mode == "text":
             # text模式：初始全为True (假设全为text)，遇到image位置置为False
-            value_mask = torch.ones((bsz, k_len), dtype=torch.bool, device=value_states.device)
+            value_mask = torch.ones(
+                (bsz, k_len), dtype=torch.bool, device=value_states.device
+            )
             # print("mean_mode: text")
         elif mean_mode == "image":
             # image模式：初始全为False，遇到image位置置为True
-            value_mask = torch.zeros((bsz, k_len), dtype=torch.bool, device=value_states.device)
+            value_mask = torch.zeros(
+                (bsz, k_len), dtype=torch.bool, device=value_states.device
+            )
             # print("mean_mode: image")
         else:
             raise ValueError(f"Unknown mean_mode: {mean_mode}")
-        num_tokens_per_item = torch.zeros((bsz, 1), dtype=value_states.dtype, device=value_states.device)
+        num_tokens_per_item = torch.zeros(
+            (bsz, 1), dtype=value_states.dtype, device=value_states.device
+        )
         for i, intervals in enumerate(image_pos):
             count = 0
             for interval in intervals:
@@ -329,14 +296,17 @@ def values_noise_multiply(
             # 统计有效 token 数量
             count = value_mask[i].sum()
             num_tokens_per_item[i] = max(count, 1.0)
-        
+
         value_mask_expanded = value_mask.view(bsz, 1, k_len, 1).expand_as(value_states)
-        masked_values = value_states.where(value_mask_expanded, torch.tensor(0.0, dtype=value_states.dtype, device=value_states.device))
-        mean = torch.sum(masked_values, dim=(2, 3), keepdim=True) / (num_tokens_per_item.view(bsz, 1, 1, 1) * head_dim)
+        masked_values = value_states.where(
+            value_mask_expanded,
+            torch.tensor(0.0, dtype=value_states.dtype, device=value_states.device),
+        )
+        mean = torch.sum(masked_values, dim=(2, 3), keepdim=True) / (
+            num_tokens_per_item.view(bsz, 1, 1, 1) * head_dim
+        )
         noise_value_states = mean.expand_as(value_states)
     # --------------------------------------------------------
-
-    # --- 2. 循环计算 final_mask (核心修改) ---
     final_mask = torch.zeros_like(attn_weights)
 
     for i, intervals in enumerate(image_pos):
@@ -348,17 +318,20 @@ def values_noise_multiply(
                 img_attn_slice = attn_weights[i : i + 1, :, end:, start:end]
 
                 if img_attn_slice.numel() > 0:
-                    # 关键修改：创建一个 valid_mask
                     # 在 Causal Attention 机制下，如果 img_attn_slice 为 0 (或极小值)，
                     # 说明这些位置是被 Mask 掉的（可能是 Padding，可能是未来的 token，也可能是 Packed 的其他样本）
-                    # 我们只对 > 0 的部分计算 GMM 统计量
-                    
+                    # 只对 > 0 的部分计算 GMM 统计量
+
                     # 使用一个极小的阈值 epsilon 防止 float 误差
                     valid_slice_mask = img_attn_slice > 1e-8
-                    
+
                     # 只有当切片内有有效值时才计算，否则全0
                     if valid_slice_mask.any():
-                        mask, _, _ = GMM_mask(img_attn_slice, valid_mask=valid_slice_mask, thres_mode=thres_mode)
+                        mask, _, _ = GMM_mask(
+                            img_attn_slice,
+                            valid_mask=valid_slice_mask,
+                            thres_mode=thres_mode,
+                        )
                         final_mask[i : i + 1, :, end:, start:end] = mask
 
     final_mask = final_mask.to(value_states.dtype)
@@ -542,61 +515,6 @@ def _get_input_embeds(
     return inputs_embeds, attention_mask
 
 
-def qwen2_vl_forward_old(
-    self: "Qwen2VLForConditionalGeneration",
-    input_ids: torch.LongTensor,
-    attention_mask: Optional[torch.Tensor] = None,
-    position_ids: Optional[torch.LongTensor] = None,
-    labels: Optional[torch.LongTensor] = None,
-    pixel_values: Optional[torch.FloatTensor] = None,
-    pixel_values_videos: Optional[torch.FloatTensor] = None,
-    image_grid_thw: Optional[torch.LongTensor] = None,
-    video_grid_thw: Optional[torch.LongTensor] = None,
-    **kwargs,
-) -> "Qwen2VLCausalLMOutputWithPast":
-    inputs_embeds, attention_mask = _get_input_embeds(
-        self,
-        input_ids,
-        attention_mask,
-        pixel_values,
-        pixel_values_videos,
-        image_grid_thw,
-        video_grid_thw,
-    )
-    outputs = self.model(
-        input_ids=None,
-        attention_mask=attention_mask,
-        position_ids=position_ids,
-        inputs_embeds=inputs_embeds,
-        apply_cmve=False,
-        **kwargs,
-    )
-    hidden_states = outputs[0]
-    logits = self.lm_head(hidden_states)
-
-    outputs_mod = self.model(
-        input_ids=None,
-        attention_mask=attention_mask,
-        position_ids=position_ids,
-        inputs_embeds=inputs_embeds,
-        apply_cmve=True,
-        **kwargs,
-    )
-    hidden_states_mod = outputs_mod[0]
-    logits_mod = self.lm_head(hidden_states_mod)
-
-    # --- 最终 logits ---
-    logits = logits - logits_mod
-    return Qwen2VLCausalLMOutputWithPast(
-        loss=None,
-        logits=logits,
-        past_key_values=None,
-        hidden_states=None,
-        attentions=None,
-        rope_deltas=None,
-    )
-
-
 def qwen2_vl_base_forward_new(
     self: "Qwen2VLModel",
     input_ids: torch.LongTensor,
@@ -656,16 +574,22 @@ def qwen2_vl_forward_new(
     pixel_values_videos: Optional[torch.FloatTensor] = None,
     image_grid_thw: Optional[torch.LongTensor] = None,
     video_grid_thw: Optional[torch.LongTensor] = None,
-    alpha: float = 1,  # <-- CMVE 强度系数
     thres_mode: str = None,  # <-- 新增参数，阈值模式
     noise: bool = False,  # <-- 新增参数，是否添加扩散噪声
     mean_mode: str = None,  # <-- 新增参数，均值计算模式
     **kwargs,
 ) -> "Qwen2VLCausalLMOutputWithPast":
     print("THIS IS CMVE FORWARD")
-    print("Using thres_mode:", thres_mode, " Using noise:", noise, " Using mean_mode:", mean_mode)
-    # --- START: 修正 image_pos 生成逻辑 (支持多图) ---
-    image_pos = []  # 结构变为 List[List[dict]]
+    print(
+        "Using thres_mode:",
+        thres_mode,
+        " Using noise:",
+        noise,
+        " Using mean_mode:",
+        mean_mode,
+    )
+
+    image_pos = []  # 结构为 List[List[dict]]
 
     # 遍历批处理中的每个输入序列
     for i in range(input_ids.shape[0]):
@@ -693,7 +617,6 @@ def qwen2_vl_forward_new(
         else:
             # 异常情况处理：数量不匹配或没有图片
             if len(bos_indices) > 0:
-                # 尝试尽力匹配（可选）
                 min_len = min(len(bos_indices), len(eos_indices))
                 for k in range(min_len):
                     sample_intervals.append(
@@ -706,23 +629,6 @@ def qwen2_vl_forward_new(
 
         image_pos.append(sample_intervals)
 
-    # --- 原始路径（保持不变） ---
-    # outputs = self.model(
-    #     input_ids=input_ids,
-    #     pixel_values=pixel_values,
-    #     pixel_values_videos=pixel_values_videos,
-    #     image_grid_thw=image_grid_thw,
-    #     video_grid_thw=video_grid_thw,
-    #     position_ids=position_ids,
-    #     attention_mask=attention_mask,
-    #     # make sure apply_cmve is False for the original run
-    #     apply_cmve=False,
-    #     **kwargs,
-    # )
-    # hidden_states = outputs[0]
-    # logits = self.lm_head(hidden_states)
-
-    # --- 变化路径（attn 应用cmve） ---
     outputs_mod = self.model(
         input_ids=input_ids,
         pixel_values=pixel_values,
@@ -740,16 +646,6 @@ def qwen2_vl_forward_new(
     )
     hidden_states_cf = outputs_mod[0]
     logits_cf = self.lm_head(hidden_states_cf)
-
-    # --- 最终 logits ---
-    # 获取原始logits中最后一个时间步的next_token_logits，用于后续的计算
-    # next_token_logits = logits[:, -1, :]
-    # # 获取经过修改后的logits中最后一个时间步的next_token_logits_cf，用于后续的计算
-    # next_token_logits_cf = logits_cf[:, -1, :]
-    # # 计算原始next_token_logits和修改后的next_token_logits_cf的加权差值，alpha是控制修改强度的系数
-    # diffs = (1 + alpha) * next_token_logits - alpha * next_token_logits_cf
-    # # 将修改后的next_token_logits赋值给原始logits的最后一个时间步，完成logits的更新
-    # logits[:, -1, :] = diffs
 
     return Qwen2VLCausalLMOutputWithPast(
         loss=None,

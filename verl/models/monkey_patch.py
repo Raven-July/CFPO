@@ -19,7 +19,7 @@ from ..utils.py_functional import is_transformers_version_greater_than
 from .transformers.flash_attention_utils import flash_attention_forward
 
 
-def make_forward_with_default(func, thres_mode="high", noise=False, mean_mode='image'):
+def make_forward_with_default(func, thres_mode="high", noise=False, mean_mode="image"):
     def wrapper(self, *args, **kwargs):
         # 如果用户没有传 a，就用默认值
         if "thres_mode" not in kwargs:
@@ -33,7 +33,9 @@ def make_forward_with_default(func, thres_mode="high", noise=False, mean_mode='i
     return wrapper
 
 
-def apply_ulysses_patch(model_type: str, apply_cmve: bool, thres_mode="high", noise=False, mean_mode='image') -> None:
+def apply_ulysses_patch(
+    model_type: str, apply_cmve: bool, thres_mode="high", noise=False, mean_mode="image"
+) -> None:
 
     if model_type in (
         "llama",
@@ -51,87 +53,61 @@ def apply_ulysses_patch(model_type: str, apply_cmve: bool, thres_mode="high", no
                 qwen2_vl_attn_forward,
                 qwen2_vl_base_forward_new,
                 qwen2_vl_forward_new,
-                qwen2_vl_forward_old,
             )
 
-            if is_transformers_version_greater_than("4.52.0"):
-                from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
-                    Qwen2_5_VLForConditionalGeneration,
-                    Qwen2_5_VLModel,
-                )
-                from transformers.models.qwen2_vl.modeling_qwen2_vl import (
-                    Qwen2VLForConditionalGeneration,
-                    Qwen2VLModel,
-                )
+            from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
+                Qwen2_5_VLForConditionalGeneration,
+                Qwen2_5_VLModel,
+            )
+            from transformers.models.qwen2_vl.modeling_qwen2_vl import (
+                Qwen2VLForConditionalGeneration,
+                Qwen2VLModel,
+            )
 
-                Qwen2VLModel.forward = qwen2_vl_base_forward_new
-                Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
-                Qwen2VLForConditionalGeneration.forward = qwen2_vl_forward_new
-                Qwen2_5_VLForConditionalGeneration.forward = qwen2_vl_forward_new
-            else:
-                from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
-                    Qwen2_5_VLForConditionalGeneration,
-                )
-                from transformers.models.qwen2_vl.modeling_qwen2_vl import (
-                    Qwen2VLForConditionalGeneration,
-                )
-
-                Qwen2VLForConditionalGeneration.forward = qwen2_vl_forward_old
-                Qwen2_5_VLForConditionalGeneration.forward = qwen2_vl_forward_old
+            Qwen2VLModel.forward = qwen2_vl_base_forward_new
+            Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
+            Qwen2VLForConditionalGeneration.forward = qwen2_vl_forward_new
+            Qwen2_5_VLForConditionalGeneration.forward = qwen2_vl_forward_new
         else:
             from .transformers.qwen2_vl_cmve import (
                 qwen2_vl_attn_forward,
                 qwen2_vl_base_forward_new,
                 qwen2_vl_forward_new,
-                qwen2_vl_forward_old,
                 qwen2_vl_language_forward_new,
                 qwen2_vl_decoder_forward_new,
             )
 
-            if is_transformers_version_greater_than("4.52.0"):
-                from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
-                    Qwen2_5_VLForConditionalGeneration,
-                    Qwen2_5_VLModel,
-                    Qwen2_5_VLTextModel,
-                    Qwen2_5_VLDecoderLayer,
-                )
-                from transformers.models.qwen2_vl.modeling_qwen2_vl import (
-                    Qwen2VLForConditionalGeneration,
-                    Qwen2VLModel,
-                    Qwen2VLTextModel,
-                    Qwen2VLDecoderLayer,
-                )
+            from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
+                Qwen2_5_VLForConditionalGeneration,
+                Qwen2_5_VLModel,
+                Qwen2_5_VLTextModel,
+                Qwen2_5_VLDecoderLayer,
+            )
+            from transformers.models.qwen2_vl.modeling_qwen2_vl import (
+                Qwen2VLForConditionalGeneration,
+                Qwen2VLModel,
+                Qwen2VLTextModel,
+                Qwen2VLDecoderLayer,
+            )
 
-                Qwen2VLModel.forward = qwen2_vl_base_forward_new
-                Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
-                Qwen2VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, thres_mode=thres_mode, noise=noise, mean_mode=mean_mode
-                )
-                Qwen2_5_VLForConditionalGeneration.forward = make_forward_with_default(
-                    qwen2_vl_forward_new, thres_mode=thres_mode, noise=noise, mean_mode=mean_mode
-                )
-                Qwen2VLTextModel.forward = qwen2_vl_language_forward_new
-                Qwen2_5_VLTextModel.forward = qwen2_vl_language_forward_new
-                Qwen2VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
-                Qwen2_5_VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
-            else:
-                from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
-                    Qwen2_5_VLForConditionalGeneration,
-                    Qwen2_5_VLTextModel,
-                    Qwen2_5_VLDecoderLayer,
-                )
-                from transformers.models.qwen2_vl.modeling_qwen2_vl import (
-                    Qwen2VLForConditionalGeneration,
-                    Qwen2VLTextModel,
-                    Qwen2VLDecoderLayer,
-                )
-
-                Qwen2VLForConditionalGeneration.forward = qwen2_vl_forward_old
-                Qwen2_5_VLForConditionalGeneration.forward = qwen2_vl_forward_old
-                Qwen2VLTextModel.forward = qwen2_vl_language_forward_new
-                Qwen2_5_VLTextModel.forward = qwen2_vl_language_forward_new
-                Qwen2VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
-                Qwen2_5_VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
+            Qwen2VLModel.forward = qwen2_vl_base_forward_new
+            Qwen2_5_VLModel.forward = qwen2_vl_base_forward_new
+            Qwen2VLForConditionalGeneration.forward = make_forward_with_default(
+                qwen2_vl_forward_new,
+                thres_mode=thres_mode,
+                noise=noise,
+                mean_mode=mean_mode,
+            )
+            Qwen2_5_VLForConditionalGeneration.forward = make_forward_with_default(
+                qwen2_vl_forward_new,
+                thres_mode=thres_mode,
+                noise=noise,
+                mean_mode=mean_mode,
+            )
+            Qwen2VLTextModel.forward = qwen2_vl_language_forward_new
+            Qwen2_5_VLTextModel.forward = qwen2_vl_language_forward_new
+            Qwen2VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
+            Qwen2_5_VLDecoderLayer.forward = qwen2_vl_decoder_forward_new
 
         if is_transformers_version_greater_than("4.53.0"):
             from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (

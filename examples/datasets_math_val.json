@@ -1,0 +1,26 @@
+[
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/C-VQA-Synthetic_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/C-VQA-Synthetic_images"
+    },
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/geometry3k_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/geometry3k_images"
+    },
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/LogicVista_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/LogicVista_images"
+    },
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/MathVerse_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/MathVerse_images"
+    },
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/MathVista_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/MathVista_images"
+    },
+    {
+        "dataset": "/Counterfact-Projects/Datasets/V3-math/MMMUPro_val_V3.json",
+        "image": "/Counterfact-Projects/Datasets/MMMUPro_images"
+    }
+]

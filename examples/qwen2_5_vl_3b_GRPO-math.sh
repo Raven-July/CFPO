@@ -4,27 +4,31 @@ set -x
 
 export PYTHONUNBUFFERED=1
 
-export SWANLAB_DIR='/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy/Counterfact-Projects/train_logs'
+export SWANLAB_DIR='/Counterfact-Projects/train_logs'
 export SWANLAB_MODE='local'
 
-BASE_PATH=/eaas/default/groups/xitucheng213/home/u2021213615/share/yzy
+MODEL_PATH=/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
 
-MODEL_PATH=${BASE_PATH}/Pretrained/Qwen2.5-VL-3B-Instruct  # replace it with your local file path
+cd /Counterfact-Projects/Counterfactual-R1
 
-cd ${BASE_PATH}/Counterfact-Projects/Counterfactual-R1
+# 从 JSON 配置文件读取数据集配置
+train_files=$(python3 - <<PY
+import json
+import os
+with open("./examples/datasets_math_train.json") as f:
+    configs = json.load(f)
+print(json.dumps(configs, ensure_ascii=False))
+PY
+)
 
-train_files='['
-train_files="${train_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/ViRL39K_train.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/ViRL39K_images\"}"
-train_files="${train_files}]"
-
-val_files='['
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/C-VQA-Synthetic_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/C-VQA-Synthetic_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/geometry3k_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/geometry3k_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/LogicVista_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/LogicVista_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MathVerse_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MathVerse_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MathVista_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MathVista_images\"},"
-val_files="${val_files}{\"dataset\":\"${BASE_PATH}/Counterfact-Projects/Datasets/V3-math/MMMUPro_val_V3.json\",\"image\":\"${BASE_PATH}/Counterfact-Projects/Datasets/MMMUPro_images\"}" # <-- 最后一个没有逗号
-val_files="${val_files}]"
+val_files=$(python3 - <<PY
+import json
+import os
+with open("./examples/datasets_math_val.json") as f:
+    configs = json.load(f)
+print(json.dumps(configs, ensure_ascii=False))
+PY
+)
 
 python3 -m verl.trainer.main \
     config=./examples/config.yaml \
@@ -53,7 +57,7 @@ python3 -m verl.trainer.main \
     worker.reward.reward_function=./examples/reward_function/base.py:compute_score \
     trainer.val_before_train=True \
     trainer.project_name=Counterfactual-R1 \
-    trainer.experiment_name=qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO \
+    trainer.experiment_name=qwen2_5_vl_3b_GRPO-math-bs384 \
     trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=2 \
     trainer.val_generations_to_log=30 \
@@ -61,5 +65,5 @@ python3 -m verl.trainer.main \
     trainer.val_freq=5 \
     trainer.save_freq=50 \
     trainer.save_limit=5 \
-    trainer.save_checkpoint_path=${BASE_PATH}/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_CMCPO-math-bs384_V3_GRPO \
+    trainer.save_checkpoint_path=/Counterfact-Projects/Counterfactual-R1/checkpoints/qwen2_5_vl_3b_GRPO-math-bs384 \
     algorithm.use_kl_cmve=False \

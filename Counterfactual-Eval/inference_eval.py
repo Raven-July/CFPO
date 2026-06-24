@@ -5,7 +5,7 @@ import math
 import random
 import argparse
 import warnings
-import logging  # <--- 1. 确保导入 logging
+import logging
 from collections import defaultdict
 from typing import Optional, Dict, Any
 from PIL import Image
@@ -21,12 +21,8 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 MIN_PIXELS = 200704  # 最小像素数
 MAX_PIXELS = 1003520  # 最大像素数
 
-# 2. [新增] 屏蔽 INFO 级别的日志噪音
-# 如果截图中的日志来自某个特定的 latex 解析库（通常在 tokenizer 内部调用），
-# 也可以尝试把根日志级别设高，或者屏蔽所有非必要的 INFO
-logging.basicConfig(
-    level=logging.ERROR
-)  # 注意：这可能会影响你自己用 logging 打印的信息
+# 屏蔽 INFO 级别的日志噪音
+logging.basicConfig(level=logging.ERROR)
 
 # vLLM 需要这个环境变量
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
@@ -174,7 +170,6 @@ def load_and_preprocess_single_item(
         return None  # 无法处理，跳过
 
     # 4. 存储 vLLM 需要的统一输入字典
-    # 这里的 `original_item` 不再是字典，而是原始数据列表的索引
     return {
         "prompt": final_prompt_text,
         "multi_modal_data": {"image": item_images_pil},
@@ -295,14 +290,12 @@ def run_evaluation(
                     else:
                         is_correct = grade_answer(answer, gt)
                         # 额外补正逻辑
-                        if (
-                            not is_correct
-                            and not args.papo
-                            and isinstance(answer, str)
-                            ):
+                        if not is_correct and not args.papo and isinstance(answer, str):
                             if ":" in answer:
-                                is_correct = grade_answer(answer.split(":")[0].strip(), gt)
-                            elif answer=="No.":
+                                is_correct = grade_answer(
+                                    answer.split(":")[0].strip(), gt
+                                )
+                            elif answer == "No.":
                                 is_correct = grade_answer("No", gt)
 
                     if is_correct:
@@ -360,9 +353,6 @@ def run_evaluation(
 # ===================== 主流程 =====================
 def main():
     args = parse_args()
-
-    # 确定 GPU 数量
-    # world_size = args.tensor_parallel_size if args.tensor_parallel_size else torch.cuda.device_count()
 
     # ---- 加载数据集配置 ----
     with open(args.config_path, "r") as f:
