@@ -40,8 +40,8 @@ PY
 
 python3 -m verl.trainer.main \
     config=./examples/config.yaml \
-    data.train_files=${train_files} \
-    data.val_files=${val_files} \
+    data.train_files="${train_files}" \
+    data.val_files="${val_files}" \
     data.format_prompt=./examples/format_prompt/base.jinja \
     data.max_prompt_length=4096 \
     data.max_response_length=2048 \
